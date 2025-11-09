@@ -1,0 +1,12 @@
+[project]
+name = "caido-auth"
+version = "0.1.0"
+description = "Authenticate with a Caido instance."
+readme = "README.md"
+authors = [{ name = "Caido Labs Inc.", email = "dev@caido.io" }]
+requires-python = ">=3.13"
+dependencies = []
+
+[build-system]
+requires = ["uv_build>=0.9.8,<0.10.0"]
+build-backend = "uv_build"

@@ -12,11 +12,11 @@
   <hr />
 </div>
 
-## 👋 SDK PY
+## 👋 Caido Auth
 
-This is the monorepo for all the Python SDK and related tooling of Caido. It contains the following packages:
+[![Pypi Version](https://img.shields.io/pypi/v/caido-auth?style=for-the-badge)](https://pypi.org/project/caido-auth/)
 
-- `caido-auth`: Library to authenticate with a Caido instance
+This package is a library to authenticate a python script with a Caido instance.
 
 ## 💚 Community
 
