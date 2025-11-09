@@ -4,8 +4,8 @@ version = "0.1.0"
 description = "Authenticate with a Caido instance."
 readme = "README.md"
 authors = [{ name = "Caido Labs Inc.", email = "dev@caido.io" }]
-requires-python = ">=3.13"
-dependencies = []
+requires-python = ">=3.12"
+dependencies = ["gql[aiohttp,websockets]>=3.5.0"]
 
 [build-system]
 requires = ["uv_build>=0.9.8,<0.10.0"]
