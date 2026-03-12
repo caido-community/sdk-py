@@ -118,7 +118,10 @@ class AuthClient:
 
     async def _wait_for_token(self, request_id: str) -> AuthenticationToken:
         """Subscribe to token creation events until a token is received."""
-        transport = WebsocketsTransport(url=self._websocket_url)
+        transport = WebsocketsTransport(
+            url=self._websocket_url,
+            close_timeout=2,
+        )
 
         try:
             async with Client(
