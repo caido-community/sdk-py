@@ -55,7 +55,7 @@ class AuthClient:
         self._websocket_url = self._get_websocket_url()
         self._approver = options.approver
         self._timeout_seconds = (
-            options.timeout_ms / 1000 if options.timeout_ms is not None else None
+            int(options.timeout_ms / 1000) if options.timeout_ms is not None else None
         )
         self._graphql_client = Client(
             transport=AIOHTTPTransport(
@@ -81,8 +81,8 @@ class AuthClient:
     ) -> ErrorDetails:
         """Extract optional reason/message from a typed GraphQL user error."""
         return ErrorDetails(
-            reason=error["reason"] if "reason" in error else None,
-            message=error["message"] if "message" in error else None,
+            reason=error.get("reason"),
+            message=error.get("message"),
         )
 
     async def start_authentication_flow(self) -> AuthenticationToken:
@@ -103,20 +103,19 @@ class AuthClient:
                 "NO_RESPONSE", message="No response from startAuthenticationFlow"
             )
 
-        if payload.get("error") is not None:
-            error = payload["error"]
+        if (error := payload.get("error")) is not None:
             details = self._extract_error_details(error)
             raise InstanceError(
                 error["code"], reason=details.reason, message=details.message
             )
 
-        if payload.get("request") is None:
+        if (request := payload.get("request")) is None:
             raise InstanceError(
                 "NO_REQUEST", message="No authentication request returned"
             )
 
         # Step 2: Delegate approval to the configured approver strategy.
-        auth_request = AuthenticationRequest.from_wire(payload["request"])
+        auth_request = AuthenticationRequest.from_wire(request)
         await self._approver.approve(auth_request)
 
         # Step 3: Wait for the token through the websocket subscription.
@@ -163,15 +162,14 @@ class AuthClient:
                 "NO_RESPONSE", message="No subscription payload received"
             )
 
-        if payload.get("error") is not None:
-            error = payload["error"]
+        if (error := payload.get("error")) is not None:
             details = self._extract_error_details(error)
             raise InstanceError(
                 error["code"], reason=details.reason, message=details.message
             )
 
-        if payload.get("token") is not None:
-            return AuthenticationToken.from_wire(payload["token"])
+        if (token := payload.get("token")) is not None:
+            return AuthenticationToken.from_wire(token)
 
         return None
 
@@ -193,14 +191,13 @@ class AuthClient:
                 "NO_RESPONSE", message="No response from refreshAuthenticationToken"
             )
 
-        if payload.get("error") is not None:
-            error = payload["error"]
+        if (error := payload.get("error")) is not None:
             details = self._extract_error_details(error)
             raise InstanceError(
                 error["code"], reason=details.reason, message=details.message
             )
 
-        if payload.get("token") is None:
+        if (token := payload.get("token")) is None:
             raise InstanceError("NO_TOKEN", message="No token returned from refresh")
 
-        return AuthenticationToken.from_wire(payload["token"])
+        return AuthenticationToken.from_wire(token)

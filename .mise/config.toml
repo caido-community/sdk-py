@@ -3,7 +3,7 @@ python = { version = "3.13" }
 uv = { version = "0.9.8" }
 
 [tasks.typecheck]
-run = "uv run --group dev ty"
+run = "uv run --group dev ty check"
 
 [tasks.fmt]
 run = "uv run --group dev ruff format packages"
