@@ -1,0 +1,39 @@
+name: Publish one
+description: Action to publish one package
+
+inputs:
+  project-path:
+    description: Path to the project to build and publish.
+    required: true
+
+  check-url:
+    description: URL to use with uv --check-url.
+    required: false
+    default: https://pypi.org/p
+
+runs:
+  using: composite
+  steps:
+    - name: Build project
+      shell: bash
+      run: uv build "${{ inputs.project-path }}"
+
+    - name: Publish project
+      shell: bash
+      run: |
+        set -o pipefail
+
+        status=0
+        output=$(uv publish --project "${{ inputs.project-path }}" --check-url "${{ inputs.check-url }}" 2>&1) || status=$?
+
+        echo "$output"
+
+        if [ "$status" -ne 0 ]; then
+          # Treat "already exists" responses from the index as success to avoid
+          # failing the workflow when this version is already published.
+          if echo "$output" | grep -qi "File already exists"; then
+            echo "Artifacts already exist on the index; treating as success."
+            exit 0
+          fi
+          exit "$status"
+        fi
