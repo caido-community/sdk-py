@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import asyncio
 from dataclasses import dataclass
 from typing import Any, cast
 from urllib.parse import urlparse
@@ -130,23 +129,12 @@ class AuthClient:
                     CREATED_AUTHENTICATION_TOKEN,
                     variable_values={"requestId": request_id},
                 )
-                if self._timeout_seconds is None:
-                    async for result in subscription:
-                        token = self._process_subscription_result(result)
-                        if token is not None:
-                            return token
-                else:
-                    async with asyncio.timeout(self._timeout_seconds):
-                        async for result in subscription:
-                            token = self._process_subscription_result(result)
-                            if token is not None:
-                                return token
+                async for result in subscription:
+                    token = self._process_subscription_result(result)
+                    if token is not None:
+                        return token
         except InstanceError:
             raise
-        except TimeoutError as exc:
-            raise InstanceError(
-                "SUBSCRIPTION_ERROR", message="Subscription timed out while waiting for token"
-            ) from exc
         except Exception as exc:
             raise InstanceError("SUBSCRIPTION_ERROR", message=str(exc)) from exc
 

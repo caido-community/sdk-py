@@ -24,7 +24,7 @@ def on_request(request: AuthenticationRequest) -> None:
 
 
 async def main() -> int:
-    instance_url = os.environ.get("CAIDO_INSTANCE_URL", "http://localhost:8080")
+    instance_url = os.environ.get("CAIDO_INSTANCE_URL", "http://localhost:8082")
     print(f"Connecting to Caido instance at: {instance_url}")
 
     approver = BrowserApprover(on_request)

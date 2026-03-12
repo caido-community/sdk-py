@@ -4,6 +4,7 @@ requires-python = ">=3.12"
 
 [manifest]
 members = [
+    "caido-sdk-client",
     "caido-server-auth",
 ]
 
@@ -145,6 +146,17 @@ sdist = { url = "https://files.pythonhosted.org/packages/47/d7/5bbeb12c44d7c4f2f
 wheels = [
     { url = "https://files.pythonhosted.org/packages/df/73/b6e24bd22e6720ca8ee9a85a0c4a2971af8497d8f3193fa05390cbd46e09/backoff-2.2.1-py3-none-any.whl", hash = "sha256:63579f9a0628e06278f7e47b7d7d5b6ce20dc65c5e96a6f3ca99a6adca0396e8", size = 15148, upload-time = "2022-10-05T19:19:30.546Z" },
 ]
+
+[[package]]
+name = "caido-sdk-client"
+version = "0.1.0"
+source = { editable = "packages/caido-sdk-client" }
+dependencies = [
+    { name = "gql", extra = ["aiohttp", "websockets"] },
+]
+
+[package.metadata]
+requires-dist = [{ name = "gql", extras = ["aiohttp", "websockets"], specifier = ">=3.5.0" }]
 
 [[package]]
 name = "caido-server-auth"
