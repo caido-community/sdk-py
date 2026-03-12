@@ -12,11 +12,50 @@
   <hr />
 </div>
 
-## 👋 Caido Auth
+## 👋 Server Auth
 
-[![Pypi Version](https://img.shields.io/pypi/v/caido-auth?style=for-the-badge)](https://pypi.org/project/caido-auth/)
+[![Pypi Version](https://img.shields.io/pypi/v/caido-server-auth?style=for-the-badge)](https://pypi.org/project/caido-server-auth/)
 
-This package is a library to authenticate a python script with a Caido instance.
+Authenticate with a Caido instance using device code flow.
+
+```python
+import asyncio
+import os
+
+from caido_server_auth import (
+    AuthClient,
+    AuthClientOptions,
+    AuthenticationRequest,
+    BrowserApprover,
+)
+
+
+def on_request(request: AuthenticationRequest) -> None:
+    print(f"Visit: {request.verification_url}")
+    print(f"Expires at: {request.expires_at.isoformat()}")
+
+
+async def main() -> None:
+    instance_url = os.environ.get("CAIDO_INSTANCE_URL", "http://localhost:8080")
+    auth = AuthClient(
+        AuthClientOptions(
+            instance_url=instance_url,
+            approver=BrowserApprover(on_request),
+        )
+    )
+    token = await auth.start_authentication_flow()
+    print(token.access_token)
+
+
+asyncio.run(main())
+```
+
+## Examples
+
+See the `examples` directory for complete working examples:
+
+- `examples/browser_auth.py` - Manual approval via browser
+- `examples/pat_auth.py` - Automated approval using Personal Access Token
 
 ## 💚 Community
 

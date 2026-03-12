@@ -1,5 +1,5 @@
 [project]
-name = "caido-auth"
+name = "caido-server-auth"
 version = "0.1.0"
 description = "Authenticate with a Caido instance."
 readme = "README.md"

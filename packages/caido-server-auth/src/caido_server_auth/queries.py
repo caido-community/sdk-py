@@ -66,7 +66,7 @@ REFRESH_AUTHENTICATION_TOKEN = gql(
     """
 )
 
-CREATED_AUTHENTICATION_TOKEN_SUBSCRIPTION = gql(
+CREATED_AUTHENTICATION_TOKEN = gql(
     """
     subscription CreatedAuthenticationToken($requestId: ID!) {
         createdAuthenticationToken(requestId: $requestId) {

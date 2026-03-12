@@ -1,21 +1,34 @@
-"""Caido Auth SDK for OAuth2 device code authentication."""
+"""Server authentication SDK for OAuth2 device code authentication."""
 
-from .client import CaidoAuth
-from .models import (
-    AuthenticationError,
-    AuthenticationFlowError,
+from .approvers import (
+    AuthApprover,
+    BrowserApprover,
+    OnRequestCallback,
+    PATApprover,
+    PATApproverOptions,
+)
+from .client import AuthClient, AuthClientOptions
+from .errors import AuthenticationError, CloudError, InstanceError
+from .types import (
     AuthenticationRequest,
-    AuthenticationScope,
     AuthenticationToken,
-    TokenRefreshError,
+    DeviceInformation,
+    DeviceScope,
 )
 
 __all__ = [
-    "CaidoAuth",
-    "AuthenticationToken",
-    "AuthenticationRequest",
-    "AuthenticationScope",
+    "AuthApprover",
+    "AuthClient",
+    "AuthClientOptions",
     "AuthenticationError",
-    "AuthenticationFlowError",
-    "TokenRefreshError",
+    "AuthenticationRequest",
+    "AuthenticationToken",
+    "BrowserApprover",
+    "CloudError",
+    "DeviceInformation",
+    "DeviceScope",
+    "InstanceError",
+    "OnRequestCallback",
+    "PATApprover",
+    "PATApproverOptions",
 ]

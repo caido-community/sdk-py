@@ -4,7 +4,7 @@ requires-python = ">=3.12"
 
 [manifest]
 members = [
-    "caido-auth",
+    "caido-server-auth",
 ]
 
 [[package]]
@@ -147,9 +147,9 @@ wheels = [
 ]
 
 [[package]]
-name = "caido-auth"
+name = "caido-server-auth"
 version = "0.1.0"
-source = { editable = "packages/caido-auth" }
+source = { editable = "packages/caido-server-auth" }
 dependencies = [
     { name = "gql", extra = ["aiohttp", "websockets"] },
 ]

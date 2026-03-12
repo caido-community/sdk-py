@@ -1,197 +1,207 @@
-"""Caido authentication client for OAuth2 device code flow."""
+"""Auth client implementation for OAuth2 device code flow."""
+
+from __future__ import annotations
 
 import asyncio
-from typing import Callable, Optional
-from urllib.parse import urljoin, urlparse
+from dataclasses import dataclass
+from typing import Any, cast
+from urllib.parse import urlparse
 
 from gql import Client
 from gql.transport.aiohttp import AIOHTTPTransport
 from gql.transport.websockets import WebsocketsTransport
 
-from .models import (
-    AuthenticationError,
-    AuthenticationFlowError,
-    AuthenticationRequest,
-    AuthenticationToken,
-    TokenRefreshError,
-)
+from .approvers.types import AuthApprover
+from .errors import InstanceError
 from .queries import (
-    CREATED_AUTHENTICATION_TOKEN_SUBSCRIPTION,
+    CREATED_AUTHENTICATION_TOKEN,
     REFRESH_AUTHENTICATION_TOKEN,
     START_AUTHENTICATION_FLOW,
 )
+from .types import (
+    AuthenticationRequest,
+    AuthenticationToken,
+    CreatedAuthenticationTokenError,
+    CreatedAuthenticationTokenResponse,
+    RefreshAuthenticationTokenError,
+    RefreshAuthenticationTokenResponse,
+    StartAuthenticationFlowError,
+    StartAuthenticationFlowResponse,
+)
 
 
-class CaidoAuth:
-    """Client for authenticating with a Caido instance"""
+@dataclass(frozen=True, slots=True)
+class AuthClientOptions:
+    """Options used to configure AuthClient."""
 
-    def __init__(self, instance_url: str):
-        """
-        Initialize the authentication client.
+    instance_url: str
+    approver: AuthApprover
+    timeout_ms: int | None = None
 
-        Args:
-            instance_url: Base URL of the Caido instance (e.g., "http://localhost:8080")
-        """
-        self.instance_url = instance_url.rstrip("/")
-        self._graphql_url = urljoin(self.instance_url, "/graphql")
+
+@dataclass(frozen=True, slots=True)
+class ErrorDetails:
+    """Structured error details extracted from GraphQL user errors."""
+
+    reason: str | None = None
+    message: str | None = None
+
+
+class AuthClient:
+    """Client for authenticating with a Caido instance."""
+
+    def __init__(self, options: AuthClientOptions) -> None:
+        self._instance_url = options.instance_url.rstrip("/")
+        self._graphql_url = f"{self._instance_url}/graphql"
         self._websocket_url = self._get_websocket_url()
+        self._approver = options.approver
+        self._timeout_seconds = (
+            options.timeout_ms / 1000 if options.timeout_ms is not None else None
+        )
+        self._graphql_client = Client(
+            transport=AIOHTTPTransport(
+                url=self._graphql_url,
+                timeout=self._timeout_seconds,
+            ),
+            fetch_schema_from_transport=False,
+        )
 
     def _get_websocket_url(self) -> str:
-        """Convert HTTP(S) URL to WS(S) URL for subscriptions."""
+        """Convert GraphQL HTTP URL to the websocket subscription URL."""
         parsed = urlparse(self._graphql_url)
         scheme = "wss" if parsed.scheme == "https" else "ws"
         return f"{scheme}://{parsed.netloc}/ws/graphql"
 
-    async def start_authentication_flow(
-        self,
-        on_request: Optional[Callable[[AuthenticationRequest], None]] = None,
-    ) -> AuthenticationToken:
-        """
-        Start the device code authentication flow.
+    @staticmethod
+    def _extract_error_details(
+        error: StartAuthenticationFlowError
+        | CreatedAuthenticationTokenError
+        | RefreshAuthenticationTokenError,
+    ) -> ErrorDetails:
+        """Extract optional reason/message from a typed GraphQL user error."""
+        return ErrorDetails(
+            reason=error["reason"] if "reason" in error else None,
+            message=error["message"] if "message" in error else None,
+        )
 
-        This method:
-        1. Initiates the authentication flow
-        2. Starts a subscription to wait for user authorization
-        3. Calls the callback with the authentication request details
-        4. Waits for the user to authorize in their browser
-        5. Returns the authentication token once approved
+    async def start_authentication_flow(self) -> AuthenticationToken:
+        """Start the device code flow and wait for the token."""
+        # Step 1: Start the authentication flow via GraphQL mutation.
+        async with self._graphql_client as session:
+            try:
+                result: dict[str, Any] = await session.execute(START_AUTHENTICATION_FLOW)
+            except Exception as exc:
+                raise InstanceError("GRAPHQL_ERROR", message=str(exc)) from exc
 
-        Args:
-            on_request: Optional callback function called with AuthenticationRequest
-                       when the user needs to visit the verification URL
+        response = cast(StartAuthenticationFlowResponse, result)
+        payload = response.get("startAuthenticationFlow")
+        if payload is None:
+            raise InstanceError(
+                "NO_RESPONSE", message="No response from startAuthenticationFlow"
+            )
 
-        Returns:
-            AuthenticationToken with access token, refresh token, and expiration
+        if payload.get("error") is not None:
+            error = payload["error"]
+            details = self._extract_error_details(error)
+            raise InstanceError(
+                error["code"], reason=details.reason, message=details.message
+            )
 
-        Raises:
-            AuthenticationFlowError: If the flow fails to start
-            AuthenticationError: If token retrieval fails
-        """
-        # Step 1: Start the authentication flow
-        transport = AIOHTTPTransport(url=self._graphql_url)
-        async with Client(
-            transport=transport,
-            fetch_schema_from_transport=False,
-        ) as session:
-            result = await session.execute(START_AUTHENTICATION_FLOW)
-            payload = result["startAuthenticationFlow"]
+        if payload.get("request") is None:
+            raise InstanceError("NO_REQUEST", message="No authentication request returned")
 
-            if payload.get("error"):
-                error = payload["error"]
-                reason = error.get("reason", error.get("code", "UNKNOWN"))
-                message = error.get("message", "Authentication flow failed")
-                raise AuthenticationFlowError(reason, message)
+        # Step 2: Delegate approval to the configured approver strategy.
+        auth_request = AuthenticationRequest.from_wire(payload["request"])
+        await self._approver.approve(auth_request)
 
-            if not payload.get("request"):
-                raise AuthenticationFlowError(
-                    "NO_REQUEST", "No authentication request returned"
-                )
-
-            auth_request = AuthenticationRequest.from_graphql(payload["request"])
-
-        # Step 2: Call the user callback with the request details
-        if on_request:
-            on_request(auth_request)
-
-        # Step 3: Subscribe to wait for token
-        token = await self._wait_for_token(auth_request.id)
-        return token
+        # Step 3: Wait for the token through the websocket subscription.
+        return await self._wait_for_token(auth_request.id)
 
     async def _wait_for_token(self, request_id: str) -> AuthenticationToken:
-        """
-        Subscribe and wait for the authentication token.
-
-        Args:
-            request_id: The authentication request ID
-
-        Returns:
-            AuthenticationToken once the user authorizes
-
-        Raises:
-            AuthenticationError: If subscription fails or returns an error
-        """
+        """Subscribe to token creation events until a token is received."""
         transport = WebsocketsTransport(url=self._websocket_url)
 
-        async with Client(
-            transport=transport,
-            fetch_schema_from_transport=False,
-        ) as session:
-            async for result in session.subscribe(
-                CREATED_AUTHENTICATION_TOKEN_SUBSCRIPTION,
-                variable_values={"requestId": request_id},
-            ):
-                payload = result["createdAuthenticationToken"]
+        try:
+            async with Client(
+                transport=transport,
+                fetch_schema_from_transport=False,
+            ) as session:
+                subscription = session.subscribe(
+                    CREATED_AUTHENTICATION_TOKEN,
+                    variable_values={"requestId": request_id},
+                )
+                if self._timeout_seconds is None:
+                    async for result in subscription:
+                        token = self._process_subscription_result(result)
+                        if token is not None:
+                            return token
+                else:
+                    async with asyncio.timeout(self._timeout_seconds):
+                        async for result in subscription:
+                            token = self._process_subscription_result(result)
+                            if token is not None:
+                                return token
+        except InstanceError:
+            raise
+        except TimeoutError as exc:
+            raise InstanceError(
+                "SUBSCRIPTION_ERROR", message="Subscription timed out while waiting for token"
+            ) from exc
+        except Exception as exc:
+            raise InstanceError("SUBSCRIPTION_ERROR", message=str(exc)) from exc
 
-                if payload.get("error"):
-                    error = payload["error"]
-                    reason = error.get("reason", error.get("code", "UNKNOWN"))
-                    message = error.get("message", "Token retrieval failed")
-                    raise AuthenticationError(f"{reason}: {message}")
+        raise InstanceError(
+            "SUBSCRIPTION_COMPLETE",
+            message="Subscription ended without receiving token",
+        )
 
-                if payload.get("token"):
-                    return AuthenticationToken.from_graphql(payload["token"])
+    def _process_subscription_result(
+        self, result: dict[str, Any]
+    ) -> AuthenticationToken | None:
+        """Validate subscription payload and convert token payload when present."""
+        response = cast(CreatedAuthenticationTokenResponse, result)
+        payload = response.get("createdAuthenticationToken")
+        if payload is None:
+            raise InstanceError("NO_RESPONSE", message="No subscription payload received")
 
-        raise AuthenticationError("Subscription ended without receiving token")
+        if payload.get("error") is not None:
+            error = payload["error"]
+            details = self._extract_error_details(error)
+            raise InstanceError(
+                error["code"], reason=details.reason, message=details.message
+            )
+
+        if payload.get("token") is not None:
+            return AuthenticationToken.from_wire(payload["token"])
+
+        return None
 
     async def refresh_token(self, refresh_token: str) -> AuthenticationToken:
-        """
-        Refresh an access token using a refresh token.
+        """Refresh an access token using a refresh token."""
+        async with self._graphql_client as session:
+            try:
+                variable_values = {"refreshToken": refresh_token}
+                result: dict[str, Any] = await session.execute(
+                    REFRESH_AUTHENTICATION_TOKEN, variable_values=variable_values
+                )
+            except Exception as exc:
+                raise InstanceError("GRAPHQL_ERROR", message=str(exc)) from exc
 
-        Args:
-            refresh_token: The refresh token from a previous authentication
-
-        Returns:
-            New AuthenticationToken with updated access and refresh tokens
-
-        Raises:
-            TokenRefreshError: If the refresh fails
-        """
-        transport = AIOHTTPTransport(url=self._graphql_url)
-
-        async with Client(
-            transport=transport,
-            fetch_schema_from_transport=False,
-        ) as session:
-            result = await session.execute(
-                REFRESH_AUTHENTICATION_TOKEN,
-                variable_values={"refreshToken": refresh_token},
+        response = cast(RefreshAuthenticationTokenResponse, result)
+        payload = response.get("refreshAuthenticationToken")
+        if payload is None:
+            raise InstanceError(
+                "NO_RESPONSE", message="No response from refreshAuthenticationToken"
             )
-            payload = result["refreshAuthenticationToken"]
 
-            if payload.get("error"):
-                error = payload["error"]
-                reason = error.get("reason", error.get("code", "UNKNOWN"))
-                message = error.get("message", "Token refresh failed")
-                raise TokenRefreshError(reason, message)
+        if payload.get("error") is not None:
+            error = payload["error"]
+            details = self._extract_error_details(error)
+            raise InstanceError(
+                error["code"], reason=details.reason, message=details.message
+            )
 
-            if not payload.get("token"):
-                raise TokenRefreshError("NO_TOKEN", "No token returned from refresh")
+        if payload.get("token") is None:
+            raise InstanceError("NO_TOKEN", message="No token returned from refresh")
 
-            return AuthenticationToken.from_graphql(payload["token"])
-
-    def authenticate(
-        self,
-        on_request: Callable[[AuthenticationRequest], None],
-    ) -> AuthenticationToken:
-        """
-        Synchronous wrapper for start_authentication_flow.
-
-        Args:
-            on_request: Optional callback function called with AuthenticationRequest
-
-        Returns:
-            AuthenticationToken with access token, refresh token, and expiration
-        """
-        return asyncio.run(self.start_authentication_flow(on_request))
-
-    def refresh(self, refresh_token: str) -> AuthenticationToken:
-        """
-        Synchronous wrapper for refresh_token.
-
-        Args:
-            refresh_token: The refresh token from a previous authentication
-
-        Returns:
-            New AuthenticationToken with updated access and refresh tokens
-        """
-        return asyncio.run(self.refresh_token(refresh_token))
+        return AuthenticationToken.from_wire(payload["token"])
