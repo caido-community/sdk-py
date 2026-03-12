@@ -51,7 +51,9 @@ class PATApprover:
         # Step 2: Optionally filter scopes if allowed_scopes is configured.
         if self._allowed_scopes is not None:
             allowed = set(self._allowed_scopes)
-            scopes_to_approve = [scope for scope in scopes_to_approve if scope in allowed]
+            scopes_to_approve = [
+                scope for scope in scopes_to_approve if scope in allowed
+            ]
 
         # Step 3: Approve the device with the final scope list.
         await self._approve_device(request.user_code, scopes_to_approve)

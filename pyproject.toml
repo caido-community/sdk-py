@@ -1,2 +1,10 @@
+[project]
+name = "caido-sdk-workspace"
+version = "0.0.0"
+requires-python = ">=3.12"
+
 [tool.uv.workspace]
 members = ["packages/*"]
+
+[dependency-groups]
+dev = ["ruff==0.15.5", "ty==0.0.22"]

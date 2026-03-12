@@ -73,9 +73,11 @@ class AuthClient:
 
     @staticmethod
     def _extract_error_details(
-        error: StartAuthenticationFlowError
-        | CreatedAuthenticationTokenError
-        | RefreshAuthenticationTokenError,
+        error: (
+            StartAuthenticationFlowError
+            | CreatedAuthenticationTokenError
+            | RefreshAuthenticationTokenError
+        ),
     ) -> ErrorDetails:
         """Extract optional reason/message from a typed GraphQL user error."""
         return ErrorDetails(
@@ -88,7 +90,9 @@ class AuthClient:
         # Step 1: Start the authentication flow via GraphQL mutation.
         async with self._graphql_client as session:
             try:
-                result: dict[str, Any] = await session.execute(START_AUTHENTICATION_FLOW)
+                result: dict[str, Any] = await session.execute(
+                    START_AUTHENTICATION_FLOW
+                )
             except Exception as exc:
                 raise InstanceError("GRAPHQL_ERROR", message=str(exc)) from exc
 
@@ -107,7 +111,9 @@ class AuthClient:
             )
 
         if payload.get("request") is None:
-            raise InstanceError("NO_REQUEST", message="No authentication request returned")
+            raise InstanceError(
+                "NO_REQUEST", message="No authentication request returned"
+            )
 
         # Step 2: Delegate approval to the configured approver strategy.
         auth_request = AuthenticationRequest.from_wire(payload["request"])
@@ -153,7 +159,9 @@ class AuthClient:
         response = cast(CreatedAuthenticationTokenResponse, result)
         payload = response.get("createdAuthenticationToken")
         if payload is None:
-            raise InstanceError("NO_RESPONSE", message="No subscription payload received")
+            raise InstanceError(
+                "NO_RESPONSE", message="No subscription payload received"
+            )
 
         if payload.get("error") is not None:
             error = payload["error"]

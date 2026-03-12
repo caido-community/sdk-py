@@ -1,3 +1,24 @@
 [tools]
 python = { version = "3.13" }
 uv = { version = "0.9.8" }
+
+[tasks.typecheck]
+run = "uv run --group dev ty"
+
+[tasks.fmt]
+run = "uv run --group dev ruff format packages"
+
+[tasks.fmt-check]
+run = "uv run --group dev ruff format --check packages"
+
+[tasks.lint]
+run = "uv run --group dev ruff check packages --select I --fix"
+
+[tasks.lint-check]
+run = "uv run --group dev ruff check packages --select I"
+
+[tasks.fix]
+depends = ["fmt", "lint"]
+
+[tasks.validate]
+depends = ["fmt-check", "lint-check", "typecheck"]

@@ -1,0 +1,28 @@
+name: Validate
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+
+jobs:
+  validate-py:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v6
+
+      - name: Install Mise
+        uses: caido/action-mise-action@v3.2.0
+        with:
+          working_directory: .
+          version: ${{ vars.CI__MISE_VERSION }}
+
+      - name: Install dependencies
+        run: uv sync --group dev
+
+      - name: Run validation (format, lint, typecheck)
+        run: mise run validate

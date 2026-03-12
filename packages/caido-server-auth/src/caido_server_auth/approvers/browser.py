@@ -8,9 +8,7 @@ from typing import TypeAlias, cast
 
 from ..types import AuthenticationRequest
 
-OnRequestCallback: TypeAlias = Callable[
-    [AuthenticationRequest], None | Awaitable[None]
-]
+OnRequestCallback: TypeAlias = Callable[[AuthenticationRequest], None | Awaitable[None]]
 
 
 class BrowserApprover:
