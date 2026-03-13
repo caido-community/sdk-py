@@ -7,4 +7,8 @@ requires-python = ">=3.12"
 members = ["packages/*"]
 
 [dependency-groups]
-dev = ["ruff==0.15.5", "ty==0.0.22"]
+dev = [
+    "ruff==0.15.5",
+    "turms>=0.10.1",
+    "ty==0.0.22",
+]
