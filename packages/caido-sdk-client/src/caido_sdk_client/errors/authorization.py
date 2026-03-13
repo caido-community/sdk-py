@@ -17,10 +17,8 @@ class PermissionDeniedUserError(BaseError):
 class AuthorizationUserError(BaseError):
     reason: str
 
-    def __init__(self, error: object) -> None:
-        reason = getattr(error, "reason", None) or (
-            error["reason"] if isinstance(error, dict) else None
-        )
+    def __init__(self, error: dict[str, str]) -> None:
+        reason = error.get("reason")
         match reason:
             case "FORBIDDEN":
                 super().__init__(

@@ -21,11 +21,6 @@ _VALID_AUTHORIZATION_REASONS = {"FORBIDDEN", "INVALID_TOKEN", "MISSING_SCOPE"}
 _VALID_CLOUD_REASONS = {r.value for r in CloudErrorReason}
 
 
-class _AuthorizationData:
-    def __init__(self, reason: str) -> None:
-        self.reason = reason
-
-
 def to_user_error(
     error: dict[str, Any],
 ) -> AuthorizationUserError | CloudUserError | OtherUserError | None:
@@ -46,7 +41,7 @@ def to_user_error(
     if code == _ERROR_CODE_AUTHORIZATION:
         reason = caido_extension.get("reason")
         if isinstance(reason, str) and reason in _VALID_AUTHORIZATION_REASONS:
-            return AuthorizationUserError(_AuthorizationData(reason))
+            return AuthorizationUserError({"reason": reason})
         return None
 
     if code == _ERROR_CODE_CLOUD:
