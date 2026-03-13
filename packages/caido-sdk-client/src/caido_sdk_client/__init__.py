@@ -22,18 +22,27 @@ from caido_sdk_client.errors import (
 )
 from caido_sdk_client.graphql import GraphQLClient
 from caido_sdk_client.logger import ConsoleLogger, Logger
-from caido_sdk_client.sdks import EnvironmentInstance, EnvironmentSDK, UserSDK
+from caido_sdk_client.sdks import (
+    EnvironmentInstance,
+    EnvironmentSDK,
+    FindingSDK,
+    FindingsListBuilder,
+    UserSDK,
+)
 from caido_sdk_client.types import (
     CloudUser,
     CreateEnvironmentOptions,
+    CreateFindingOptions,
     Environment,
     EnvironmentVariable,
     EnvironmentVariableKind,
+    Finding,
     GuestUser,
     ScriptUser,
     SubscriptionEntitlement,
     SubscriptionPlan,
     UpdateEnvironmentOptions,
+    UpdateFindingOptions,
     User,
     UserIdentity,
     UserProfile,
@@ -52,12 +61,16 @@ __all__ = [
     "ConnectOptions",
     "ConsoleLogger",
     "CreateEnvironmentOptions",
+    "CreateFindingOptions",
     "Environment",
     "EnvironmentInstance",
     "EnvironmentSDK",
     "EnvironmentVariable",
     "EnvironmentVariableKind",
     "FileTokenCache",
+    "Finding",
+    "FindingSDK",
+    "FindingsListBuilder",
     "GraphQLClient",
     "GuestUser",
     "Health",
@@ -74,6 +87,7 @@ __all__ = [
     "TokenPair",
     "UnsupportedViewerTypeError",
     "UpdateEnvironmentOptions",
+    "UpdateFindingOptions",
     "User",
     "UserIdentity",
     "UserProfile",

@@ -8,7 +8,6 @@ from pathlib import Path
 
 from caido_sdk_client.auth.cache.types import CachedToken
 from caido_sdk_client.logger import Logger
-from caido_sdk_client.utils.optional import Maybe, is_absent
 
 
 class FileTokenCache:
@@ -21,14 +20,14 @@ class FileTokenCache:
         self._path = path or ".caido-token.json"
         self._logger = logger
 
-    async def load(self) -> Maybe[CachedToken]:
+    async def load(self) -> CachedToken | None:
         try:
             resolved = self._resolve_path()
             with open(resolved) as f:
                 parsed = json.load(f)
 
             access_token = parsed.get("access_token")
-            if is_absent(access_token):
+            if access_token is None:
                 return None
 
             return CachedToken(
