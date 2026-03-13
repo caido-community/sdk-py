@@ -46,12 +46,21 @@ Turms config is in `graphql.config.yaml` at the package root.
 - Use `from __future__ import annotations` in every module.
 - Error classes extend `BaseError` (in `errors/base.py`), which mirrors the JS `BaseError extends Error`.
 - `from` is a Python keyword; the JS `errors/from.ts` is named `errors/from_error.py` with a `from_error()` function.
-- Use generated pydantic models and enums from `graphql/__generated__/schema.py` for typed error constructors and fragment types.
-- Use `match`/`case` on pydantic model instances (structural pattern matching) in `from_error()` instead of string `__typename` dispatch.
+- Use generated pydantic models and enums from `graphql/__generated__/schema.py` for typed error constructors, operations, and fragment types.
+- In `from_error()`, prefer dispatching on the GraphQL `typename` string (mirroring the JS `error.__typename` switch) instead of structural pattern matching on specific pydantic model classes. This keeps the function compatible with both fragment `...Full` models and operation-specific inline fragment models, as long as they expose the required attributes. For new error families, mirror the existing `from_error()` style and raise a `ValueError` on unknown `typename`.
 - Use `match`/`case` on enum values in error constructors (e.g., `CloudErrorReason.UNAVAILABLE`).
 - `PluginFunctionCallError` takes REST `Any` payloads (not GraphQL fragments) since it comes from the REST API.
 - The top-level `__init__.py` re-exports the public API. Keep it updated when adding new modules.
 - Port one folder/feature at a time. Don't get distracted by issues in files not currently being ported.
+
+### High-level SDKs (`sdks/*.py`)
+
+- High-level SDKs should:
+  - Depend directly on the concrete `GraphQLClient` (no extra protocol wrappers unless absolutely necessary).
+  - Call generated operation models (e.g. `Projects`, `CreateProject`) and use `model_validate` on the raw result before doing any logic.
+  - Delegate mapping from GraphQL fragments to public dataclasses to small helpers in a `convert/` module (e.g. `convert/project.py` with `map_to_project`), mirroring the JS `src/convert/` folder.
+  - Use the shared `handle_graphql_error` helper with `AllErrors` for GraphQL payload `error` fields, rather than re-implementing error mapping in each SDK.
+  - When the GraphQL schema guarantees that a field is present when `error` is null, keep a lightweight defensive check and raise a generic `MissingExpectedValueError` with a clear path string (e.g. `"createProject.project"`), instead of casting.
 
 ## Dependencies
 
