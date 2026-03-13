@@ -1,334 +1,452 @@
-from typing import Optional, Union, Literal, Annotated, List
-from enum import Enum
-from pydantic import BaseModel, Field, ConfigDict
-from caido_sdk_client.utils.pydantic import BaseModel
 from gql import FileVar
+from enum import Enum
+from typing import Union, List, Annotated, Literal, Optional
+from pydantic import ConfigDict, Field, BaseModel
+from caido_sdk_client.utils.pydantic import BaseModel
+
 
 class CloudErrorReason(str, Enum):
     """No documentation"""
-    UNAVAILABLE = 'UNAVAILABLE'
-    UNEXPECTED = 'UNEXPECTED'
+
+    UNAVAILABLE = "UNAVAILABLE"
+    UNEXPECTED = "UNEXPECTED"
+
 
 class EnvironmentVariableKind(str, Enum):
     """No documentation"""
-    PLAIN = 'PLAIN'
-    SECRET = 'SECRET'
+
+    PLAIN = "PLAIN"
+    SECRET = "SECRET"
+
 
 class FindingOrderBy(str, Enum):
     """No documentation"""
-    CREATED_AT = 'CREATED_AT'
-    HOST = 'HOST'
-    ID = 'ID'
-    PATH = 'PATH'
-    REPORTER = 'REPORTER'
-    TITLE = 'TITLE'
+
+    CREATED_AT = "CREATED_AT"
+    HOST = "HOST"
+    ID = "ID"
+    PATH = "PATH"
+    REPORTER = "REPORTER"
+    TITLE = "TITLE"
+
 
 class HostedFileStatus(str, Enum):
     """No documentation"""
-    ERROR = 'ERROR'
-    READY = 'READY'
+
+    ERROR = "ERROR"
+    READY = "READY"
+
 
 class Ordering(str, Enum):
     """No documentation"""
-    ASC = 'ASC'
-    DESC = 'DESC'
+
+    ASC = "ASC"
+    DESC = "DESC"
+
 
 class PermissionDeniedErrorReason(str, Enum):
     """No documentation"""
-    ENTITLEMENT = 'ENTITLEMENT'
-    GUEST_USER = 'GUEST_USER'
-    SCRIPT_USER = 'SCRIPT_USER'
+
+    ENTITLEMENT = "ENTITLEMENT"
+    GUEST_USER = "GUEST_USER"
+    SCRIPT_USER = "SCRIPT_USER"
+
 
 class PluginErrorReason(str, Enum):
     """No documentation"""
-    ALREADY_INSTALLED = 'ALREADY_INSTALLED'
-    INVALID_MANIFEST = 'INVALID_MANIFEST'
-    INVALID_OPERATION = 'INVALID_OPERATION'
-    INVALID_PACKAGE = 'INVALID_PACKAGE'
-    MISSING_FILE = 'MISSING_FILE'
+
+    ALREADY_INSTALLED = "ALREADY_INSTALLED"
+    INVALID_MANIFEST = "INVALID_MANIFEST"
+    INVALID_OPERATION = "INVALID_OPERATION"
+    INVALID_PACKAGE = "INVALID_PACKAGE"
+    MISSING_FILE = "MISSING_FILE"
+
 
 class ProjectErrorReason(str, Enum):
     """No documentation"""
-    DELETING = 'DELETING'
-    EXPORTING = 'EXPORTING'
-    INVALID_VERSION = 'INVALID_VERSION'
-    NOT_READY = 'NOT_READY'
-    TOO_RECENT = 'TOO_RECENT'
+
+    DELETING = "DELETING"
+    EXPORTING = "EXPORTING"
+    INVALID_VERSION = "INVALID_VERSION"
+    NOT_READY = "NOT_READY"
+    TOO_RECENT = "TOO_RECENT"
+
 
 class ProjectStatus(str, Enum):
     """No documentation"""
-    ERROR = 'ERROR'
-    READY = 'READY'
-    RESTORING = 'RESTORING'
+
+    ERROR = "ERROR"
+    READY = "READY"
+    RESTORING = "RESTORING"
+
 
 class RequestResponseOrderBy(str, Enum):
     """No documentation"""
-    CREATED_AT = 'CREATED_AT'
-    FILE_EXTENSION = 'FILE_EXTENSION'
-    HOST = 'HOST'
-    ID = 'ID'
-    METHOD = 'METHOD'
-    PATH = 'PATH'
-    QUERY = 'QUERY'
-    RESP_LENGTH = 'RESP_LENGTH'
-    RESP_ROUNDTRIP_TIME = 'RESP_ROUNDTRIP_TIME'
-    RESP_STATUS_CODE = 'RESP_STATUS_CODE'
-    SOURCE = 'SOURCE'
+
+    CREATED_AT = "CREATED_AT"
+    FILE_EXTENSION = "FILE_EXTENSION"
+    HOST = "HOST"
+    ID = "ID"
+    METHOD = "METHOD"
+    PATH = "PATH"
+    QUERY = "QUERY"
+    RESP_LENGTH = "RESP_LENGTH"
+    RESP_ROUNDTRIP_TIME = "RESP_ROUNDTRIP_TIME"
+    RESP_STATUS_CODE = "RESP_STATUS_CODE"
+    SOURCE = "SOURCE"
+
 
 class StoreErrorReason(str, Enum):
     """No documentation"""
-    FILE_UNAVAILABLE = 'FILE_UNAVAILABLE'
-    INVALID_PUBLIC_KEY = 'INVALID_PUBLIC_KEY'
-    INVALID_SIGNATURE = 'INVALID_SIGNATURE'
-    PACKAGE_TOO_LARGE = 'PACKAGE_TOO_LARGE'
-    PACKAGE_UNKNOWN = 'PACKAGE_UNKNOWN'
+
+    FILE_UNAVAILABLE = "FILE_UNAVAILABLE"
+    INVALID_PUBLIC_KEY = "INVALID_PUBLIC_KEY"
+    INVALID_SIGNATURE = "INVALID_SIGNATURE"
+    PACKAGE_TOO_LARGE = "PACKAGE_TOO_LARGE"
+    PACKAGE_UNKNOWN = "PACKAGE_UNKNOWN"
+
 
 class TaskStatus(str, Enum):
     """No documentation"""
-    CANCELLED = 'CANCELLED'
-    DONE = 'DONE'
-    ERROR = 'ERROR'
+
+    CANCELLED = "CANCELLED"
+    DONE = "DONE"
+    ERROR = "ERROR"
+
 
 class WorkflowErrorReason(str, Enum):
     """No documentation"""
-    EXECUTION_ERROR = 'EXECUTION_ERROR'
-    INVALID_INPUT = 'INVALID_INPUT'
-    INVALID_PROPERTY = 'INVALID_PROPERTY'
-    INVALID_TRIGGER = 'INVALID_TRIGGER'
-    INVALID_WORKFLOW = 'INVALID_WORKFLOW'
+
+    EXECUTION_ERROR = "EXECUTION_ERROR"
+    INVALID_INPUT = "INVALID_INPUT"
+    INVALID_PROPERTY = "INVALID_PROPERTY"
+    INVALID_TRIGGER = "INVALID_TRIGGER"
+    INVALID_WORKFLOW = "INVALID_WORKFLOW"
+
 
 class WorkflowKind(str, Enum):
     """No documentation"""
-    ACTIVE = 'ACTIVE'
-    CONVERT = 'CONVERT'
-    PASSIVE = 'PASSIVE'
+
+    ACTIVE = "ACTIVE"
+    CONVERT = "CONVERT"
+    PASSIVE = "PASSIVE"
+
 
 class AIProviderAnthropicInput(BaseModel):
     """No documentation"""
+
     apiKey: str
+
 
 class AIProviderGoogleInput(BaseModel):
     """No documentation"""
+
     apiKey: str
+
 
 class AIProviderOpenAIInput(BaseModel):
     """No documentation"""
+
     apiKey: str
     url: Optional[str] = None
 
+
 class AIProviderOpenRouterInput(BaseModel):
     """No documentation"""
+
     apiKey: str
+
 
 class ConnectionInfoInput(BaseModel):
     """No documentation"""
+
     SNI: Optional[str] = None
     host: str
     isTLS: bool
     port: int
 
+
 class CreateEnvironmentInput(BaseModel):
     """No documentation"""
+
     name: str
-    variables: List['EnvironmentVariableInput']
+    variables: List["EnvironmentVariableInput"]
+
 
 class CreateFilterPresetInput(BaseModel):
     """No documentation"""
+
     alias: str
     clause: str
     name: str
 
+
 class CreateFindingInput(BaseModel):
     """No documentation"""
+
     dedupeKey: Optional[str] = None
     description: Optional[str] = None
     reporter: str
     title: str
 
+
 class CreateProjectInput(BaseModel):
     """No documentation"""
+
     name: str
     temporary: bool
 
+
 class CreateReplaySessionCollectionInput(BaseModel):
     """No documentation"""
+
     name: str
+
 
 class CreateReplaySessionInput(BaseModel):
     """No documentation"""
+
     collectionId: Optional[str] = None
-    requestSource: Optional['RequestSourceInput'] = None
+    requestSource: Optional["RequestSourceInput"] = None
+
 
 class CreateScopeInput(BaseModel):
     """No documentation"""
+
     allowlist: List[str]
     denylist: List[str]
     name: str
 
+
 class CreateWorkflowInput(BaseModel):
     """No documentation"""
+
     definition: dict
-    global_: bool = Field(alias='global')
+    global_: bool = Field(alias="global")
+
 
 class DeleteFindingsInput(BaseModel):
     """No documentation"""
+
     ids: Optional[List[str]] = None
     reporter: Optional[str] = None
 
+
 class EnvironmentVariableInput(BaseModel):
     """No documentation"""
+
     kind: EnvironmentVariableKind
     name: str
     value: str
 
+
 class FilterClauseFindingInput(BaseModel):
     """No documentation"""
+
     reporter: Optional[str] = None
+
 
 class FindingOrderInput(BaseModel):
     """No documentation"""
+
     by: FindingOrderBy
     ordering: Ordering
 
+
 class InstallPluginPackageInput(BaseModel):
     """No documentation"""
+
     force: Optional[bool] = None
-    source: 'PluginPackageSource'
+    source: "PluginPackageSource"
+
 
 class PluginPackageSource(BaseModel):
     """No documentation"""
+
     file: Optional[FileVar] = None
     manifestId: Optional[str] = None
     url: Optional[str] = None
 
+
 class RangeInput(BaseModel):
     """No documentation"""
+
     end: int
     start: int
 
+
 class ReplayEntrySettingsInput(BaseModel):
     """No documentation"""
+
     connectionClose: bool
-    placeholders: List['ReplayPlaceholderInput']
+    placeholders: List["ReplayPlaceholderInput"]
     updateContentLength: bool
+
 
 class ReplayEnvironmentPreprocessorInput(BaseModel):
     """No documentation"""
+
     variableName: str
+
 
 class ReplayPlaceholderInput(BaseModel):
     """No documentation"""
+
     inputRange: RangeInput
     outputRange: RangeInput
-    preprocessors: List['ReplayPreprocessorInput']
+    preprocessors: List["ReplayPreprocessorInput"]
+
 
 class ReplayPrefixPreprocessorInput(BaseModel):
     """No documentation"""
+
     value: str
+
 
 class ReplayPreprocessorInput(BaseModel):
     """No documentation"""
-    options: 'ReplayPreprocessorOptionsInput'
+
+    options: "ReplayPreprocessorOptionsInput"
+
 
 class ReplayPreprocessorOptionsInput(BaseModel):
     """No documentation"""
+
     environment: Optional[ReplayEnvironmentPreprocessorInput] = None
     prefix: Optional[ReplayPrefixPreprocessorInput] = None
-    suffix: Optional['ReplaySuffixPreprocessorInput'] = None
-    urlEncode: Optional['ReplayUrlEncodePreprocessorInput'] = None
-    workflow: Optional['ReplayWorkflowPreprocessorInput'] = None
+    suffix: Optional["ReplaySuffixPreprocessorInput"] = None
+    urlEncode: Optional["ReplayUrlEncodePreprocessorInput"] = None
+    workflow: Optional["ReplayWorkflowPreprocessorInput"] = None
+
 
 class ReplaySuffixPreprocessorInput(BaseModel):
     """No documentation"""
+
     value: str
+
 
 class ReplayUrlEncodePreprocessorInput(BaseModel):
     """No documentation"""
+
     charset: Optional[str] = None
     nonAscii: bool
 
+
 class ReplayWorkflowPreprocessorInput(BaseModel):
     """No documentation"""
+
     id: str
+
 
 class RequestRawInput(BaseModel):
     """No documentation"""
+
     connectionInfo: ConnectionInfoInput
     raw: str
 
+
 class RequestResponseOrderInput(BaseModel):
     """No documentation"""
+
     by: RequestResponseOrderBy
     ordering: Ordering
 
+
 class RequestSourceInput(BaseModel):
     """No documentation"""
+
     id: Optional[str] = None
     raw: Optional[RequestRawInput] = None
 
+
 class SetInstanceSettingsInput(BaseModel):
     """No documentation"""
-    aiProvider: Optional['SettingsAIProviderInput'] = None
-    analytics: Optional['SettingsAnalyticInput'] = None
-    onboarding: Optional['SettingsOnboardingInput'] = None
+
+    aiProvider: Optional["SettingsAIProviderInput"] = None
+    analytics: Optional["SettingsAnalyticInput"] = None
+    onboarding: Optional["SettingsOnboardingInput"] = None
+
 
 class SettingsAIProviderInput(BaseModel):
     """No documentation"""
+
     anthropic: Optional[AIProviderAnthropicInput] = None
     google: Optional[AIProviderGoogleInput] = None
     openai: Optional[AIProviderOpenAIInput] = None
     openrouter: Optional[AIProviderOpenRouterInput] = None
 
+
 class SettingsAnalyticInput(BaseModel):
     """No documentation"""
+
     enabled: bool
+
 
 class SettingsOnboardingInput(BaseModel):
     """No documentation"""
+
     analytic: bool
+
 
 class StartReplayTaskInput(BaseModel):
     """No documentation"""
+
     connection: ConnectionInfoInput
     raw: str
     settings: ReplayEntrySettingsInput
 
+
 class UpdateEnvironmentInput(BaseModel):
     """No documentation"""
+
     name: str
     variables: List[EnvironmentVariableInput]
     version: int
 
+
 class UpdateFilterPresetInput(BaseModel):
     """No documentation"""
+
     alias: str
     clause: str
     name: str
 
+
 class UpdateFindingInput(BaseModel):
     """No documentation"""
+
     description: Optional[str] = None
     hidden: Optional[bool] = None
     title: Optional[str] = None
 
+
 class UpdateScopeInput(BaseModel):
     """No documentation"""
+
     allowlist: List[str]
     denylist: List[str]
     name: str
 
+
 class UpdateWorkflowInput(BaseModel):
     """No documentation"""
+
     definition: dict
+
 
 class UploadHostedFileInput(BaseModel):
     """No documentation"""
+
     file: FileVar
     name: str
 
+
 class ConnectionInfoFull(BaseModel):
     """No documentation"""
-    typename: Literal['ConnectionInfo'] = Field(alias='__typename', default='ConnectionInfo')
+
+    typename: Literal["ConnectionInfo"] = Field(
+        alias="__typename", default="ConnectionInfo"
+    )
     host: str
     port: int
     isTLS: bool
@@ -336,20 +454,27 @@ class ConnectionInfoFull(BaseModel):
 
     class Meta:
         """Meta class for ConnectionInfoFull"""
-        document = 'fragment ConnectionInfoFull on ConnectionInfo {\n  __typename\n  host\n  port\n  isTLS\n  SNI\n}'
-        name = 'ConnectionInfoFull'
-        type = 'ConnectionInfo'
+
+        document = "fragment ConnectionInfoFull on ConnectionInfo {\n  __typename\n  host\n  port\n  isTLS\n  SNI\n}"
+        name = "ConnectionInfoFull"
+        type = "ConnectionInfo"
+
 
 class EnvironmentFullVariables(BaseModel):
     """No documentation"""
-    typename: Literal['EnvironmentVariable'] = Field(alias='__typename', default='EnvironmentVariable')
+
+    typename: Literal["EnvironmentVariable"] = Field(
+        alias="__typename", default="EnvironmentVariable"
+    )
     name: str
     value: str
     kind: EnvironmentVariableKind
 
+
 class EnvironmentFull(BaseModel):
     """No documentation"""
-    typename: Literal['Environment'] = Field(alias='__typename', default='Environment')
+
+    typename: Literal["Environment"] = Field(alias="__typename", default="Environment")
     id: str
     name: str
     variables: List[EnvironmentFullVariables]
@@ -357,131 +482,246 @@ class EnvironmentFull(BaseModel):
 
     class Meta:
         """Meta class for EnvironmentFull"""
-        document = 'fragment EnvironmentFull on Environment {\n  id\n  name\n  variables {\n    name\n    value\n    kind\n    __typename\n  }\n  version\n  __typename\n}'
-        name = 'EnvironmentFull'
-        type = 'Environment'
+
+        document = "fragment EnvironmentFull on Environment {\n  id\n  name\n  variables {\n    name\n    value\n    kind\n    __typename\n  }\n  version\n  __typename\n}"
+        name = "EnvironmentFull"
+        type = "Environment"
+
 
 class UserErrorFullBase(BaseModel):
     """No documentation"""
+
     code: str
+
 
 class UserErrorFullCatch(UserErrorFullBase):
     """Catch all class for UserErrorFullBase"""
-    typename: str = Field(alias='__typename')
-    'No documentation'
+
+    typename: str = Field(alias="__typename")
+    "No documentation"
     code: str
+
 
 class UserErrorFullAIUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['AIUserError'] = Field(alias='__typename', default='AIUserError')
+
+    typename: Literal["AIUserError"] = Field(alias="__typename", default="AIUserError")
+
 
 class UserErrorFullAliasTakenUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['AliasTakenUserError'] = Field(alias='__typename', default='AliasTakenUserError')
+
+    typename: Literal["AliasTakenUserError"] = Field(
+        alias="__typename", default="AliasTakenUserError"
+    )
+
 
 class UserErrorFullAssistantUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['AssistantUserError'] = Field(alias='__typename', default='AssistantUserError')
+
+    typename: Literal["AssistantUserError"] = Field(
+        alias="__typename", default="AssistantUserError"
+    )
+
 
 class UserErrorFullAuthenticationUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['AuthenticationUserError'] = Field(alias='__typename', default='AuthenticationUserError')
+
+    typename: Literal["AuthenticationUserError"] = Field(
+        alias="__typename", default="AuthenticationUserError"
+    )
+
 
 class UserErrorFullAuthorizationUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['AuthorizationUserError'] = Field(alias='__typename', default='AuthorizationUserError')
+
+    typename: Literal["AuthorizationUserError"] = Field(
+        alias="__typename", default="AuthorizationUserError"
+    )
+
 
 class UserErrorFullAutomateTaskUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['AutomateTaskUserError'] = Field(alias='__typename', default='AutomateTaskUserError')
+
+    typename: Literal["AutomateTaskUserError"] = Field(
+        alias="__typename", default="AutomateTaskUserError"
+    )
+
 
 class UserErrorFullBackupUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['BackupUserError'] = Field(alias='__typename', default='BackupUserError')
+
+    typename: Literal["BackupUserError"] = Field(
+        alias="__typename", default="BackupUserError"
+    )
+
 
 class UserErrorFullCertificateUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['CertificateUserError'] = Field(alias='__typename', default='CertificateUserError')
+
+    typename: Literal["CertificateUserError"] = Field(
+        alias="__typename", default="CertificateUserError"
+    )
+
 
 class UserErrorFullCloudUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['CloudUserError'] = Field(alias='__typename', default='CloudUserError')
+
+    typename: Literal["CloudUserError"] = Field(
+        alias="__typename", default="CloudUserError"
+    )
+
 
 class UserErrorFullInternalUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['InternalUserError'] = Field(alias='__typename', default='InternalUserError')
+
+    typename: Literal["InternalUserError"] = Field(
+        alias="__typename", default="InternalUserError"
+    )
+
 
 class UserErrorFullInvalidGlobTermsUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['InvalidGlobTermsUserError'] = Field(alias='__typename', default='InvalidGlobTermsUserError')
+
+    typename: Literal["InvalidGlobTermsUserError"] = Field(
+        alias="__typename", default="InvalidGlobTermsUserError"
+    )
+
 
 class UserErrorFullInvalidHTTPQLUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['InvalidHTTPQLUserError'] = Field(alias='__typename', default='InvalidHTTPQLUserError')
+
+    typename: Literal["InvalidHTTPQLUserError"] = Field(
+        alias="__typename", default="InvalidHTTPQLUserError"
+    )
+
 
 class UserErrorFullInvalidRegexUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['InvalidRegexUserError'] = Field(alias='__typename', default='InvalidRegexUserError')
+
+    typename: Literal["InvalidRegexUserError"] = Field(
+        alias="__typename", default="InvalidRegexUserError"
+    )
+
 
 class UserErrorFullNameTakenUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['NameTakenUserError'] = Field(alias='__typename', default='NameTakenUserError')
+
+    typename: Literal["NameTakenUserError"] = Field(
+        alias="__typename", default="NameTakenUserError"
+    )
+
 
 class UserErrorFullNewerVersionUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['NewerVersionUserError'] = Field(alias='__typename', default='NewerVersionUserError')
+
+    typename: Literal["NewerVersionUserError"] = Field(
+        alias="__typename", default="NewerVersionUserError"
+    )
+
 
 class UserErrorFullOtherUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class UserErrorFullPermissionDeniedUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['PermissionDeniedUserError'] = Field(alias='__typename', default='PermissionDeniedUserError')
+
+    typename: Literal["PermissionDeniedUserError"] = Field(
+        alias="__typename", default="PermissionDeniedUserError"
+    )
+
 
 class UserErrorFullPluginUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['PluginUserError'] = Field(alias='__typename', default='PluginUserError')
+
+    typename: Literal["PluginUserError"] = Field(
+        alias="__typename", default="PluginUserError"
+    )
+
 
 class UserErrorFullProjectUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['ProjectUserError'] = Field(alias='__typename', default='ProjectUserError')
+
+    typename: Literal["ProjectUserError"] = Field(
+        alias="__typename", default="ProjectUserError"
+    )
+
 
 class UserErrorFullRankUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['RankUserError'] = Field(alias='__typename', default='RankUserError')
+
+    typename: Literal["RankUserError"] = Field(
+        alias="__typename", default="RankUserError"
+    )
+
 
 class UserErrorFullReadOnlyUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['ReadOnlyUserError'] = Field(alias='__typename', default='ReadOnlyUserError')
+
+    typename: Literal["ReadOnlyUserError"] = Field(
+        alias="__typename", default="ReadOnlyUserError"
+    )
+
 
 class UserErrorFullRenderFailedUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['RenderFailedUserError'] = Field(alias='__typename', default='RenderFailedUserError')
+
+    typename: Literal["RenderFailedUserError"] = Field(
+        alias="__typename", default="RenderFailedUserError"
+    )
+
 
 class UserErrorFullStoreUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['StoreUserError'] = Field(alias='__typename', default='StoreUserError')
+
+    typename: Literal["StoreUserError"] = Field(
+        alias="__typename", default="StoreUserError"
+    )
+
 
 class UserErrorFullTaskInProgressUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['TaskInProgressUserError'] = Field(alias='__typename', default='TaskInProgressUserError')
+
+    typename: Literal["TaskInProgressUserError"] = Field(
+        alias="__typename", default="TaskInProgressUserError"
+    )
+
 
 class UserErrorFullUnknownIdUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['UnknownIdUserError'] = Field(alias='__typename', default='UnknownIdUserError')
+
+    typename: Literal["UnknownIdUserError"] = Field(
+        alias="__typename", default="UnknownIdUserError"
+    )
+
 
 class UserErrorFullUnsupportedPlatformUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['UnsupportedPlatformUserError'] = Field(alias='__typename', default='UnsupportedPlatformUserError')
+
+    typename: Literal["UnsupportedPlatformUserError"] = Field(
+        alias="__typename", default="UnsupportedPlatformUserError"
+    )
+
 
 class UserErrorFullWorkflowUserError(UserErrorFullBase, BaseModel):
     """No documentation"""
-    typename: Literal['WorkflowUserError'] = Field(alias='__typename', default='WorkflowUserError')
+
+    typename: Literal["WorkflowUserError"] = Field(
+        alias="__typename", default="WorkflowUserError"
+    )
+
 
 class FilterPresetFull(BaseModel):
     """No documentation"""
-    typename: Literal['FilterPreset'] = Field(alias='__typename', default='FilterPreset')
+
+    typename: Literal["FilterPreset"] = Field(
+        alias="__typename", default="FilterPreset"
+    )
     id: str
     name: str
     alias: str
@@ -489,18 +729,23 @@ class FilterPresetFull(BaseModel):
 
     class Meta:
         """Meta class for FilterPresetFull"""
-        document = 'fragment FilterPresetFull on FilterPreset {\n  id\n  name\n  alias\n  clause\n  __typename\n}'
-        name = 'FilterPresetFull'
-        type = 'FilterPreset'
+
+        document = "fragment FilterPresetFull on FilterPreset {\n  id\n  name\n  alias\n  clause\n  __typename\n}"
+        name = "FilterPresetFull"
+        type = "FilterPreset"
+
 
 class FindingFullRequest(BaseModel):
     """No documentation"""
-    typename: Literal['Request'] = Field(alias='__typename', default='Request')
+
+    typename: Literal["Request"] = Field(alias="__typename", default="Request")
     id: str
+
 
 class FindingFull(BaseModel):
     """No documentation"""
-    typename: Literal['Finding'] = Field(alias='__typename', default='Finding')
+
+    typename: Literal["Finding"] = Field(alias="__typename", default="Finding")
     id: str
     request: FindingFullRequest
     title: str
@@ -514,13 +759,16 @@ class FindingFull(BaseModel):
 
     class Meta:
         """Meta class for FindingFull"""
-        document = 'fragment FindingFull on Finding {\n  id\n  request {\n    id\n    __typename\n  }\n  title\n  reporter\n  description\n  dedupeKey\n  host\n  path\n  hidden\n  createdAt\n  __typename\n}'
-        name = 'FindingFull'
-        type = 'Finding'
+
+        document = "fragment FindingFull on Finding {\n  id\n  request {\n    id\n    __typename\n  }\n  title\n  reporter\n  description\n  dedupeKey\n  host\n  path\n  hidden\n  createdAt\n  __typename\n}"
+        name = "FindingFull"
+        type = "Finding"
+
 
 class HostedFileFull(BaseModel):
     """No documentation"""
-    typename: Literal['HostedFile'] = Field(alias='__typename', default='HostedFile')
+
+    typename: Literal["HostedFile"] = Field(alias="__typename", default="HostedFile")
     id: str
     name: str
     path: str
@@ -531,93 +779,155 @@ class HostedFileFull(BaseModel):
 
     class Meta:
         """Meta class for HostedFileFull"""
-        document = 'fragment HostedFileFull on HostedFile {\n  id\n  name\n  path\n  size\n  status\n  createdAt\n  updatedAt\n  __typename\n}'
-        name = 'HostedFileFull'
-        type = 'HostedFile'
+
+        document = "fragment HostedFileFull on HostedFile {\n  id\n  name\n  path\n  size\n  status\n  createdAt\n  updatedAt\n  __typename\n}"
+        name = "HostedFileFull"
+        type = "HostedFile"
+
 
 class InstanceAIProviderAnthropicFull(BaseModel):
     """No documentation"""
-    typename: Literal['AIProviderAnthropic'] = Field(alias='__typename', default='AIProviderAnthropic')
+
+    typename: Literal["AIProviderAnthropic"] = Field(
+        alias="__typename", default="AIProviderAnthropic"
+    )
     apiKey: str
 
     class Meta:
         """Meta class for InstanceAIProviderAnthropicFull"""
-        document = 'fragment InstanceAIProviderAnthropicFull on AIProviderAnthropic {\n  apiKey\n  __typename\n}'
-        name = 'InstanceAIProviderAnthropicFull'
-        type = 'AIProviderAnthropic'
+
+        document = "fragment InstanceAIProviderAnthropicFull on AIProviderAnthropic {\n  apiKey\n  __typename\n}"
+        name = "InstanceAIProviderAnthropicFull"
+        type = "AIProviderAnthropic"
+
 
 class InstanceAIProviderGoogleFull(BaseModel):
     """No documentation"""
-    typename: Literal['AIProviderGoogle'] = Field(alias='__typename', default='AIProviderGoogle')
+
+    typename: Literal["AIProviderGoogle"] = Field(
+        alias="__typename", default="AIProviderGoogle"
+    )
     apiKey: str
 
     class Meta:
         """Meta class for InstanceAIProviderGoogleFull"""
-        document = 'fragment InstanceAIProviderGoogleFull on AIProviderGoogle {\n  apiKey\n  __typename\n}'
-        name = 'InstanceAIProviderGoogleFull'
-        type = 'AIProviderGoogle'
+
+        document = "fragment InstanceAIProviderGoogleFull on AIProviderGoogle {\n  apiKey\n  __typename\n}"
+        name = "InstanceAIProviderGoogleFull"
+        type = "AIProviderGoogle"
+
 
 class InstanceAIProviderOpenAIFull(BaseModel):
     """No documentation"""
-    typename: Literal['AIProviderOpenAI'] = Field(alias='__typename', default='AIProviderOpenAI')
+
+    typename: Literal["AIProviderOpenAI"] = Field(
+        alias="__typename", default="AIProviderOpenAI"
+    )
     apiKey: str
     url: Optional[str] = Field(default=None)
 
     class Meta:
         """Meta class for InstanceAIProviderOpenAIFull"""
-        document = 'fragment InstanceAIProviderOpenAIFull on AIProviderOpenAI {\n  apiKey\n  url\n  __typename\n}'
-        name = 'InstanceAIProviderOpenAIFull'
-        type = 'AIProviderOpenAI'
+
+        document = "fragment InstanceAIProviderOpenAIFull on AIProviderOpenAI {\n  apiKey\n  url\n  __typename\n}"
+        name = "InstanceAIProviderOpenAIFull"
+        type = "AIProviderOpenAI"
+
 
 class InstanceAIProviderOpenRouterFull(BaseModel):
     """No documentation"""
-    typename: Literal['AIProviderOpenRouter'] = Field(alias='__typename', default='AIProviderOpenRouter')
+
+    typename: Literal["AIProviderOpenRouter"] = Field(
+        alias="__typename", default="AIProviderOpenRouter"
+    )
     apiKey: str
 
     class Meta:
         """Meta class for InstanceAIProviderOpenRouterFull"""
-        document = 'fragment InstanceAIProviderOpenRouterFull on AIProviderOpenRouter {\n  apiKey\n  __typename\n}'
-        name = 'InstanceAIProviderOpenRouterFull'
-        type = 'AIProviderOpenRouter'
+
+        document = "fragment InstanceAIProviderOpenRouterFull on AIProviderOpenRouter {\n  apiKey\n  __typename\n}"
+        name = "InstanceAIProviderOpenRouterFull"
+        type = "AIProviderOpenRouter"
+
 
 class PluginPackageMetaPluginsBase(BaseModel):
     """No documentation"""
+
     id: str
     manifestId: str
     enabled: bool
 
-class PluginPackageMetaPluginsBasePluginBackend(PluginPackageMetaPluginsBase, BaseModel):
-    """No documentation"""
-    typename: Literal['PluginBackend'] = Field(alias='__typename', default='PluginBackend')
 
-class PluginPackageMetaPluginsBasePluginFrontend(PluginPackageMetaPluginsBase, BaseModel):
+class PluginPackageMetaPluginsBasePluginBackend(
+    PluginPackageMetaPluginsBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['PluginFrontend'] = Field(alias='__typename', default='PluginFrontend')
 
-class PluginPackageMetaPluginsBasePluginWorkflow(PluginPackageMetaPluginsBase, BaseModel):
+    typename: Literal["PluginBackend"] = Field(
+        alias="__typename", default="PluginBackend"
+    )
+
+
+class PluginPackageMetaPluginsBasePluginFrontend(
+    PluginPackageMetaPluginsBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['PluginWorkflow'] = Field(alias='__typename', default='PluginWorkflow')
+
+    typename: Literal["PluginFrontend"] = Field(
+        alias="__typename", default="PluginFrontend"
+    )
+
+
+class PluginPackageMetaPluginsBasePluginWorkflow(
+    PluginPackageMetaPluginsBase, BaseModel
+):
+    """No documentation"""
+
+    typename: Literal["PluginWorkflow"] = Field(
+        alias="__typename", default="PluginWorkflow"
+    )
+
 
 class PluginPackageMetaPluginsBaseCatchAll(PluginPackageMetaPluginsBase, BaseModel):
     """Catch all class for PluginPackageMetaPluginsBase"""
-    typename: str = Field(alias='__typename')
+
+    typename: str = Field(alias="__typename")
+
 
 class PluginPackageMeta(BaseModel):
     """No documentation"""
-    typename: Literal['PluginPackage'] = Field(alias='__typename', default='PluginPackage')
+
+    typename: Literal["PluginPackage"] = Field(
+        alias="__typename", default="PluginPackage"
+    )
     id: str
     manifestId: str
-    plugins: List[Union[Annotated[Union[PluginPackageMetaPluginsBasePluginBackend, PluginPackageMetaPluginsBasePluginFrontend, PluginPackageMetaPluginsBasePluginWorkflow], Field(discriminator='typename')], PluginPackageMetaPluginsBaseCatchAll]]
+    plugins: List[
+        Union[
+            Annotated[
+                Union[
+                    PluginPackageMetaPluginsBasePluginBackend,
+                    PluginPackageMetaPluginsBasePluginFrontend,
+                    PluginPackageMetaPluginsBasePluginWorkflow,
+                ],
+                Field(discriminator="typename"),
+            ],
+            PluginPackageMetaPluginsBaseCatchAll,
+        ]
+    ]
 
     class Meta:
         """Meta class for PluginPackageMeta"""
-        document = 'fragment PluginPackageMeta on PluginPackage {\n  id\n  manifestId\n  plugins {\n    __typename\n    id\n    manifestId\n    enabled\n  }\n  __typename\n}'
-        name = 'PluginPackageMeta'
-        type = 'PluginPackage'
+
+        document = "fragment PluginPackageMeta on PluginPackage {\n  id\n  manifestId\n  plugins {\n    __typename\n    id\n    manifestId\n    enabled\n  }\n  __typename\n}"
+        name = "PluginPackageMeta"
+        type = "PluginPackage"
+
 
 class ProjectFull(BaseModel):
     """No documentation"""
-    typename: Literal['Project'] = Field(alias='__typename', default='Project')
+
+    typename: Literal["Project"] = Field(alias="__typename", default="Project")
     id: str
     name: str
     path: str
@@ -628,121 +938,186 @@ class ProjectFull(BaseModel):
     version: str
     size: int
     readOnly: bool
-    'Defines if the project would be read-only if selected by the caller'
+    "Defines if the project would be read-only if selected by the caller"
 
     class Meta:
         """Meta class for ProjectFull"""
-        document = 'fragment ProjectFull on Project {\n  id\n  name\n  path\n  status\n  temporary\n  createdAt\n  updatedAt\n  version\n  size\n  readOnly\n  __typename\n}'
-        name = 'ProjectFull'
-        type = 'Project'
+
+        document = "fragment ProjectFull on Project {\n  id\n  name\n  path\n  status\n  temporary\n  createdAt\n  updatedAt\n  version\n  size\n  readOnly\n  __typename\n}"
+        name = "ProjectFull"
+        type = "Project"
+
 
 class RangeFull(BaseModel):
     """No documentation"""
-    typename: Literal['Range'] = Field(alias='__typename', default='Range')
+
+    typename: Literal["Range"] = Field(alias="__typename", default="Range")
     start: int
     end: int
 
     class Meta:
         """Meta class for RangeFull"""
-        document = 'fragment RangeFull on Range {\n  start\n  end\n  __typename\n}'
-        name = 'RangeFull'
-        type = 'Range'
+
+        document = "fragment RangeFull on Range {\n  start\n  end\n  __typename\n}"
+        name = "RangeFull"
+        type = "Range"
+
 
 class ReplayPrefixPreprocessorFull(BaseModel):
     """No documentation"""
-    typename: Literal['ReplayPrefixPreprocessor'] = Field(alias='__typename', default='ReplayPrefixPreprocessor')
+
+    typename: Literal["ReplayPrefixPreprocessor"] = Field(
+        alias="__typename", default="ReplayPrefixPreprocessor"
+    )
     value: str
 
     class Meta:
         """Meta class for ReplayPrefixPreprocessorFull"""
-        document = 'fragment ReplayPrefixPreprocessorFull on ReplayPrefixPreprocessor {\n  __typename\n  value\n}'
-        name = 'ReplayPrefixPreprocessorFull'
-        type = 'ReplayPrefixPreprocessor'
+
+        document = "fragment ReplayPrefixPreprocessorFull on ReplayPrefixPreprocessor {\n  __typename\n  value\n}"
+        name = "ReplayPrefixPreprocessorFull"
+        type = "ReplayPrefixPreprocessor"
+
 
 class ReplaySuffixPreprocessorFull(BaseModel):
     """No documentation"""
-    typename: Literal['ReplaySuffixPreprocessor'] = Field(alias='__typename', default='ReplaySuffixPreprocessor')
+
+    typename: Literal["ReplaySuffixPreprocessor"] = Field(
+        alias="__typename", default="ReplaySuffixPreprocessor"
+    )
     value: str
 
     class Meta:
         """Meta class for ReplaySuffixPreprocessorFull"""
-        document = 'fragment ReplaySuffixPreprocessorFull on ReplaySuffixPreprocessor {\n  __typename\n  value\n}'
-        name = 'ReplaySuffixPreprocessorFull'
-        type = 'ReplaySuffixPreprocessor'
+
+        document = "fragment ReplaySuffixPreprocessorFull on ReplaySuffixPreprocessor {\n  __typename\n  value\n}"
+        name = "ReplaySuffixPreprocessorFull"
+        type = "ReplaySuffixPreprocessor"
+
 
 class ReplayUrlEncodePreprocessorFull(BaseModel):
     """No documentation"""
-    typename: Literal['ReplayUrlEncodePreprocessor'] = Field(alias='__typename', default='ReplayUrlEncodePreprocessor')
+
+    typename: Literal["ReplayUrlEncodePreprocessor"] = Field(
+        alias="__typename", default="ReplayUrlEncodePreprocessor"
+    )
     charset: Optional[str] = Field(default=None)
     nonAscii: bool
 
     class Meta:
         """Meta class for ReplayUrlEncodePreprocessorFull"""
-        document = 'fragment ReplayUrlEncodePreprocessorFull on ReplayUrlEncodePreprocessor {\n  __typename\n  charset\n  nonAscii\n}'
-        name = 'ReplayUrlEncodePreprocessorFull'
-        type = 'ReplayUrlEncodePreprocessor'
+
+        document = "fragment ReplayUrlEncodePreprocessorFull on ReplayUrlEncodePreprocessor {\n  __typename\n  charset\n  nonAscii\n}"
+        name = "ReplayUrlEncodePreprocessorFull"
+        type = "ReplayUrlEncodePreprocessor"
+
 
 class ReplayWorkflowPreprocessorFull(BaseModel):
     """No documentation"""
-    typename: Literal['ReplayWorkflowPreprocessor'] = Field(alias='__typename', default='ReplayWorkflowPreprocessor')
+
+    typename: Literal["ReplayWorkflowPreprocessor"] = Field(
+        alias="__typename", default="ReplayWorkflowPreprocessor"
+    )
     id: str
 
     class Meta:
         """Meta class for ReplayWorkflowPreprocessorFull"""
-        document = 'fragment ReplayWorkflowPreprocessorFull on ReplayWorkflowPreprocessor {\n  __typename\n  id\n}'
-        name = 'ReplayWorkflowPreprocessorFull'
-        type = 'ReplayWorkflowPreprocessor'
+
+        document = "fragment ReplayWorkflowPreprocessorFull on ReplayWorkflowPreprocessor {\n  __typename\n  id\n}"
+        name = "ReplayWorkflowPreprocessorFull"
+        type = "ReplayWorkflowPreprocessor"
+
 
 class ReplayEnvironmentPreprocessorFull(BaseModel):
     """No documentation"""
-    typename: Literal['ReplayEnvironmentPreprocessor'] = Field(alias='__typename', default='ReplayEnvironmentPreprocessor')
+
+    typename: Literal["ReplayEnvironmentPreprocessor"] = Field(
+        alias="__typename", default="ReplayEnvironmentPreprocessor"
+    )
     variableName: str
 
     class Meta:
         """Meta class for ReplayEnvironmentPreprocessorFull"""
-        document = 'fragment ReplayEnvironmentPreprocessorFull on ReplayEnvironmentPreprocessor {\n  __typename\n  variableName\n}'
-        name = 'ReplayEnvironmentPreprocessorFull'
-        type = 'ReplayEnvironmentPreprocessor'
+
+        document = "fragment ReplayEnvironmentPreprocessorFull on ReplayEnvironmentPreprocessor {\n  __typename\n  variableName\n}"
+        name = "ReplayEnvironmentPreprocessorFull"
+        type = "ReplayEnvironmentPreprocessor"
+
 
 class ReplayPreprocessorFullReplayPrefixPreprocessorInlineFragment(BaseModel):
-    typename: Literal['ReplayPrefixPreprocessor'] = Field(alias='__typename', default='ReplayPrefixPreprocessor')
+    typename: Literal["ReplayPrefixPreprocessor"] = Field(
+        alias="__typename", default="ReplayPrefixPreprocessor"
+    )
+
 
 class ReplayPreprocessorFullReplaySuffixPreprocessorInlineFragment(BaseModel):
-    typename: Literal['ReplaySuffixPreprocessor'] = Field(alias='__typename', default='ReplaySuffixPreprocessor')
+    typename: Literal["ReplaySuffixPreprocessor"] = Field(
+        alias="__typename", default="ReplaySuffixPreprocessor"
+    )
+
 
 class ReplayPreprocessorFullReplayUrlEncodePreprocessorInlineFragment(BaseModel):
-    typename: Literal['ReplayUrlEncodePreprocessor'] = Field(alias='__typename', default='ReplayUrlEncodePreprocessor')
+    typename: Literal["ReplayUrlEncodePreprocessor"] = Field(
+        alias="__typename", default="ReplayUrlEncodePreprocessor"
+    )
+
 
 class ReplayPreprocessorFullReplayWorkflowPreprocessorInlineFragment(BaseModel):
-    typename: Literal['ReplayWorkflowPreprocessor'] = Field(alias='__typename', default='ReplayWorkflowPreprocessor')
+    typename: Literal["ReplayWorkflowPreprocessor"] = Field(
+        alias="__typename", default="ReplayWorkflowPreprocessor"
+    )
+
 
 class ReplayPreprocessorFullReplayEnvironmentPreprocessorInlineFragment(BaseModel):
-    typename: Literal['ReplayEnvironmentPreprocessor'] = Field(alias='__typename', default='ReplayEnvironmentPreprocessor')
+    typename: Literal["ReplayEnvironmentPreprocessor"] = Field(
+        alias="__typename", default="ReplayEnvironmentPreprocessor"
+    )
+
 
 class ReplayPreprocessorFull(BaseModel):
     """No documentation"""
-    typename: Literal['ReplayPreprocessor'] = Field(alias='__typename', default='ReplayPreprocessor')
-    options: Union[ReplayPreprocessorFullReplayPrefixPreprocessorInlineFragment, ReplayPreprocessorFullReplaySuffixPreprocessorInlineFragment, ReplayPreprocessorFullReplayUrlEncodePreprocessorInlineFragment, ReplayPreprocessorFullReplayWorkflowPreprocessorInlineFragment, ReplayPreprocessorFullReplayEnvironmentPreprocessorInlineFragment]
+
+    typename: Literal["ReplayPreprocessor"] = Field(
+        alias="__typename", default="ReplayPreprocessor"
+    )
+    options: Union[
+        ReplayPreprocessorFullReplayPrefixPreprocessorInlineFragment,
+        ReplayPreprocessorFullReplaySuffixPreprocessorInlineFragment,
+        ReplayPreprocessorFullReplayUrlEncodePreprocessorInlineFragment,
+        ReplayPreprocessorFullReplayWorkflowPreprocessorInlineFragment,
+        ReplayPreprocessorFullReplayEnvironmentPreprocessorInlineFragment,
+    ]
 
     class Meta:
         """Meta class for ReplayPreprocessorFull"""
-        document = 'fragment ReplayEnvironmentPreprocessorFull on ReplayEnvironmentPreprocessor {\n  __typename\n  variableName\n}\n\nfragment ReplayPrefixPreprocessorFull on ReplayPrefixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplaySuffixPreprocessorFull on ReplaySuffixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplayUrlEncodePreprocessorFull on ReplayUrlEncodePreprocessor {\n  __typename\n  charset\n  nonAscii\n}\n\nfragment ReplayWorkflowPreprocessorFull on ReplayWorkflowPreprocessor {\n  __typename\n  id\n}\n\nfragment ReplayPreprocessorFull on ReplayPreprocessor {\n  __typename\n  options {\n    ... on ReplayPrefixPreprocessor {\n      ...ReplayPrefixPreprocessorFull\n    }\n    ... on ReplaySuffixPreprocessor {\n      ...ReplaySuffixPreprocessorFull\n    }\n    ... on ReplayUrlEncodePreprocessor {\n      ...ReplayUrlEncodePreprocessorFull\n    }\n    ... on ReplayWorkflowPreprocessor {\n      ...ReplayWorkflowPreprocessorFull\n    }\n    ... on ReplayEnvironmentPreprocessor {\n      ...ReplayEnvironmentPreprocessorFull\n    }\n    __typename\n  }\n}'
-        name = 'ReplayPreprocessorFull'
-        type = 'ReplayPreprocessor'
+
+        document = "fragment ReplayEnvironmentPreprocessorFull on ReplayEnvironmentPreprocessor {\n  __typename\n  variableName\n}\n\nfragment ReplayPrefixPreprocessorFull on ReplayPrefixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplaySuffixPreprocessorFull on ReplaySuffixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplayUrlEncodePreprocessorFull on ReplayUrlEncodePreprocessor {\n  __typename\n  charset\n  nonAscii\n}\n\nfragment ReplayWorkflowPreprocessorFull on ReplayWorkflowPreprocessor {\n  __typename\n  id\n}\n\nfragment ReplayPreprocessorFull on ReplayPreprocessor {\n  __typename\n  options {\n    ... on ReplayPrefixPreprocessor {\n      ...ReplayPrefixPreprocessorFull\n    }\n    ... on ReplaySuffixPreprocessor {\n      ...ReplaySuffixPreprocessorFull\n    }\n    ... on ReplayUrlEncodePreprocessor {\n      ...ReplayUrlEncodePreprocessorFull\n    }\n    ... on ReplayWorkflowPreprocessor {\n      ...ReplayWorkflowPreprocessorFull\n    }\n    ... on ReplayEnvironmentPreprocessor {\n      ...ReplayEnvironmentPreprocessorFull\n    }\n    __typename\n  }\n}"
+        name = "ReplayPreprocessorFull"
+        type = "ReplayPreprocessor"
+
 
 class ReplaySessionMetaCollection(BaseModel):
     """No documentation"""
-    typename: Literal['ReplaySessionCollection'] = Field(alias='__typename', default='ReplaySessionCollection')
+
+    typename: Literal["ReplaySessionCollection"] = Field(
+        alias="__typename", default="ReplaySessionCollection"
+    )
     id: str
+
 
 class ReplaySessionMetaActiveentry(BaseModel):
     """No documentation"""
-    typename: Literal['ReplayEntry'] = Field(alias='__typename', default='ReplayEntry')
+
+    typename: Literal["ReplayEntry"] = Field(alias="__typename", default="ReplayEntry")
     id: str
+
 
 class ReplaySessionMeta(BaseModel):
     """No documentation"""
-    typename: Literal['ReplaySession'] = Field(alias='__typename', default='ReplaySession')
+
+    typename: Literal["ReplaySession"] = Field(
+        alias="__typename", default="ReplaySession"
+    )
     id: str
     name: str
     collection: ReplaySessionMetaCollection
@@ -750,25 +1125,33 @@ class ReplaySessionMeta(BaseModel):
 
     class Meta:
         """Meta class for ReplaySessionMeta"""
-        document = 'fragment ReplaySessionMeta on ReplaySession {\n  id\n  name\n  collection {\n    id\n    __typename\n  }\n  activeEntry {\n    id\n    __typename\n  }\n  __typename\n}'
-        name = 'ReplaySessionMeta'
-        type = 'ReplaySession'
+
+        document = "fragment ReplaySessionMeta on ReplaySession {\n  id\n  name\n  collection {\n    id\n    __typename\n  }\n  activeEntry {\n    id\n    __typename\n  }\n  __typename\n}"
+        name = "ReplaySessionMeta"
+        type = "ReplaySession"
+
 
 class ReplaySessionCollectionMeta(BaseModel):
     """No documentation"""
-    typename: Literal['ReplaySessionCollection'] = Field(alias='__typename', default='ReplaySessionCollection')
+
+    typename: Literal["ReplaySessionCollection"] = Field(
+        alias="__typename", default="ReplaySessionCollection"
+    )
     id: str
     name: str
 
     class Meta:
         """Meta class for ReplaySessionCollectionMeta"""
-        document = 'fragment ReplaySessionCollectionMeta on ReplaySessionCollection {\n  id\n  name\n  __typename\n}'
-        name = 'ReplaySessionCollectionMeta'
-        type = 'ReplaySessionCollection'
+
+        document = "fragment ReplaySessionCollectionMeta on ReplaySessionCollection {\n  id\n  name\n  __typename\n}"
+        name = "ReplaySessionCollectionMeta"
+        type = "ReplaySessionCollection"
+
 
 class ResponseFull(BaseModel):
     """No documentation"""
-    typename: Literal['Response'] = Field(alias='__typename', default='Response')
+
+    typename: Literal["Response"] = Field(alias="__typename", default="Response")
     id: str
     statusCode: int
     roundtripTime: int
@@ -778,13 +1161,16 @@ class ResponseFull(BaseModel):
 
     class Meta:
         """Meta class for ResponseFull"""
-        document = 'fragment ResponseFull on Response {\n  id\n  statusCode\n  roundtripTime\n  length\n  createdAt\n  raw @include(if: $includeResponseRaw)\n  __typename\n}'
-        name = 'ResponseFull'
-        type = 'Response'
+
+        document = "fragment ResponseFull on Response {\n  id\n  statusCode\n  roundtripTime\n  length\n  createdAt\n  raw @include(if: $includeResponseRaw)\n  __typename\n}"
+        name = "ResponseFull"
+        type = "Response"
+
 
 class ScopeFull(BaseModel):
     """No documentation"""
-    typename: Literal['Scope'] = Field(alias='__typename', default='Scope')
+
+    typename: Literal["Scope"] = Field(alias="__typename", default="Scope")
     id: str
     name: str
     allowlist: List[str]
@@ -793,262 +1179,376 @@ class ScopeFull(BaseModel):
 
     class Meta:
         """Meta class for ScopeFull"""
-        document = 'fragment ScopeFull on Scope {\n  id\n  name\n  allowlist\n  denylist\n  indexed\n  __typename\n}'
-        name = 'ScopeFull'
-        type = 'Scope'
+
+        document = "fragment ScopeFull on Scope {\n  id\n  name\n  allowlist\n  denylist\n  indexed\n  __typename\n}"
+        name = "ScopeFull"
+        type = "Scope"
+
 
 class TaskMetaBase(BaseModel):
     """No documentation"""
+
     id: str
     createdAt: str
+
 
 class TaskMetaCatch(TaskMetaBase):
     """Catch all class for TaskMetaBase"""
-    typename: str = Field(alias='__typename')
-    'No documentation'
+
+    typename: str = Field(alias="__typename")
+    "No documentation"
     id: str
     createdAt: str
 
+
 class TaskMetaDataExportTask(TaskMetaBase, BaseModel):
     """No documentation"""
-    typename: Literal['DataExportTask'] = Field(alias='__typename', default='DataExportTask')
+
+    typename: Literal["DataExportTask"] = Field(
+        alias="__typename", default="DataExportTask"
+    )
+
 
 class TaskMetaReplayTask(TaskMetaBase, BaseModel):
     """No documentation"""
-    typename: Literal['ReplayTask'] = Field(alias='__typename', default='ReplayTask')
+
+    typename: Literal["ReplayTask"] = Field(alias="__typename", default="ReplayTask")
+
 
 class TaskMetaWorkflowTask(TaskMetaBase, BaseModel):
     """No documentation"""
-    typename: Literal['WorkflowTask'] = Field(alias='__typename', default='WorkflowTask')
+
+    typename: Literal["WorkflowTask"] = Field(
+        alias="__typename", default="WorkflowTask"
+    )
+
 
 class WorkflowFull(BaseModel):
     """No documentation"""
-    typename: Literal['Workflow'] = Field(alias='__typename', default='Workflow')
+
+    typename: Literal["Workflow"] = Field(alias="__typename", default="Workflow")
     id: str
     name: str
     kind: WorkflowKind
     definition: dict
     enabled: bool
-    global_: bool = Field(alias='global')
+    global_: bool = Field(alias="global")
     readOnly: bool
     createdAt: str
     updatedAt: str
 
     class Meta:
         """Meta class for WorkflowFull"""
-        document = 'fragment WorkflowFull on Workflow {\n  id\n  name\n  kind\n  definition\n  enabled\n  global\n  readOnly\n  createdAt\n  updatedAt\n  __typename\n}'
-        name = 'WorkflowFull'
-        type = 'Workflow'
+
+        document = "fragment WorkflowFull on Workflow {\n  id\n  name\n  kind\n  definition\n  enabled\n  global\n  readOnly\n  createdAt\n  updatedAt\n  __typename\n}"
+        name = "WorkflowFull"
+        type = "Workflow"
+
 
 class CloudUserErrorFull(UserErrorFullCloudUserError, BaseModel):
     """No documentation"""
-    typename: Literal['CloudUserError'] = Field(alias='__typename', default='CloudUserError')
+
+    typename: Literal["CloudUserError"] = Field(
+        alias="__typename", default="CloudUserError"
+    )
     cloudReason: CloudErrorReason
 
     class Meta:
         """Meta class for CloudUserErrorFull"""
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment CloudUserErrorFull on CloudUserError {\n  ...UserErrorFull\n  cloudReason: reason\n  __typename\n}'
-        name = 'CloudUserErrorFull'
-        type = 'CloudUserError'
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment CloudUserErrorFull on CloudUserError {\n  ...UserErrorFull\n  cloudReason: reason\n  __typename\n}"
+        name = "CloudUserErrorFull"
+        type = "CloudUserError"
+
 
 class NameTakenUserErrorFull(UserErrorFullNameTakenUserError, BaseModel):
     """No documentation"""
-    typename: Literal['NameTakenUserError'] = Field(alias='__typename', default='NameTakenUserError')
+
+    typename: Literal["NameTakenUserError"] = Field(
+        alias="__typename", default="NameTakenUserError"
+    )
     name: str
 
     class Meta:
         """Meta class for NameTakenUserErrorFull"""
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment NameTakenUserErrorFull on NameTakenUserError {\n  ...UserErrorFull\n  name\n  __typename\n}'
-        name = 'NameTakenUserErrorFull'
-        type = 'NameTakenUserError'
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment NameTakenUserErrorFull on NameTakenUserError {\n  ...UserErrorFull\n  name\n  __typename\n}"
+        name = "NameTakenUserErrorFull"
+        type = "NameTakenUserError"
+
 
 class UnknownIdUserErrorFull(UserErrorFullUnknownIdUserError, BaseModel):
     """No documentation"""
-    typename: Literal['UnknownIdUserError'] = Field(alias='__typename', default='UnknownIdUserError')
+
+    typename: Literal["UnknownIdUserError"] = Field(
+        alias="__typename", default="UnknownIdUserError"
+    )
     id: str
 
     class Meta:
         """Meta class for UnknownIdUserErrorFull"""
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}'
-        name = 'UnknownIdUserErrorFull'
-        type = 'UnknownIdUserError'
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}"
+        name = "UnknownIdUserErrorFull"
+        type = "UnknownIdUserError"
+
 
 class PermissionDeniedUserErrorFull(UserErrorFullPermissionDeniedUserError, BaseModel):
     """No documentation"""
-    typename: Literal['PermissionDeniedUserError'] = Field(alias='__typename', default='PermissionDeniedUserError')
+
+    typename: Literal["PermissionDeniedUserError"] = Field(
+        alias="__typename", default="PermissionDeniedUserError"
+    )
     permissionReason: PermissionDeniedErrorReason
 
     class Meta:
         """Meta class for PermissionDeniedUserErrorFull"""
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {\n  ...UserErrorFull\n  permissionReason: reason\n  __typename\n}'
-        name = 'PermissionDeniedUserErrorFull'
-        type = 'PermissionDeniedUserError'
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {\n  ...UserErrorFull\n  permissionReason: reason\n  __typename\n}"
+        name = "PermissionDeniedUserErrorFull"
+        type = "PermissionDeniedUserError"
+
 
 class ProjectUserErrorFull(UserErrorFullProjectUserError, BaseModel):
     """No documentation"""
-    typename: Literal['ProjectUserError'] = Field(alias='__typename', default='ProjectUserError')
+
+    typename: Literal["ProjectUserError"] = Field(
+        alias="__typename", default="ProjectUserError"
+    )
     projectReason: ProjectErrorReason
 
     class Meta:
         """Meta class for ProjectUserErrorFull"""
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment ProjectUserErrorFull on ProjectUserError {\n  ...UserErrorFull\n  projectReason: reason\n  __typename\n}'
-        name = 'ProjectUserErrorFull'
-        type = 'ProjectUserError'
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment ProjectUserErrorFull on ProjectUserError {\n  ...UserErrorFull\n  projectReason: reason\n  __typename\n}"
+        name = "ProjectUserErrorFull"
+        type = "ProjectUserError"
+
 
 class OtherUserErrorFull(UserErrorFullOtherUserError, BaseModel):
     """No documentation"""
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
 
     class Meta:
         """Meta class for OtherUserErrorFull"""
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}'
-        name = 'OtherUserErrorFull'
-        type = 'OtherUserError'
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}"
+        name = "OtherUserErrorFull"
+        type = "OtherUserError"
+
 
 class ReadOnlyUserErrorFull(UserErrorFullReadOnlyUserError, BaseModel):
     """No documentation"""
-    typename: Literal['ReadOnlyUserError'] = Field(alias='__typename', default='ReadOnlyUserError')
+
+    typename: Literal["ReadOnlyUserError"] = Field(
+        alias="__typename", default="ReadOnlyUserError"
+    )
 
     class Meta:
         """Meta class for ReadOnlyUserErrorFull"""
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment ReadOnlyUserErrorFull on ReadOnlyUserError {\n  ...UserErrorFull\n  __typename\n}'
-        name = 'ReadOnlyUserErrorFull'
-        type = 'ReadOnlyUserError'
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment ReadOnlyUserErrorFull on ReadOnlyUserError {\n  ...UserErrorFull\n  __typename\n}"
+        name = "ReadOnlyUserErrorFull"
+        type = "ReadOnlyUserError"
+
 
 class InvalidGlobTermsUserErrorFull(UserErrorFullInvalidGlobTermsUserError, BaseModel):
     """No documentation"""
-    typename: Literal['InvalidGlobTermsUserError'] = Field(alias='__typename', default='InvalidGlobTermsUserError')
+
+    typename: Literal["InvalidGlobTermsUserError"] = Field(
+        alias="__typename", default="InvalidGlobTermsUserError"
+    )
     terms: List[str]
 
     class Meta:
         """Meta class for InvalidGlobTermsUserErrorFull"""
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment InvalidGlobTermsUserErrorFull on InvalidGlobTermsUserError {\n  ...UserErrorFull\n  terms\n  __typename\n}'
-        name = 'InvalidGlobTermsUserErrorFull'
-        type = 'InvalidGlobTermsUserError'
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment InvalidGlobTermsUserErrorFull on InvalidGlobTermsUserError {\n  ...UserErrorFull\n  terms\n  __typename\n}"
+        name = "InvalidGlobTermsUserErrorFull"
+        type = "InvalidGlobTermsUserError"
+
 
 class AliasTakenUserErrorFull(UserErrorFullAliasTakenUserError, BaseModel):
     """No documentation"""
-    typename: Literal['AliasTakenUserError'] = Field(alias='__typename', default='AliasTakenUserError')
+
+    typename: Literal["AliasTakenUserError"] = Field(
+        alias="__typename", default="AliasTakenUserError"
+    )
     alias: str
 
     class Meta:
         """Meta class for AliasTakenUserErrorFull"""
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment AliasTakenUserErrorFull on AliasTakenUserError {\n  ...UserErrorFull\n  alias\n  __typename\n}'
-        name = 'AliasTakenUserErrorFull'
-        type = 'AliasTakenUserError'
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment AliasTakenUserErrorFull on AliasTakenUserError {\n  ...UserErrorFull\n  alias\n  __typename\n}"
+        name = "AliasTakenUserErrorFull"
+        type = "AliasTakenUserError"
+
 
 class NewerVersionUserErrorFull(UserErrorFullNewerVersionUserError, BaseModel):
     """No documentation"""
-    typename: Literal['NewerVersionUserError'] = Field(alias='__typename', default='NewerVersionUserError')
+
+    typename: Literal["NewerVersionUserError"] = Field(
+        alias="__typename", default="NewerVersionUserError"
+    )
     version: int
 
     class Meta:
         """Meta class for NewerVersionUserErrorFull"""
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment NewerVersionUserErrorFull on NewerVersionUserError {\n  ...UserErrorFull\n  version\n  __typename\n}'
-        name = 'NewerVersionUserErrorFull'
-        type = 'NewerVersionUserError'
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment NewerVersionUserErrorFull on NewerVersionUserError {\n  ...UserErrorFull\n  version\n  __typename\n}"
+        name = "NewerVersionUserErrorFull"
+        type = "NewerVersionUserError"
+
 
 class PluginUserErrorFull(UserErrorFullPluginUserError, BaseModel):
     """No documentation"""
-    typename: Literal['PluginUserError'] = Field(alias='__typename', default='PluginUserError')
+
+    typename: Literal["PluginUserError"] = Field(
+        alias="__typename", default="PluginUserError"
+    )
     reason: PluginErrorReason
 
     class Meta:
         """Meta class for PluginUserErrorFull"""
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment PluginUserErrorFull on PluginUserError {\n  ...UserErrorFull\n  reason\n  __typename\n}'
-        name = 'PluginUserErrorFull'
-        type = 'PluginUserError'
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment PluginUserErrorFull on PluginUserError {\n  ...UserErrorFull\n  reason\n  __typename\n}"
+        name = "PluginUserErrorFull"
+        type = "PluginUserError"
+
 
 class StoreUserErrorFull(UserErrorFullStoreUserError, BaseModel):
     """No documentation"""
-    typename: Literal['StoreUserError'] = Field(alias='__typename', default='StoreUserError')
+
+    typename: Literal["StoreUserError"] = Field(
+        alias="__typename", default="StoreUserError"
+    )
     storeReason: StoreErrorReason
 
     class Meta:
         """Meta class for StoreUserErrorFull"""
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment StoreUserErrorFull on StoreUserError {\n  ...UserErrorFull\n  storeReason: reason\n  __typename\n}'
-        name = 'StoreUserErrorFull'
-        type = 'StoreUserError'
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment StoreUserErrorFull on StoreUserError {\n  ...UserErrorFull\n  storeReason: reason\n  __typename\n}"
+        name = "StoreUserErrorFull"
+        type = "StoreUserError"
+
 
 class TaskInProgressUserErrorFull(UserErrorFullTaskInProgressUserError, BaseModel):
     """No documentation"""
-    typename: Literal['TaskInProgressUserError'] = Field(alias='__typename', default='TaskInProgressUserError')
+
+    typename: Literal["TaskInProgressUserError"] = Field(
+        alias="__typename", default="TaskInProgressUserError"
+    )
     taskId: str
 
     class Meta:
         """Meta class for TaskInProgressUserErrorFull"""
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment TaskInProgressUserErrorFull on TaskInProgressUserError {\n  ...UserErrorFull\n  taskId\n  __typename\n}'
-        name = 'TaskInProgressUserErrorFull'
-        type = 'TaskInProgressUserError'
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment TaskInProgressUserErrorFull on TaskInProgressUserError {\n  ...UserErrorFull\n  taskId\n  __typename\n}"
+        name = "TaskInProgressUserErrorFull"
+        type = "TaskInProgressUserError"
+
 
 class WorkflowUserErrorFull(UserErrorFullWorkflowUserError, BaseModel):
     """No documentation"""
-    typename: Literal['WorkflowUserError'] = Field(alias='__typename', default='WorkflowUserError')
+
+    typename: Literal["WorkflowUserError"] = Field(
+        alias="__typename", default="WorkflowUserError"
+    )
     node: Optional[str] = Field(default=None)
     message: str
     reason: WorkflowErrorReason
 
     class Meta:
         """Meta class for WorkflowUserErrorFull"""
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment WorkflowUserErrorFull on WorkflowUserError {\n  ...UserErrorFull\n  node\n  message\n  reason\n  __typename\n}'
-        name = 'WorkflowUserErrorFull'
-        type = 'WorkflowUserError'
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment WorkflowUserErrorFull on WorkflowUserError {\n  ...UserErrorFull\n  node\n  message\n  reason\n  __typename\n}"
+        name = "WorkflowUserErrorFull"
+        type = "WorkflowUserError"
+
 
 class InstanceSettingsFullAiproviders(BaseModel):
     """No documentation"""
-    typename: Literal['AIProviders'] = Field(alias='__typename', default='AIProviders')
+
+    typename: Literal["AIProviders"] = Field(alias="__typename", default="AIProviders")
     anthropic: Optional[InstanceAIProviderAnthropicFull] = Field(default=None)
     google: Optional[InstanceAIProviderGoogleFull] = Field(default=None)
     openai: Optional[InstanceAIProviderOpenAIFull] = Field(default=None)
     openrouter: Optional[InstanceAIProviderOpenRouterFull] = Field(default=None)
 
+
 class InstanceSettingsFullAnalytic(BaseModel):
     """No documentation"""
-    typename: Literal['AnalyticStatus'] = Field(alias='__typename', default='AnalyticStatus')
+
+    typename: Literal["AnalyticStatus"] = Field(
+        alias="__typename", default="AnalyticStatus"
+    )
     enabled: bool
     cloud: bool
     local: bool
 
+
 class InstanceSettingsFullOnboarding(BaseModel):
     """No documentation"""
-    typename: Literal['OnboardingState'] = Field(alias='__typename', default='OnboardingState')
+
+    typename: Literal["OnboardingState"] = Field(
+        alias="__typename", default="OnboardingState"
+    )
     analytic: bool
+
 
 class InstanceSettingsFull(BaseModel):
     """No documentation"""
-    typename: Literal['InstanceSettings'] = Field(alias='__typename', default='InstanceSettings')
+
+    typename: Literal["InstanceSettings"] = Field(
+        alias="__typename", default="InstanceSettings"
+    )
     aiProviders: InstanceSettingsFullAiproviders
     analytic: InstanceSettingsFullAnalytic
     onboarding: InstanceSettingsFullOnboarding
 
     class Meta:
         """Meta class for InstanceSettingsFull"""
-        document = 'fragment InstanceAIProviderAnthropicFull on AIProviderAnthropic {\n  apiKey\n  __typename\n}\n\nfragment InstanceAIProviderGoogleFull on AIProviderGoogle {\n  apiKey\n  __typename\n}\n\nfragment InstanceAIProviderOpenAIFull on AIProviderOpenAI {\n  apiKey\n  url\n  __typename\n}\n\nfragment InstanceAIProviderOpenRouterFull on AIProviderOpenRouter {\n  apiKey\n  __typename\n}\n\nfragment InstanceSettingsFull on InstanceSettings {\n  aiProviders {\n    anthropic {\n      ...InstanceAIProviderAnthropicFull\n      __typename\n    }\n    google {\n      ...InstanceAIProviderGoogleFull\n      __typename\n    }\n    openai {\n      ...InstanceAIProviderOpenAIFull\n      __typename\n    }\n    openrouter {\n      ...InstanceAIProviderOpenRouterFull\n      __typename\n    }\n    __typename\n  }\n  analytic {\n    enabled\n    cloud\n    local\n    __typename\n  }\n  onboarding {\n    analytic\n    __typename\n  }\n  __typename\n}'
-        name = 'InstanceSettingsFull'
-        type = 'InstanceSettings'
+
+        document = "fragment InstanceAIProviderAnthropicFull on AIProviderAnthropic {\n  apiKey\n  __typename\n}\n\nfragment InstanceAIProviderGoogleFull on AIProviderGoogle {\n  apiKey\n  __typename\n}\n\nfragment InstanceAIProviderOpenAIFull on AIProviderOpenAI {\n  apiKey\n  url\n  __typename\n}\n\nfragment InstanceAIProviderOpenRouterFull on AIProviderOpenRouter {\n  apiKey\n  __typename\n}\n\nfragment InstanceSettingsFull on InstanceSettings {\n  aiProviders {\n    anthropic {\n      ...InstanceAIProviderAnthropicFull\n      __typename\n    }\n    google {\n      ...InstanceAIProviderGoogleFull\n      __typename\n    }\n    openai {\n      ...InstanceAIProviderOpenAIFull\n      __typename\n    }\n    openrouter {\n      ...InstanceAIProviderOpenRouterFull\n      __typename\n    }\n    __typename\n  }\n  analytic {\n    enabled\n    cloud\n    local\n    __typename\n  }\n  onboarding {\n    analytic\n    __typename\n  }\n  __typename\n}"
+        name = "InstanceSettingsFull"
+        type = "InstanceSettings"
+
 
 class ReplayPlaceholderFull(BaseModel):
     """No documentation"""
-    typename: Literal['ReplayPlaceholder'] = Field(alias='__typename', default='ReplayPlaceholder')
+
+    typename: Literal["ReplayPlaceholder"] = Field(
+        alias="__typename", default="ReplayPlaceholder"
+    )
     inputRange: RangeFull
     outputRange: RangeFull
     preprocessors: List[ReplayPreprocessorFull]
 
     class Meta:
         """Meta class for ReplayPlaceholderFull"""
-        document = 'fragment ReplayEnvironmentPreprocessorFull on ReplayEnvironmentPreprocessor {\n  __typename\n  variableName\n}\n\nfragment ReplayPrefixPreprocessorFull on ReplayPrefixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplaySuffixPreprocessorFull on ReplaySuffixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplayUrlEncodePreprocessorFull on ReplayUrlEncodePreprocessor {\n  __typename\n  charset\n  nonAscii\n}\n\nfragment ReplayWorkflowPreprocessorFull on ReplayWorkflowPreprocessor {\n  __typename\n  id\n}\n\nfragment RangeFull on Range {\n  start\n  end\n  __typename\n}\n\nfragment ReplayPreprocessorFull on ReplayPreprocessor {\n  __typename\n  options {\n    ... on ReplayPrefixPreprocessor {\n      ...ReplayPrefixPreprocessorFull\n    }\n    ... on ReplaySuffixPreprocessor {\n      ...ReplaySuffixPreprocessorFull\n    }\n    ... on ReplayUrlEncodePreprocessor {\n      ...ReplayUrlEncodePreprocessorFull\n    }\n    ... on ReplayWorkflowPreprocessor {\n      ...ReplayWorkflowPreprocessorFull\n    }\n    ... on ReplayEnvironmentPreprocessor {\n      ...ReplayEnvironmentPreprocessorFull\n    }\n    __typename\n  }\n}\n\nfragment ReplayPlaceholderFull on ReplayPlaceholder {\n  __typename\n  inputRange {\n    ...RangeFull\n    __typename\n  }\n  outputRange {\n    ...RangeFull\n    __typename\n  }\n  preprocessors {\n    ...ReplayPreprocessorFull\n    __typename\n  }\n}'
-        name = 'ReplayPlaceholderFull'
-        type = 'ReplayPlaceholder'
+
+        document = "fragment ReplayEnvironmentPreprocessorFull on ReplayEnvironmentPreprocessor {\n  __typename\n  variableName\n}\n\nfragment ReplayPrefixPreprocessorFull on ReplayPrefixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplaySuffixPreprocessorFull on ReplaySuffixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplayUrlEncodePreprocessorFull on ReplayUrlEncodePreprocessor {\n  __typename\n  charset\n  nonAscii\n}\n\nfragment ReplayWorkflowPreprocessorFull on ReplayWorkflowPreprocessor {\n  __typename\n  id\n}\n\nfragment RangeFull on Range {\n  start\n  end\n  __typename\n}\n\nfragment ReplayPreprocessorFull on ReplayPreprocessor {\n  __typename\n  options {\n    ... on ReplayPrefixPreprocessor {\n      ...ReplayPrefixPreprocessorFull\n    }\n    ... on ReplaySuffixPreprocessor {\n      ...ReplaySuffixPreprocessorFull\n    }\n    ... on ReplayUrlEncodePreprocessor {\n      ...ReplayUrlEncodePreprocessorFull\n    }\n    ... on ReplayWorkflowPreprocessor {\n      ...ReplayWorkflowPreprocessorFull\n    }\n    ... on ReplayEnvironmentPreprocessor {\n      ...ReplayEnvironmentPreprocessorFull\n    }\n    __typename\n  }\n}\n\nfragment ReplayPlaceholderFull on ReplayPlaceholder {\n  __typename\n  inputRange {\n    ...RangeFull\n    __typename\n  }\n  outputRange {\n    ...RangeFull\n    __typename\n  }\n  preprocessors {\n    ...ReplayPreprocessorFull\n    __typename\n  }\n}"
+        name = "ReplayPlaceholderFull"
+        type = "ReplayPlaceholder"
+
 
 class RequestFullMetadata(BaseModel):
     """No documentation"""
-    typename: Literal['RequestMetadata'] = Field(alias='__typename', default='RequestMetadata')
+
+    typename: Literal["RequestMetadata"] = Field(
+        alias="__typename", default="RequestMetadata"
+    )
     id: str
     color: Optional[str] = Field(default=None)
 
+
 class RequestFull(BaseModel):
     """No documentation"""
-    typename: Literal['Request'] = Field(alias='__typename', default='Request')
+
+    typename: Literal["Request"] = Field(alias="__typename", default="Request")
     id: str
     host: str
     port: int
@@ -1063,39 +1563,55 @@ class RequestFull(BaseModel):
 
     class Meta:
         """Meta class for RequestFull"""
-        document = 'fragment ResponseFull on Response {\n  id\n  statusCode\n  roundtripTime\n  length\n  createdAt\n  raw @include(if: $includeResponseRaw)\n  __typename\n}\n\nfragment RequestFull on Request {\n  id\n  host\n  port\n  method\n  path\n  query\n  isTls\n  metadata {\n    id\n    color\n    __typename\n  }\n  createdAt\n  raw @include(if: $includeRequestRaw)\n  response {\n    ...ResponseFull\n    __typename\n  }\n  __typename\n}'
-        name = 'RequestFull'
-        type = 'Request'
+
+        document = "fragment ResponseFull on Response {\n  id\n  statusCode\n  roundtripTime\n  length\n  createdAt\n  raw @include(if: $includeResponseRaw)\n  __typename\n}\n\nfragment RequestFull on Request {\n  id\n  host\n  port\n  method\n  path\n  query\n  isTls\n  metadata {\n    id\n    color\n    __typename\n  }\n  createdAt\n  raw @include(if: $includeRequestRaw)\n  response {\n    ...ResponseFull\n    __typename\n  }\n  __typename\n}"
+        name = "RequestFull"
+        type = "Request"
+
 
 class ReplayTaskMetaReplayentry(BaseModel):
     """No documentation"""
-    typename: Literal['ReplayEntry'] = Field(alias='__typename', default='ReplayEntry')
+
+    typename: Literal["ReplayEntry"] = Field(alias="__typename", default="ReplayEntry")
     id: str
+
 
 class ReplayTaskMeta(TaskMetaReplayTask, BaseModel):
     """No documentation"""
-    typename: Literal['ReplayTask'] = Field(alias='__typename', default='ReplayTask')
+
+    typename: Literal["ReplayTask"] = Field(alias="__typename", default="ReplayTask")
     replayEntry: ReplayTaskMetaReplayentry
 
     class Meta:
         """Meta class for ReplayTaskMeta"""
-        document = 'fragment TaskMeta on Task {\n  __typename\n  id\n  createdAt\n}\n\nfragment ReplayTaskMeta on ReplayTask {\n  ...TaskMeta\n  replayEntry {\n    id\n    __typename\n  }\n  __typename\n}'
-        name = 'ReplayTaskMeta'
-        type = 'ReplayTask'
+
+        document = "fragment TaskMeta on Task {\n  __typename\n  id\n  createdAt\n}\n\nfragment ReplayTaskMeta on ReplayTask {\n  ...TaskMeta\n  replayEntry {\n    id\n    __typename\n  }\n  __typename\n}"
+        name = "ReplayTaskMeta"
+        type = "ReplayTask"
+
 
 class ReplayEntryFullSession(BaseModel):
     """No documentation"""
-    typename: Literal['ReplaySession'] = Field(alias='__typename', default='ReplaySession')
+
+    typename: Literal["ReplaySession"] = Field(
+        alias="__typename", default="ReplaySession"
+    )
     id: str
+
 
 class ReplayEntryFullSettings(BaseModel):
     """No documentation"""
-    typename: Literal['ReplayEntrySettings'] = Field(alias='__typename', default='ReplayEntrySettings')
+
+    typename: Literal["ReplayEntrySettings"] = Field(
+        alias="__typename", default="ReplayEntrySettings"
+    )
     placeholders: List[ReplayPlaceholderFull]
+
 
 class ReplayEntryFull(BaseModel):
     """No documentation"""
-    typename: Literal['ReplayEntry'] = Field(alias='__typename', default='ReplayEntry')
+
+    typename: Literal["ReplayEntry"] = Field(alias="__typename", default="ReplayEntry")
     connection: ConnectionInfoFull
     createdAt: str
     error: Optional[str] = Field(default=None)
@@ -1107,319 +1623,523 @@ class ReplayEntryFull(BaseModel):
 
     class Meta:
         """Meta class for ReplayEntryFull"""
-        document = 'fragment ReplayEnvironmentPreprocessorFull on ReplayEnvironmentPreprocessor {\n  __typename\n  variableName\n}\n\nfragment ReplayPrefixPreprocessorFull on ReplayPrefixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplaySuffixPreprocessorFull on ReplaySuffixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplayUrlEncodePreprocessorFull on ReplayUrlEncodePreprocessor {\n  __typename\n  charset\n  nonAscii\n}\n\nfragment ReplayWorkflowPreprocessorFull on ReplayWorkflowPreprocessor {\n  __typename\n  id\n}\n\nfragment RangeFull on Range {\n  start\n  end\n  __typename\n}\n\nfragment ReplayPreprocessorFull on ReplayPreprocessor {\n  __typename\n  options {\n    ... on ReplayPrefixPreprocessor {\n      ...ReplayPrefixPreprocessorFull\n    }\n    ... on ReplaySuffixPreprocessor {\n      ...ReplaySuffixPreprocessorFull\n    }\n    ... on ReplayUrlEncodePreprocessor {\n      ...ReplayUrlEncodePreprocessorFull\n    }\n    ... on ReplayWorkflowPreprocessor {\n      ...ReplayWorkflowPreprocessorFull\n    }\n    ... on ReplayEnvironmentPreprocessor {\n      ...ReplayEnvironmentPreprocessorFull\n    }\n    __typename\n  }\n}\n\nfragment ResponseFull on Response {\n  id\n  statusCode\n  roundtripTime\n  length\n  createdAt\n  raw @include(if: $includeResponseRaw)\n  __typename\n}\n\nfragment ConnectionInfoFull on ConnectionInfo {\n  __typename\n  host\n  port\n  isTLS\n  SNI\n}\n\nfragment ReplayPlaceholderFull on ReplayPlaceholder {\n  __typename\n  inputRange {\n    ...RangeFull\n    __typename\n  }\n  outputRange {\n    ...RangeFull\n    __typename\n  }\n  preprocessors {\n    ...ReplayPreprocessorFull\n    __typename\n  }\n}\n\nfragment RequestFull on Request {\n  id\n  host\n  port\n  method\n  path\n  query\n  isTls\n  metadata {\n    id\n    color\n    __typename\n  }\n  createdAt\n  raw @include(if: $includeRequestRaw)\n  response {\n    ...ResponseFull\n    __typename\n  }\n  __typename\n}\n\nfragment ReplayEntryFull on ReplayEntry {\n  connection {\n    ...ConnectionInfoFull\n    __typename\n  }\n  createdAt\n  error\n  id\n  raw @include(if: $includeReplayRaw)\n  request {\n    ...RequestFull\n    __typename\n  }\n  session {\n    id\n    __typename\n  }\n  settings {\n    placeholders {\n      ...ReplayPlaceholderFull\n      __typename\n    }\n    __typename\n  }\n  __typename\n}'
-        name = 'ReplayEntryFull'
-        type = 'ReplayEntry'
+
+        document = "fragment ReplayEnvironmentPreprocessorFull on ReplayEnvironmentPreprocessor {\n  __typename\n  variableName\n}\n\nfragment ReplayPrefixPreprocessorFull on ReplayPrefixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplaySuffixPreprocessorFull on ReplaySuffixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplayUrlEncodePreprocessorFull on ReplayUrlEncodePreprocessor {\n  __typename\n  charset\n  nonAscii\n}\n\nfragment ReplayWorkflowPreprocessorFull on ReplayWorkflowPreprocessor {\n  __typename\n  id\n}\n\nfragment RangeFull on Range {\n  start\n  end\n  __typename\n}\n\nfragment ReplayPreprocessorFull on ReplayPreprocessor {\n  __typename\n  options {\n    ... on ReplayPrefixPreprocessor {\n      ...ReplayPrefixPreprocessorFull\n    }\n    ... on ReplaySuffixPreprocessor {\n      ...ReplaySuffixPreprocessorFull\n    }\n    ... on ReplayUrlEncodePreprocessor {\n      ...ReplayUrlEncodePreprocessorFull\n    }\n    ... on ReplayWorkflowPreprocessor {\n      ...ReplayWorkflowPreprocessorFull\n    }\n    ... on ReplayEnvironmentPreprocessor {\n      ...ReplayEnvironmentPreprocessorFull\n    }\n    __typename\n  }\n}\n\nfragment ResponseFull on Response {\n  id\n  statusCode\n  roundtripTime\n  length\n  createdAt\n  raw @include(if: $includeResponseRaw)\n  __typename\n}\n\nfragment ConnectionInfoFull on ConnectionInfo {\n  __typename\n  host\n  port\n  isTLS\n  SNI\n}\n\nfragment ReplayPlaceholderFull on ReplayPlaceholder {\n  __typename\n  inputRange {\n    ...RangeFull\n    __typename\n  }\n  outputRange {\n    ...RangeFull\n    __typename\n  }\n  preprocessors {\n    ...ReplayPreprocessorFull\n    __typename\n  }\n}\n\nfragment RequestFull on Request {\n  id\n  host\n  port\n  method\n  path\n  query\n  isTls\n  metadata {\n    id\n    color\n    __typename\n  }\n  createdAt\n  raw @include(if: $includeRequestRaw)\n  response {\n    ...ResponseFull\n    __typename\n  }\n  __typename\n}\n\nfragment ReplayEntryFull on ReplayEntry {\n  connection {\n    ...ConnectionInfoFull\n    __typename\n  }\n  createdAt\n  error\n  id\n  raw @include(if: $includeReplayRaw)\n  request {\n    ...RequestFull\n    __typename\n  }\n  session {\n    id\n    __typename\n  }\n  settings {\n    placeholders {\n      ...ReplayPlaceholderFull\n      __typename\n    }\n    __typename\n  }\n  __typename\n}"
+        name = "ReplayEntryFull"
+        type = "ReplayEntry"
+
 
 class Environments(BaseModel):
     """No documentation found for this operation."""
+
     environments: List[EnvironmentFull]
 
     class Arguments(BaseModel):
-        """Arguments for Environments """
+        """Arguments for Environments"""
+
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for Environments """
-        document = 'fragment EnvironmentFull on Environment {\n  id\n  name\n  variables {\n    name\n    value\n    kind\n    __typename\n  }\n  version\n  __typename\n}\n\nquery Environments {\n  environments {\n    ...EnvironmentFull\n    __typename\n  }\n}'
+        """Meta class for Environments"""
+
+        document = "fragment EnvironmentFull on Environment {\n  id\n  name\n  variables {\n    name\n    value\n    kind\n    __typename\n  }\n  version\n  __typename\n}\n\nquery Environments {\n  environments {\n    ...EnvironmentFull\n    __typename\n  }\n}"
+
 
 class EnvironmentQuery(BaseModel):
     """No documentation found for this operation."""
+
     environment: Optional[EnvironmentFull] = Field(default=None)
 
     class Arguments(BaseModel):
-        """Arguments for EnvironmentQuery """
+        """Arguments for EnvironmentQuery"""
+
         id: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for EnvironmentQuery """
-        document = 'fragment EnvironmentFull on Environment {\n  id\n  name\n  variables {\n    name\n    value\n    kind\n    __typename\n  }\n  version\n  __typename\n}\n\nquery EnvironmentQuery($id: ID!) {\n  environment(id: $id) {\n    ...EnvironmentFull\n    __typename\n  }\n}'
+        """Meta class for EnvironmentQuery"""
+
+        document = "fragment EnvironmentFull on Environment {\n  id\n  name\n  variables {\n    name\n    value\n    kind\n    __typename\n  }\n  version\n  __typename\n}\n\nquery EnvironmentQuery($id: ID!) {\n  environment(id: $id) {\n    ...EnvironmentFull\n    __typename\n  }\n}"
+
 
 class CreateEnvironmentCreateenvironmentNameTakenUserErrorInlineFragment(BaseModel):
-    typename: Literal['NameTakenUserError'] = Field(alias='__typename', default='NameTakenUserError')
+    typename: Literal["NameTakenUserError"] = Field(
+        alias="__typename", default="NameTakenUserError"
+    )
 
-class CreateEnvironmentCreateenvironmentPermissionDeniedUserErrorInlineFragment(BaseModel):
-    typename: Literal['PermissionDeniedUserError'] = Field(alias='__typename', default='PermissionDeniedUserError')
+
+class CreateEnvironmentCreateenvironmentPermissionDeniedUserErrorInlineFragment(
+    BaseModel
+):
+    typename: Literal["PermissionDeniedUserError"] = Field(
+        alias="__typename", default="PermissionDeniedUserError"
+    )
+
 
 class CreateEnvironmentCreateenvironmentCloudUserErrorInlineFragment(BaseModel):
-    typename: Literal['CloudUserError'] = Field(alias='__typename', default='CloudUserError')
+    typename: Literal["CloudUserError"] = Field(
+        alias="__typename", default="CloudUserError"
+    )
+
 
 class CreateEnvironmentCreateenvironmentOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class CreateEnvironmentCreateenvironment(BaseModel):
     """No documentation"""
-    typename: Literal['CreateEnvironmentPayload'] = Field(alias='__typename', default='CreateEnvironmentPayload')
-    error: Optional[Union[CreateEnvironmentCreateenvironmentNameTakenUserErrorInlineFragment, CreateEnvironmentCreateenvironmentPermissionDeniedUserErrorInlineFragment, CreateEnvironmentCreateenvironmentCloudUserErrorInlineFragment, CreateEnvironmentCreateenvironmentOtherUserErrorInlineFragment]] = Field(default=None)
+
+    typename: Literal["CreateEnvironmentPayload"] = Field(
+        alias="__typename", default="CreateEnvironmentPayload"
+    )
+    error: Optional[
+        Union[
+            CreateEnvironmentCreateenvironmentNameTakenUserErrorInlineFragment,
+            CreateEnvironmentCreateenvironmentPermissionDeniedUserErrorInlineFragment,
+            CreateEnvironmentCreateenvironmentCloudUserErrorInlineFragment,
+            CreateEnvironmentCreateenvironmentOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
     environment: Optional[EnvironmentFull] = Field(default=None)
+
 
 class CreateEnvironment(BaseModel):
     """No documentation found for this operation."""
+
     createEnvironment: CreateEnvironmentCreateenvironment
 
     class Arguments(BaseModel):
-        """Arguments for CreateEnvironment """
+        """Arguments for CreateEnvironment"""
+
         input: CreateEnvironmentInput
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for CreateEnvironment """
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment CloudUserErrorFull on CloudUserError {\n  ...UserErrorFull\n  cloudReason: reason\n  __typename\n}\n\nfragment EnvironmentFull on Environment {\n  id\n  name\n  variables {\n    name\n    value\n    kind\n    __typename\n  }\n  version\n  __typename\n}\n\nfragment NameTakenUserErrorFull on NameTakenUserError {\n  ...UserErrorFull\n  name\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {\n  ...UserErrorFull\n  permissionReason: reason\n  __typename\n}\n\nmutation CreateEnvironment($input: CreateEnvironmentInput!) {\n  createEnvironment(input: $input) {\n    error {\n      __typename\n      ... on NameTakenUserError {\n        ...NameTakenUserErrorFull\n      }\n      ... on PermissionDeniedUserError {\n        ...PermissionDeniedUserErrorFull\n      }\n      ... on CloudUserError {\n        ...CloudUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    environment {\n      ...EnvironmentFull\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for CreateEnvironment"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment CloudUserErrorFull on CloudUserError {\n  ...UserErrorFull\n  cloudReason: reason\n  __typename\n}\n\nfragment EnvironmentFull on Environment {\n  id\n  name\n  variables {\n    name\n    value\n    kind\n    __typename\n  }\n  version\n  __typename\n}\n\nfragment NameTakenUserErrorFull on NameTakenUserError {\n  ...UserErrorFull\n  name\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {\n  ...UserErrorFull\n  permissionReason: reason\n  __typename\n}\n\nmutation CreateEnvironment($input: CreateEnvironmentInput!) {\n  createEnvironment(input: $input) {\n    error {\n      __typename\n      ... on NameTakenUserError {\n        ...NameTakenUserErrorFull\n      }\n      ... on PermissionDeniedUserError {\n        ...PermissionDeniedUserErrorFull\n      }\n      ... on CloudUserError {\n        ...CloudUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    environment {\n      ...EnvironmentFull\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class UpdateEnvironmentUpdateenvironmentUnknownIdUserErrorInlineFragment(BaseModel):
-    typename: Literal['UnknownIdUserError'] = Field(alias='__typename', default='UnknownIdUserError')
+    typename: Literal["UnknownIdUserError"] = Field(
+        alias="__typename", default="UnknownIdUserError"
+    )
+
 
 class UpdateEnvironmentUpdateenvironmentNameTakenUserErrorInlineFragment(BaseModel):
-    typename: Literal['NameTakenUserError'] = Field(alias='__typename', default='NameTakenUserError')
+    typename: Literal["NameTakenUserError"] = Field(
+        alias="__typename", default="NameTakenUserError"
+    )
+
 
 class UpdateEnvironmentUpdateenvironmentNewerVersionUserErrorInlineFragment(BaseModel):
-    typename: Literal['NewerVersionUserError'] = Field(alias='__typename', default='NewerVersionUserError')
+    typename: Literal["NewerVersionUserError"] = Field(
+        alias="__typename", default="NewerVersionUserError"
+    )
 
-class UpdateEnvironmentUpdateenvironmentPermissionDeniedUserErrorInlineFragment(BaseModel):
-    typename: Literal['PermissionDeniedUserError'] = Field(alias='__typename', default='PermissionDeniedUserError')
+
+class UpdateEnvironmentUpdateenvironmentPermissionDeniedUserErrorInlineFragment(
+    BaseModel
+):
+    typename: Literal["PermissionDeniedUserError"] = Field(
+        alias="__typename", default="PermissionDeniedUserError"
+    )
+
 
 class UpdateEnvironmentUpdateenvironmentOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class UpdateEnvironmentUpdateenvironment(BaseModel):
     """No documentation"""
-    typename: Literal['UpdateEnvironmentPayload'] = Field(alias='__typename', default='UpdateEnvironmentPayload')
-    error: Optional[Union[UpdateEnvironmentUpdateenvironmentUnknownIdUserErrorInlineFragment, UpdateEnvironmentUpdateenvironmentNameTakenUserErrorInlineFragment, UpdateEnvironmentUpdateenvironmentNewerVersionUserErrorInlineFragment, UpdateEnvironmentUpdateenvironmentPermissionDeniedUserErrorInlineFragment, UpdateEnvironmentUpdateenvironmentOtherUserErrorInlineFragment]] = Field(default=None)
+
+    typename: Literal["UpdateEnvironmentPayload"] = Field(
+        alias="__typename", default="UpdateEnvironmentPayload"
+    )
+    error: Optional[
+        Union[
+            UpdateEnvironmentUpdateenvironmentUnknownIdUserErrorInlineFragment,
+            UpdateEnvironmentUpdateenvironmentNameTakenUserErrorInlineFragment,
+            UpdateEnvironmentUpdateenvironmentNewerVersionUserErrorInlineFragment,
+            UpdateEnvironmentUpdateenvironmentPermissionDeniedUserErrorInlineFragment,
+            UpdateEnvironmentUpdateenvironmentOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
     environment: Optional[EnvironmentFull] = Field(default=None)
+
 
 class UpdateEnvironment(BaseModel):
     """No documentation found for this operation."""
+
     updateEnvironment: UpdateEnvironmentUpdateenvironment
 
     class Arguments(BaseModel):
-        """Arguments for UpdateEnvironment """
+        """Arguments for UpdateEnvironment"""
+
         id: str
         input: UpdateEnvironmentInput
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for UpdateEnvironment """
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment EnvironmentFull on Environment {\n  id\n  name\n  variables {\n    name\n    value\n    kind\n    __typename\n  }\n  version\n  __typename\n}\n\nfragment NameTakenUserErrorFull on NameTakenUserError {\n  ...UserErrorFull\n  name\n  __typename\n}\n\nfragment NewerVersionUserErrorFull on NewerVersionUserError {\n  ...UserErrorFull\n  version\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {\n  ...UserErrorFull\n  permissionReason: reason\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nmutation UpdateEnvironment($id: ID!, $input: UpdateEnvironmentInput!) {\n  updateEnvironment(id: $id, input: $input) {\n    error {\n      __typename\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on NameTakenUserError {\n        ...NameTakenUserErrorFull\n      }\n      ... on NewerVersionUserError {\n        ...NewerVersionUserErrorFull\n      }\n      ... on PermissionDeniedUserError {\n        ...PermissionDeniedUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    environment {\n      ...EnvironmentFull\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for UpdateEnvironment"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment EnvironmentFull on Environment {\n  id\n  name\n  variables {\n    name\n    value\n    kind\n    __typename\n  }\n  version\n  __typename\n}\n\nfragment NameTakenUserErrorFull on NameTakenUserError {\n  ...UserErrorFull\n  name\n  __typename\n}\n\nfragment NewerVersionUserErrorFull on NewerVersionUserError {\n  ...UserErrorFull\n  version\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {\n  ...UserErrorFull\n  permissionReason: reason\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nmutation UpdateEnvironment($id: ID!, $input: UpdateEnvironmentInput!) {\n  updateEnvironment(id: $id, input: $input) {\n    error {\n      __typename\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on NameTakenUserError {\n        ...NameTakenUserErrorFull\n      }\n      ... on NewerVersionUserError {\n        ...NewerVersionUserErrorFull\n      }\n      ... on PermissionDeniedUserError {\n        ...PermissionDeniedUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    environment {\n      ...EnvironmentFull\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class DeleteEnvironmentDeleteenvironmentUnknownIdUserErrorInlineFragment(BaseModel):
-    typename: Literal['UnknownIdUserError'] = Field(alias='__typename', default='UnknownIdUserError')
+    typename: Literal["UnknownIdUserError"] = Field(
+        alias="__typename", default="UnknownIdUserError"
+    )
+
 
 class DeleteEnvironmentDeleteenvironmentOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class DeleteEnvironmentDeleteenvironment(BaseModel):
     """No documentation"""
-    typename: Literal['DeleteEnvironmentPayload'] = Field(alias='__typename', default='DeleteEnvironmentPayload')
+
+    typename: Literal["DeleteEnvironmentPayload"] = Field(
+        alias="__typename", default="DeleteEnvironmentPayload"
+    )
     deletedId: Optional[str] = Field(default=None)
-    error: Optional[Union[DeleteEnvironmentDeleteenvironmentUnknownIdUserErrorInlineFragment, DeleteEnvironmentDeleteenvironmentOtherUserErrorInlineFragment]] = Field(default=None)
+    error: Optional[
+        Union[
+            DeleteEnvironmentDeleteenvironmentUnknownIdUserErrorInlineFragment,
+            DeleteEnvironmentDeleteenvironmentOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
+
 
 class DeleteEnvironment(BaseModel):
     """No documentation found for this operation."""
+
     deleteEnvironment: DeleteEnvironmentDeleteenvironment
 
     class Arguments(BaseModel):
-        """Arguments for DeleteEnvironment """
+        """Arguments for DeleteEnvironment"""
+
         id: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for DeleteEnvironment """
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nmutation DeleteEnvironment($id: ID!) {\n  deleteEnvironment(id: $id) {\n    deletedId\n    error {\n      __typename\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    __typename\n  }\n}'
+        """Meta class for DeleteEnvironment"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nmutation DeleteEnvironment($id: ID!) {\n  deleteEnvironment(id: $id) {\n    deletedId\n    error {\n      __typename\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    __typename\n  }\n}"
+
 
 class SelectEnvironmentSelectenvironmentUnknownIdUserErrorInlineFragment(BaseModel):
-    typename: Literal['UnknownIdUserError'] = Field(alias='__typename', default='UnknownIdUserError')
+    typename: Literal["UnknownIdUserError"] = Field(
+        alias="__typename", default="UnknownIdUserError"
+    )
+
 
 class SelectEnvironmentSelectenvironmentOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class SelectEnvironmentSelectenvironmentEnvironmentVariables(BaseModel):
     """No documentation"""
-    typename: Literal['EnvironmentVariable'] = Field(alias='__typename', default='EnvironmentVariable')
+
+    typename: Literal["EnvironmentVariable"] = Field(
+        alias="__typename", default="EnvironmentVariable"
+    )
     name: str
     value: str
     kind: EnvironmentVariableKind
 
+
 class SelectEnvironmentSelectenvironmentEnvironment(BaseModel):
     """No documentation"""
-    typename: Literal['Environment'] = Field(alias='__typename', default='Environment')
+
+    typename: Literal["Environment"] = Field(alias="__typename", default="Environment")
     id: str
     name: str
     variables: List[SelectEnvironmentSelectenvironmentEnvironmentVariables]
     version: int
 
+
 class SelectEnvironmentSelectenvironment(BaseModel):
     """No documentation"""
-    typename: Literal['SelectEnvironmentPayload'] = Field(alias='__typename', default='SelectEnvironmentPayload')
-    error: Optional[Union[SelectEnvironmentSelectenvironmentUnknownIdUserErrorInlineFragment, SelectEnvironmentSelectenvironmentOtherUserErrorInlineFragment]] = Field(default=None)
-    environment: Optional[SelectEnvironmentSelectenvironmentEnvironment] = Field(default=None)
+
+    typename: Literal["SelectEnvironmentPayload"] = Field(
+        alias="__typename", default="SelectEnvironmentPayload"
+    )
+    error: Optional[
+        Union[
+            SelectEnvironmentSelectenvironmentUnknownIdUserErrorInlineFragment,
+            SelectEnvironmentSelectenvironmentOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
+    environment: Optional[SelectEnvironmentSelectenvironmentEnvironment] = Field(
+        default=None
+    )
+
 
 class SelectEnvironment(BaseModel):
     """No documentation found for this operation."""
+
     selectEnvironment: SelectEnvironmentSelectenvironment
 
     class Arguments(BaseModel):
-        """Arguments for SelectEnvironment """
+        """Arguments for SelectEnvironment"""
+
         id: Optional[str] = Field(default=None)
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for SelectEnvironment """
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nmutation SelectEnvironment($id: ID) {\n  selectEnvironment(id: $id) {\n    error {\n      __typename\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    environment {\n      id\n      name\n      variables {\n        name\n        value\n        kind\n        __typename\n      }\n      version\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for SelectEnvironment"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nmutation SelectEnvironment($id: ID) {\n  selectEnvironment(id: $id) {\n    error {\n      __typename\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    environment {\n      id\n      name\n      variables {\n        name\n        value\n        kind\n        __typename\n      }\n      version\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class FilterPresets(BaseModel):
     """No documentation found for this operation."""
+
     filterPresets: List[FilterPresetFull]
 
     class Arguments(BaseModel):
-        """Arguments for FilterPresets """
+        """Arguments for FilterPresets"""
+
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for FilterPresets """
-        document = 'fragment FilterPresetFull on FilterPreset {\n  id\n  name\n  alias\n  clause\n  __typename\n}\n\nquery FilterPresets {\n  filterPresets {\n    ...FilterPresetFull\n    __typename\n  }\n}'
+        """Meta class for FilterPresets"""
+
+        document = "fragment FilterPresetFull on FilterPreset {\n  id\n  name\n  alias\n  clause\n  __typename\n}\n\nquery FilterPresets {\n  filterPresets {\n    ...FilterPresetFull\n    __typename\n  }\n}"
+
 
 class FilterPreset(BaseModel):
     """No documentation found for this operation."""
+
     filterPreset: Optional[FilterPresetFull] = Field(default=None)
 
     class Arguments(BaseModel):
-        """Arguments for FilterPreset """
+        """Arguments for FilterPreset"""
+
         id: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for FilterPreset """
-        document = 'fragment FilterPresetFull on FilterPreset {\n  id\n  name\n  alias\n  clause\n  __typename\n}\n\nquery FilterPreset($id: ID!) {\n  filterPreset(id: $id) {\n    ...FilterPresetFull\n    __typename\n  }\n}'
+        """Meta class for FilterPreset"""
+
+        document = "fragment FilterPresetFull on FilterPreset {\n  id\n  name\n  alias\n  clause\n  __typename\n}\n\nquery FilterPreset($id: ID!) {\n  filterPreset(id: $id) {\n    ...FilterPresetFull\n    __typename\n  }\n}"
+
 
 class CreateFilterPresetCreatefilterpresetNameTakenUserErrorInlineFragment(BaseModel):
-    typename: Literal['NameTakenUserError'] = Field(alias='__typename', default='NameTakenUserError')
+    typename: Literal["NameTakenUserError"] = Field(
+        alias="__typename", default="NameTakenUserError"
+    )
+
 
 class CreateFilterPresetCreatefilterpresetAliasTakenUserErrorInlineFragment(BaseModel):
-    typename: Literal['AliasTakenUserError'] = Field(alias='__typename', default='AliasTakenUserError')
+    typename: Literal["AliasTakenUserError"] = Field(
+        alias="__typename", default="AliasTakenUserError"
+    )
 
-class CreateFilterPresetCreatefilterpresetPermissionDeniedUserErrorInlineFragment(BaseModel):
-    typename: Literal['PermissionDeniedUserError'] = Field(alias='__typename', default='PermissionDeniedUserError')
+
+class CreateFilterPresetCreatefilterpresetPermissionDeniedUserErrorInlineFragment(
+    BaseModel
+):
+    typename: Literal["PermissionDeniedUserError"] = Field(
+        alias="__typename", default="PermissionDeniedUserError"
+    )
+
 
 class CreateFilterPresetCreatefilterpresetCloudUserErrorInlineFragment(BaseModel):
-    typename: Literal['CloudUserError'] = Field(alias='__typename', default='CloudUserError')
+    typename: Literal["CloudUserError"] = Field(
+        alias="__typename", default="CloudUserError"
+    )
+
 
 class CreateFilterPresetCreatefilterpresetOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class CreateFilterPresetCreatefilterpreset(BaseModel):
     """No documentation"""
-    typename: Literal['CreateFilterPresetPayload'] = Field(alias='__typename', default='CreateFilterPresetPayload')
-    error: Optional[Union[CreateFilterPresetCreatefilterpresetNameTakenUserErrorInlineFragment, CreateFilterPresetCreatefilterpresetAliasTakenUserErrorInlineFragment, CreateFilterPresetCreatefilterpresetPermissionDeniedUserErrorInlineFragment, CreateFilterPresetCreatefilterpresetCloudUserErrorInlineFragment, CreateFilterPresetCreatefilterpresetOtherUserErrorInlineFragment]] = Field(default=None)
+
+    typename: Literal["CreateFilterPresetPayload"] = Field(
+        alias="__typename", default="CreateFilterPresetPayload"
+    )
+    error: Optional[
+        Union[
+            CreateFilterPresetCreatefilterpresetNameTakenUserErrorInlineFragment,
+            CreateFilterPresetCreatefilterpresetAliasTakenUserErrorInlineFragment,
+            CreateFilterPresetCreatefilterpresetPermissionDeniedUserErrorInlineFragment,
+            CreateFilterPresetCreatefilterpresetCloudUserErrorInlineFragment,
+            CreateFilterPresetCreatefilterpresetOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
     filter: Optional[FilterPresetFull] = Field(default=None)
+
 
 class CreateFilterPreset(BaseModel):
     """No documentation found for this operation."""
+
     createFilterPreset: CreateFilterPresetCreatefilterpreset
 
     class Arguments(BaseModel):
-        """Arguments for CreateFilterPreset """
+        """Arguments for CreateFilterPreset"""
+
         input: CreateFilterPresetInput
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for CreateFilterPreset """
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment AliasTakenUserErrorFull on AliasTakenUserError {\n  ...UserErrorFull\n  alias\n  __typename\n}\n\nfragment CloudUserErrorFull on CloudUserError {\n  ...UserErrorFull\n  cloudReason: reason\n  __typename\n}\n\nfragment FilterPresetFull on FilterPreset {\n  id\n  name\n  alias\n  clause\n  __typename\n}\n\nfragment NameTakenUserErrorFull on NameTakenUserError {\n  ...UserErrorFull\n  name\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {\n  ...UserErrorFull\n  permissionReason: reason\n  __typename\n}\n\nmutation CreateFilterPreset($input: CreateFilterPresetInput!) {\n  createFilterPreset(input: $input) {\n    error {\n      __typename\n      ... on NameTakenUserError {\n        ...NameTakenUserErrorFull\n      }\n      ... on AliasTakenUserError {\n        ...AliasTakenUserErrorFull\n      }\n      ... on PermissionDeniedUserError {\n        ...PermissionDeniedUserErrorFull\n      }\n      ... on CloudUserError {\n        ...CloudUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    filter {\n      ...FilterPresetFull\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for CreateFilterPreset"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment AliasTakenUserErrorFull on AliasTakenUserError {\n  ...UserErrorFull\n  alias\n  __typename\n}\n\nfragment CloudUserErrorFull on CloudUserError {\n  ...UserErrorFull\n  cloudReason: reason\n  __typename\n}\n\nfragment FilterPresetFull on FilterPreset {\n  id\n  name\n  alias\n  clause\n  __typename\n}\n\nfragment NameTakenUserErrorFull on NameTakenUserError {\n  ...UserErrorFull\n  name\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {\n  ...UserErrorFull\n  permissionReason: reason\n  __typename\n}\n\nmutation CreateFilterPreset($input: CreateFilterPresetInput!) {\n  createFilterPreset(input: $input) {\n    error {\n      __typename\n      ... on NameTakenUserError {\n        ...NameTakenUserErrorFull\n      }\n      ... on AliasTakenUserError {\n        ...AliasTakenUserErrorFull\n      }\n      ... on PermissionDeniedUserError {\n        ...PermissionDeniedUserErrorFull\n      }\n      ... on CloudUserError {\n        ...CloudUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    filter {\n      ...FilterPresetFull\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class UpdateFilterPresetUpdatefilterpresetNameTakenUserErrorInlineFragment(BaseModel):
-    typename: Literal['NameTakenUserError'] = Field(alias='__typename', default='NameTakenUserError')
+    typename: Literal["NameTakenUserError"] = Field(
+        alias="__typename", default="NameTakenUserError"
+    )
+
 
 class UpdateFilterPresetUpdatefilterpresetAliasTakenUserErrorInlineFragment(BaseModel):
-    typename: Literal['AliasTakenUserError'] = Field(alias='__typename', default='AliasTakenUserError')
+    typename: Literal["AliasTakenUserError"] = Field(
+        alias="__typename", default="AliasTakenUserError"
+    )
+
 
 class UpdateFilterPresetUpdatefilterpresetOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class UpdateFilterPresetUpdatefilterpreset(BaseModel):
     """No documentation"""
-    typename: Literal['UpdateFilterPresetPayload'] = Field(alias='__typename', default='UpdateFilterPresetPayload')
-    error: Optional[Union[UpdateFilterPresetUpdatefilterpresetNameTakenUserErrorInlineFragment, UpdateFilterPresetUpdatefilterpresetAliasTakenUserErrorInlineFragment, UpdateFilterPresetUpdatefilterpresetOtherUserErrorInlineFragment]] = Field(default=None)
+
+    typename: Literal["UpdateFilterPresetPayload"] = Field(
+        alias="__typename", default="UpdateFilterPresetPayload"
+    )
+    error: Optional[
+        Union[
+            UpdateFilterPresetUpdatefilterpresetNameTakenUserErrorInlineFragment,
+            UpdateFilterPresetUpdatefilterpresetAliasTakenUserErrorInlineFragment,
+            UpdateFilterPresetUpdatefilterpresetOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
     filter: Optional[FilterPresetFull] = Field(default=None)
+
 
 class UpdateFilterPreset(BaseModel):
     """No documentation found for this operation."""
+
     updateFilterPreset: UpdateFilterPresetUpdatefilterpreset
 
     class Arguments(BaseModel):
-        """Arguments for UpdateFilterPreset """
+        """Arguments for UpdateFilterPreset"""
+
         id: str
         input: UpdateFilterPresetInput
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for UpdateFilterPreset """
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment AliasTakenUserErrorFull on AliasTakenUserError {\n  ...UserErrorFull\n  alias\n  __typename\n}\n\nfragment FilterPresetFull on FilterPreset {\n  id\n  name\n  alias\n  clause\n  __typename\n}\n\nfragment NameTakenUserErrorFull on NameTakenUserError {\n  ...UserErrorFull\n  name\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nmutation UpdateFilterPreset($id: ID!, $input: UpdateFilterPresetInput!) {\n  updateFilterPreset(id: $id, input: $input) {\n    error {\n      __typename\n      ... on NameTakenUserError {\n        ...NameTakenUserErrorFull\n      }\n      ... on AliasTakenUserError {\n        ...AliasTakenUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    filter {\n      ...FilterPresetFull\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for UpdateFilterPreset"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment AliasTakenUserErrorFull on AliasTakenUserError {\n  ...UserErrorFull\n  alias\n  __typename\n}\n\nfragment FilterPresetFull on FilterPreset {\n  id\n  name\n  alias\n  clause\n  __typename\n}\n\nfragment NameTakenUserErrorFull on NameTakenUserError {\n  ...UserErrorFull\n  name\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nmutation UpdateFilterPreset($id: ID!, $input: UpdateFilterPresetInput!) {\n  updateFilterPreset(id: $id, input: $input) {\n    error {\n      __typename\n      ... on NameTakenUserError {\n        ...NameTakenUserErrorFull\n      }\n      ... on AliasTakenUserError {\n        ...AliasTakenUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    filter {\n      ...FilterPresetFull\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class DeleteFilterPresetDeletefilterpreset(BaseModel):
     """No documentation"""
-    typename: Literal['DeleteFilterPresetPayload'] = Field(alias='__typename', default='DeleteFilterPresetPayload')
+
+    typename: Literal["DeleteFilterPresetPayload"] = Field(
+        alias="__typename", default="DeleteFilterPresetPayload"
+    )
     deletedId: Optional[str] = Field(default=None)
+
 
 class DeleteFilterPreset(BaseModel):
     """No documentation found for this operation."""
+
     deleteFilterPreset: DeleteFilterPresetDeletefilterpreset
 
     class Arguments(BaseModel):
-        """Arguments for DeleteFilterPreset """
+        """Arguments for DeleteFilterPreset"""
+
         id: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for DeleteFilterPreset """
-        document = 'mutation DeleteFilterPreset($id: ID!) {\n  deleteFilterPreset(id: $id) {\n    deletedId\n    __typename\n  }\n}'
+        """Meta class for DeleteFilterPreset"""
+
+        document = "mutation DeleteFilterPreset($id: ID!) {\n  deleteFilterPreset(id: $id) {\n    deletedId\n    __typename\n  }\n}"
+
 
 class Finding(BaseModel):
     """No documentation found for this operation."""
+
     finding: Optional[FindingFull] = Field(default=None)
 
     class Arguments(BaseModel):
-        """Arguments for Finding """
+        """Arguments for Finding"""
+
         id: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for Finding """
-        document = 'fragment FindingFull on Finding {\n  id\n  request {\n    id\n    __typename\n  }\n  title\n  reporter\n  description\n  dedupeKey\n  host\n  path\n  hidden\n  createdAt\n  __typename\n}\n\nquery Finding($id: ID!) {\n  finding(id: $id) {\n    ...FindingFull\n    __typename\n  }\n}'
+        """Meta class for Finding"""
+
+        document = "fragment FindingFull on Finding {\n  id\n  request {\n    id\n    __typename\n  }\n  title\n  reporter\n  description\n  dedupeKey\n  host\n  path\n  hidden\n  createdAt\n  __typename\n}\n\nquery Finding($id: ID!) {\n  finding(id: $id) {\n    ...FindingFull\n    __typename\n  }\n}"
+
 
 class FindingsFindingsEdges(BaseModel):
     """An edge in a connection."""
-    typename: Literal['FindingEdge'] = Field(alias='__typename', default='FindingEdge')
+
+    typename: Literal["FindingEdge"] = Field(alias="__typename", default="FindingEdge")
     cursor: str
-    'A cursor for use in pagination'
+    "A cursor for use in pagination"
     node: FindingFull
-    'The item at the end of the edge'
+    "The item at the end of the edge"
+
 
 class FindingsFindingsPageinfo(BaseModel):
     """Information about pagination in a connection"""
-    typename: Literal['PageInfo'] = Field(alias='__typename', default='PageInfo')
+
+    typename: Literal["PageInfo"] = Field(alias="__typename", default="PageInfo")
     hasNextPage: bool
-    'When paginating forwards, are there more items?'
+    "When paginating forwards, are there more items?"
     hasPreviousPage: bool
-    'When paginating backwards, are there more items?'
+    "When paginating backwards, are there more items?"
     startCursor: Optional[str] = Field(default=None)
-    'When paginating backwards, the cursor to continue.'
+    "When paginating backwards, the cursor to continue."
     endCursor: Optional[str] = Field(default=None)
-    'When paginating forwards, the cursor to continue.'
+    "When paginating forwards, the cursor to continue."
+
 
 class FindingsFindings(BaseModel):
     """No documentation"""
-    typename: Literal['FindingConnection'] = Field(alias='__typename', default='FindingConnection')
+
+    typename: Literal["FindingConnection"] = Field(
+        alias="__typename", default="FindingConnection"
+    )
     edges: List[FindingsFindingsEdges]
-    'A list of edges.'
+    "A list of edges."
     pageInfo: FindingsFindingsPageinfo
-    'Information to aid in pagination.'
+    "Information to aid in pagination."
+
 
 class Findings(BaseModel):
     """No documentation found for this operation."""
+
     findings: FindingsFindings
 
     class Arguments(BaseModel):
-        """Arguments for Findings """
+        """Arguments for Findings"""
+
         first: Optional[int] = Field(default=None)
         after: Optional[str] = Field(default=None)
         last: Optional[int] = Field(default=None)
@@ -1429,363 +2149,590 @@ class Findings(BaseModel):
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for Findings """
-        document = 'fragment FindingFull on Finding {\n  id\n  request {\n    id\n    __typename\n  }\n  title\n  reporter\n  description\n  dedupeKey\n  host\n  path\n  hidden\n  createdAt\n  __typename\n}\n\nquery Findings($first: Int, $after: String, $last: Int, $before: String, $filter: FilterClauseFindingInput, $order: FindingOrderInput) {\n  findings(\n    first: $first\n    after: $after\n    last: $last\n    before: $before\n    filter: $filter\n    order: $order\n  ) {\n    edges {\n      cursor\n      node {\n        ...FindingFull\n        __typename\n      }\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for Findings"""
+
+        document = "fragment FindingFull on Finding {\n  id\n  request {\n    id\n    __typename\n  }\n  title\n  reporter\n  description\n  dedupeKey\n  host\n  path\n  hidden\n  createdAt\n  __typename\n}\n\nquery Findings($first: Int, $after: String, $last: Int, $before: String, $filter: FilterClauseFindingInput, $order: FindingOrderInput) {\n  findings(\n    first: $first\n    after: $after\n    last: $last\n    before: $before\n    filter: $filter\n    order: $order\n  ) {\n    edges {\n      cursor\n      node {\n        ...FindingFull\n        __typename\n      }\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class CreateFindingCreatefindingOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class CreateFindingCreatefindingUnknownIdUserErrorInlineFragment(BaseModel):
-    typename: Literal['UnknownIdUserError'] = Field(alias='__typename', default='UnknownIdUserError')
+    typename: Literal["UnknownIdUserError"] = Field(
+        alias="__typename", default="UnknownIdUserError"
+    )
+
 
 class CreateFindingCreatefinding(BaseModel):
     """No documentation"""
-    typename: Literal['CreateFindingPayload'] = Field(alias='__typename', default='CreateFindingPayload')
-    error: Optional[Union[CreateFindingCreatefindingOtherUserErrorInlineFragment, CreateFindingCreatefindingUnknownIdUserErrorInlineFragment]] = Field(default=None)
+
+    typename: Literal["CreateFindingPayload"] = Field(
+        alias="__typename", default="CreateFindingPayload"
+    )
+    error: Optional[
+        Union[
+            CreateFindingCreatefindingOtherUserErrorInlineFragment,
+            CreateFindingCreatefindingUnknownIdUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
     finding: Optional[FindingFull] = Field(default=None)
+
 
 class CreateFinding(BaseModel):
     """No documentation found for this operation."""
+
     createFinding: CreateFindingCreatefinding
 
     class Arguments(BaseModel):
-        """Arguments for CreateFinding """
+        """Arguments for CreateFinding"""
+
         requestId: str
         input: CreateFindingInput
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for CreateFinding """
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment FindingFull on Finding {\n  id\n  request {\n    id\n    __typename\n  }\n  title\n  reporter\n  description\n  dedupeKey\n  host\n  path\n  hidden\n  createdAt\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nmutation CreateFinding($requestId: ID!, $input: CreateFindingInput!) {\n  createFinding(requestId: $requestId, input: $input) {\n    error {\n      __typename\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n    }\n    finding {\n      ...FindingFull\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for CreateFinding"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment FindingFull on Finding {\n  id\n  request {\n    id\n    __typename\n  }\n  title\n  reporter\n  description\n  dedupeKey\n  host\n  path\n  hidden\n  createdAt\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nmutation CreateFinding($requestId: ID!, $input: CreateFindingInput!) {\n  createFinding(requestId: $requestId, input: $input) {\n    error {\n      __typename\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n    }\n    finding {\n      ...FindingFull\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class UpdateFindingUpdatefindingUnknownIdUserErrorInlineFragment(BaseModel):
-    typename: Literal['UnknownIdUserError'] = Field(alias='__typename', default='UnknownIdUserError')
+    typename: Literal["UnknownIdUserError"] = Field(
+        alias="__typename", default="UnknownIdUserError"
+    )
+
 
 class UpdateFindingUpdatefindingOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class UpdateFindingUpdatefinding(BaseModel):
     """No documentation"""
-    typename: Literal['UpdateFindingPayload'] = Field(alias='__typename', default='UpdateFindingPayload')
-    error: Optional[Union[UpdateFindingUpdatefindingUnknownIdUserErrorInlineFragment, UpdateFindingUpdatefindingOtherUserErrorInlineFragment]] = Field(default=None)
+
+    typename: Literal["UpdateFindingPayload"] = Field(
+        alias="__typename", default="UpdateFindingPayload"
+    )
+    error: Optional[
+        Union[
+            UpdateFindingUpdatefindingUnknownIdUserErrorInlineFragment,
+            UpdateFindingUpdatefindingOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
     finding: Optional[FindingFull] = Field(default=None)
+
 
 class UpdateFinding(BaseModel):
     """No documentation found for this operation."""
+
     updateFinding: UpdateFindingUpdatefinding
 
     class Arguments(BaseModel):
-        """Arguments for UpdateFinding """
+        """Arguments for UpdateFinding"""
+
         id: str
         input: UpdateFindingInput
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for UpdateFinding """
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment FindingFull on Finding {\n  id\n  request {\n    id\n    __typename\n  }\n  title\n  reporter\n  description\n  dedupeKey\n  host\n  path\n  hidden\n  createdAt\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nmutation UpdateFinding($id: ID!, $input: UpdateFindingInput!) {\n  updateFinding(id: $id, input: $input) {\n    error {\n      __typename\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    finding {\n      ...FindingFull\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for UpdateFinding"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment FindingFull on Finding {\n  id\n  request {\n    id\n    __typename\n  }\n  title\n  reporter\n  description\n  dedupeKey\n  host\n  path\n  hidden\n  createdAt\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nmutation UpdateFinding($id: ID!, $input: UpdateFindingInput!) {\n  updateFinding(id: $id, input: $input) {\n    error {\n      __typename\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    finding {\n      ...FindingFull\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class DeleteFindingsDeletefindings(BaseModel):
     """No documentation"""
-    typename: Literal['DeleteFindingsPayload'] = Field(alias='__typename', default='DeleteFindingsPayload')
+
+    typename: Literal["DeleteFindingsPayload"] = Field(
+        alias="__typename", default="DeleteFindingsPayload"
+    )
     deletedIds: Optional[List[str]] = Field(default=None)
+
 
 class DeleteFindings(BaseModel):
     """No documentation found for this operation."""
+
     deleteFindings: DeleteFindingsDeletefindings
 
     class Arguments(BaseModel):
-        """Arguments for DeleteFindings """
+        """Arguments for DeleteFindings"""
+
         input: Optional[DeleteFindingsInput] = Field(default=None)
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for DeleteFindings """
-        document = 'mutation DeleteFindings($input: DeleteFindingsInput) {\n  deleteFindings(input: $input) {\n    deletedIds\n    __typename\n  }\n}'
+        """Meta class for DeleteFindings"""
+
+        document = "mutation DeleteFindings($input: DeleteFindingsInput) {\n  deleteFindings(input: $input) {\n    deletedIds\n    __typename\n  }\n}"
+
 
 class HostedFiles(BaseModel):
     """No documentation found for this operation."""
+
     hostedFiles: List[HostedFileFull]
 
     class Arguments(BaseModel):
-        """Arguments for HostedFiles """
+        """Arguments for HostedFiles"""
+
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for HostedFiles """
-        document = 'fragment HostedFileFull on HostedFile {\n  id\n  name\n  path\n  size\n  status\n  createdAt\n  updatedAt\n  __typename\n}\n\nquery HostedFiles {\n  hostedFiles {\n    ...HostedFileFull\n    __typename\n  }\n}'
+        """Meta class for HostedFiles"""
+
+        document = "fragment HostedFileFull on HostedFile {\n  id\n  name\n  path\n  size\n  status\n  createdAt\n  updatedAt\n  __typename\n}\n\nquery HostedFiles {\n  hostedFiles {\n    ...HostedFileFull\n    __typename\n  }\n}"
+
 
 class UploadHostedFileUploadhostedfile(BaseModel):
     """No documentation"""
-    typename: Literal['UploadHostedFilePayload'] = Field(alias='__typename', default='UploadHostedFilePayload')
+
+    typename: Literal["UploadHostedFilePayload"] = Field(
+        alias="__typename", default="UploadHostedFilePayload"
+    )
     hostedFile: Optional[HostedFileFull] = Field(default=None)
+
 
 class UploadHostedFile(BaseModel):
     """No documentation found for this operation."""
+
     uploadHostedFile: UploadHostedFileUploadhostedfile
 
     class Arguments(BaseModel):
-        """Arguments for UploadHostedFile """
+        """Arguments for UploadHostedFile"""
+
         input: UploadHostedFileInput
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for UploadHostedFile """
-        document = 'fragment HostedFileFull on HostedFile {\n  id\n  name\n  path\n  size\n  status\n  createdAt\n  updatedAt\n  __typename\n}\n\nmutation UploadHostedFile($input: UploadHostedFileInput!) {\n  uploadHostedFile(input: $input) {\n    hostedFile {\n      ...HostedFileFull\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for UploadHostedFile"""
+
+        document = "fragment HostedFileFull on HostedFile {\n  id\n  name\n  path\n  size\n  status\n  createdAt\n  updatedAt\n  __typename\n}\n\nmutation UploadHostedFile($input: UploadHostedFileInput!) {\n  uploadHostedFile(input: $input) {\n    hostedFile {\n      ...HostedFileFull\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class RenameHostedFileRenamehostedfile(BaseModel):
     """No documentation"""
-    typename: Literal['RenameHostedFilePayload'] = Field(alias='__typename', default='RenameHostedFilePayload')
+
+    typename: Literal["RenameHostedFilePayload"] = Field(
+        alias="__typename", default="RenameHostedFilePayload"
+    )
     hostedFile: Optional[HostedFileFull] = Field(default=None)
+
 
 class RenameHostedFile(BaseModel):
     """No documentation found for this operation."""
+
     renameHostedFile: RenameHostedFileRenamehostedfile
 
     class Arguments(BaseModel):
-        """Arguments for RenameHostedFile """
+        """Arguments for RenameHostedFile"""
+
         id: str
         name: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for RenameHostedFile """
-        document = 'fragment HostedFileFull on HostedFile {\n  id\n  name\n  path\n  size\n  status\n  createdAt\n  updatedAt\n  __typename\n}\n\nmutation RenameHostedFile($id: ID!, $name: String!) {\n  renameHostedFile(id: $id, name: $name) {\n    hostedFile {\n      ...HostedFileFull\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for RenameHostedFile"""
+
+        document = "fragment HostedFileFull on HostedFile {\n  id\n  name\n  path\n  size\n  status\n  createdAt\n  updatedAt\n  __typename\n}\n\nmutation RenameHostedFile($id: ID!, $name: String!) {\n  renameHostedFile(id: $id, name: $name) {\n    hostedFile {\n      ...HostedFileFull\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class DeleteHostedFileDeletehostedfile(BaseModel):
     """No documentation"""
-    typename: Literal['DeleteHostedFilePayload'] = Field(alias='__typename', default='DeleteHostedFilePayload')
+
+    typename: Literal["DeleteHostedFilePayload"] = Field(
+        alias="__typename", default="DeleteHostedFilePayload"
+    )
     deletedId: Optional[str] = Field(default=None)
+
 
 class DeleteHostedFile(BaseModel):
     """No documentation found for this operation."""
+
     deleteHostedFile: DeleteHostedFileDeletehostedfile
 
     class Arguments(BaseModel):
-        """Arguments for DeleteHostedFile """
+        """Arguments for DeleteHostedFile"""
+
         id: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for DeleteHostedFile """
-        document = 'mutation DeleteHostedFile($id: ID!) {\n  deleteHostedFile(id: $id) {\n    deletedId\n    __typename\n  }\n}'
+        """Meta class for DeleteHostedFile"""
+
+        document = "mutation DeleteHostedFile($id: ID!) {\n  deleteHostedFile(id: $id) {\n    deletedId\n    __typename\n  }\n}"
+
 
 class InstanceSettings(BaseModel):
     """No documentation found for this operation."""
+
     instanceSettings: InstanceSettingsFull
 
     class Arguments(BaseModel):
-        """Arguments for InstanceSettings """
+        """Arguments for InstanceSettings"""
+
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for InstanceSettings """
-        document = 'fragment InstanceAIProviderAnthropicFull on AIProviderAnthropic {\n  apiKey\n  __typename\n}\n\nfragment InstanceAIProviderGoogleFull on AIProviderGoogle {\n  apiKey\n  __typename\n}\n\nfragment InstanceAIProviderOpenAIFull on AIProviderOpenAI {\n  apiKey\n  url\n  __typename\n}\n\nfragment InstanceAIProviderOpenRouterFull on AIProviderOpenRouter {\n  apiKey\n  __typename\n}\n\nfragment InstanceSettingsFull on InstanceSettings {\n  aiProviders {\n    anthropic {\n      ...InstanceAIProviderAnthropicFull\n      __typename\n    }\n    google {\n      ...InstanceAIProviderGoogleFull\n      __typename\n    }\n    openai {\n      ...InstanceAIProviderOpenAIFull\n      __typename\n    }\n    openrouter {\n      ...InstanceAIProviderOpenRouterFull\n      __typename\n    }\n    __typename\n  }\n  analytic {\n    enabled\n    cloud\n    local\n    __typename\n  }\n  onboarding {\n    analytic\n    __typename\n  }\n  __typename\n}\n\nquery InstanceSettings {\n  instanceSettings {\n    ...InstanceSettingsFull\n    __typename\n  }\n}'
+        """Meta class for InstanceSettings"""
+
+        document = "fragment InstanceAIProviderAnthropicFull on AIProviderAnthropic {\n  apiKey\n  __typename\n}\n\nfragment InstanceAIProviderGoogleFull on AIProviderGoogle {\n  apiKey\n  __typename\n}\n\nfragment InstanceAIProviderOpenAIFull on AIProviderOpenAI {\n  apiKey\n  url\n  __typename\n}\n\nfragment InstanceAIProviderOpenRouterFull on AIProviderOpenRouter {\n  apiKey\n  __typename\n}\n\nfragment InstanceSettingsFull on InstanceSettings {\n  aiProviders {\n    anthropic {\n      ...InstanceAIProviderAnthropicFull\n      __typename\n    }\n    google {\n      ...InstanceAIProviderGoogleFull\n      __typename\n    }\n    openai {\n      ...InstanceAIProviderOpenAIFull\n      __typename\n    }\n    openrouter {\n      ...InstanceAIProviderOpenRouterFull\n      __typename\n    }\n    __typename\n  }\n  analytic {\n    enabled\n    cloud\n    local\n    __typename\n  }\n  onboarding {\n    analytic\n    __typename\n  }\n  __typename\n}\n\nquery InstanceSettings {\n  instanceSettings {\n    ...InstanceSettingsFull\n    __typename\n  }\n}"
+
 
 class SetInstanceSettingsSetinstancesettings(BaseModel):
     """No documentation"""
-    typename: Literal['SetInstanceSettingsPayload'] = Field(alias='__typename', default='SetInstanceSettingsPayload')
+
+    typename: Literal["SetInstanceSettingsPayload"] = Field(
+        alias="__typename", default="SetInstanceSettingsPayload"
+    )
     settings: InstanceSettingsFull
+
 
 class SetInstanceSettings(BaseModel):
     """No documentation found for this operation."""
+
     setInstanceSettings: SetInstanceSettingsSetinstancesettings
 
     class Arguments(BaseModel):
-        """Arguments for SetInstanceSettings """
+        """Arguments for SetInstanceSettings"""
+
         input: SetInstanceSettingsInput
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for SetInstanceSettings """
-        document = 'fragment InstanceAIProviderAnthropicFull on AIProviderAnthropic {\n  apiKey\n  __typename\n}\n\nfragment InstanceAIProviderGoogleFull on AIProviderGoogle {\n  apiKey\n  __typename\n}\n\nfragment InstanceAIProviderOpenAIFull on AIProviderOpenAI {\n  apiKey\n  url\n  __typename\n}\n\nfragment InstanceAIProviderOpenRouterFull on AIProviderOpenRouter {\n  apiKey\n  __typename\n}\n\nfragment InstanceSettingsFull on InstanceSettings {\n  aiProviders {\n    anthropic {\n      ...InstanceAIProviderAnthropicFull\n      __typename\n    }\n    google {\n      ...InstanceAIProviderGoogleFull\n      __typename\n    }\n    openai {\n      ...InstanceAIProviderOpenAIFull\n      __typename\n    }\n    openrouter {\n      ...InstanceAIProviderOpenRouterFull\n      __typename\n    }\n    __typename\n  }\n  analytic {\n    enabled\n    cloud\n    local\n    __typename\n  }\n  onboarding {\n    analytic\n    __typename\n  }\n  __typename\n}\n\nmutation SetInstanceSettings($input: SetInstanceSettingsInput!) {\n  setInstanceSettings(input: $input) {\n    settings {\n      ...InstanceSettingsFull\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for SetInstanceSettings"""
+
+        document = "fragment InstanceAIProviderAnthropicFull on AIProviderAnthropic {\n  apiKey\n  __typename\n}\n\nfragment InstanceAIProviderGoogleFull on AIProviderGoogle {\n  apiKey\n  __typename\n}\n\nfragment InstanceAIProviderOpenAIFull on AIProviderOpenAI {\n  apiKey\n  url\n  __typename\n}\n\nfragment InstanceAIProviderOpenRouterFull on AIProviderOpenRouter {\n  apiKey\n  __typename\n}\n\nfragment InstanceSettingsFull on InstanceSettings {\n  aiProviders {\n    anthropic {\n      ...InstanceAIProviderAnthropicFull\n      __typename\n    }\n    google {\n      ...InstanceAIProviderGoogleFull\n      __typename\n    }\n    openai {\n      ...InstanceAIProviderOpenAIFull\n      __typename\n    }\n    openrouter {\n      ...InstanceAIProviderOpenRouterFull\n      __typename\n    }\n    __typename\n  }\n  analytic {\n    enabled\n    cloud\n    local\n    __typename\n  }\n  onboarding {\n    analytic\n    __typename\n  }\n  __typename\n}\n\nmutation SetInstanceSettings($input: SetInstanceSettingsInput!) {\n  setInstanceSettings(input: $input) {\n    settings {\n      ...InstanceSettingsFull\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class PluginPackages(BaseModel):
     """No documentation found for this operation."""
+
     pluginPackages: List[PluginPackageMeta]
 
     class Arguments(BaseModel):
-        """Arguments for PluginPackages """
+        """Arguments for PluginPackages"""
+
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for PluginPackages """
-        document = 'fragment PluginPackageMeta on PluginPackage {\n  id\n  manifestId\n  plugins {\n    __typename\n    id\n    manifestId\n    enabled\n  }\n  __typename\n}\n\nquery PluginPackages {\n  pluginPackages {\n    ...PluginPackageMeta\n    __typename\n  }\n}'
+        """Meta class for PluginPackages"""
+
+        document = "fragment PluginPackageMeta on PluginPackage {\n  id\n  manifestId\n  plugins {\n    __typename\n    id\n    manifestId\n    enabled\n  }\n  __typename\n}\n\nquery PluginPackages {\n  pluginPackages {\n    ...PluginPackageMeta\n    __typename\n  }\n}"
+
 
 class InstallPluginPackageInstallpluginpackagePluginUserErrorInlineFragment(BaseModel):
-    typename: Literal['PluginUserError'] = Field(alias='__typename', default='PluginUserError')
+    typename: Literal["PluginUserError"] = Field(
+        alias="__typename", default="PluginUserError"
+    )
+
 
 class InstallPluginPackageInstallpluginpackageStoreUserErrorInlineFragment(BaseModel):
-    typename: Literal['StoreUserError'] = Field(alias='__typename', default='StoreUserError')
+    typename: Literal["StoreUserError"] = Field(
+        alias="__typename", default="StoreUserError"
+    )
+
 
 class InstallPluginPackageInstallpluginpackageCloudUserErrorInlineFragment(BaseModel):
-    typename: Literal['CloudUserError'] = Field(alias='__typename', default='CloudUserError')
+    typename: Literal["CloudUserError"] = Field(
+        alias="__typename", default="CloudUserError"
+    )
+
 
 class InstallPluginPackageInstallpluginpackageOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class InstallPluginPackageInstallpluginpackage(BaseModel):
     """No documentation"""
-    typename: Literal['InstallPluginPackagePayload'] = Field(alias='__typename', default='InstallPluginPackagePayload')
+
+    typename: Literal["InstallPluginPackagePayload"] = Field(
+        alias="__typename", default="InstallPluginPackagePayload"
+    )
     package: Optional[PluginPackageMeta] = Field(default=None)
-    error: Optional[Union[InstallPluginPackageInstallpluginpackagePluginUserErrorInlineFragment, InstallPluginPackageInstallpluginpackageStoreUserErrorInlineFragment, InstallPluginPackageInstallpluginpackageCloudUserErrorInlineFragment, InstallPluginPackageInstallpluginpackageOtherUserErrorInlineFragment]] = Field(default=None)
+    error: Optional[
+        Union[
+            InstallPluginPackageInstallpluginpackagePluginUserErrorInlineFragment,
+            InstallPluginPackageInstallpluginpackageStoreUserErrorInlineFragment,
+            InstallPluginPackageInstallpluginpackageCloudUserErrorInlineFragment,
+            InstallPluginPackageInstallpluginpackageOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
+
 
 class InstallPluginPackage(BaseModel):
     """No documentation found for this operation."""
+
     installPluginPackage: InstallPluginPackageInstallpluginpackage
 
     class Arguments(BaseModel):
-        """Arguments for InstallPluginPackage """
+        """Arguments for InstallPluginPackage"""
+
         input: InstallPluginPackageInput
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for InstallPluginPackage """
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment CloudUserErrorFull on CloudUserError {\n  ...UserErrorFull\n  cloudReason: reason\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment PluginPackageMeta on PluginPackage {\n  id\n  manifestId\n  plugins {\n    __typename\n    id\n    manifestId\n    enabled\n  }\n  __typename\n}\n\nfragment PluginUserErrorFull on PluginUserError {\n  ...UserErrorFull\n  reason\n  __typename\n}\n\nfragment StoreUserErrorFull on StoreUserError {\n  ...UserErrorFull\n  storeReason: reason\n  __typename\n}\n\nmutation InstallPluginPackage($input: InstallPluginPackageInput!) {\n  installPluginPackage(input: $input) {\n    package {\n      ...PluginPackageMeta\n      __typename\n    }\n    error {\n      __typename\n      ... on PluginUserError {\n        ...PluginUserErrorFull\n      }\n      ... on StoreUserError {\n        ...StoreUserErrorFull\n      }\n      ... on CloudUserError {\n        ...CloudUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    __typename\n  }\n}'
+        """Meta class for InstallPluginPackage"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment CloudUserErrorFull on CloudUserError {\n  ...UserErrorFull\n  cloudReason: reason\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment PluginPackageMeta on PluginPackage {\n  id\n  manifestId\n  plugins {\n    __typename\n    id\n    manifestId\n    enabled\n  }\n  __typename\n}\n\nfragment PluginUserErrorFull on PluginUserError {\n  ...UserErrorFull\n  reason\n  __typename\n}\n\nfragment StoreUserErrorFull on StoreUserError {\n  ...UserErrorFull\n  storeReason: reason\n  __typename\n}\n\nmutation InstallPluginPackage($input: InstallPluginPackageInput!) {\n  installPluginPackage(input: $input) {\n    package {\n      ...PluginPackageMeta\n      __typename\n    }\n    error {\n      __typename\n      ... on PluginUserError {\n        ...PluginUserErrorFull\n      }\n      ... on StoreUserError {\n        ...StoreUserErrorFull\n      }\n      ... on CloudUserError {\n        ...CloudUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    __typename\n  }\n}"
+
 
 class Projects(BaseModel):
     """No documentation found for this operation."""
+
     projects: List[ProjectFull]
 
     class Arguments(BaseModel):
-        """Arguments for Projects """
+        """Arguments for Projects"""
+
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for Projects """
-        document = 'fragment ProjectFull on Project {\n  id\n  name\n  path\n  status\n  temporary\n  createdAt\n  updatedAt\n  version\n  size\n  readOnly\n  __typename\n}\n\nquery Projects {\n  projects {\n    ...ProjectFull\n    __typename\n  }\n}'
+        """Meta class for Projects"""
+
+        document = "fragment ProjectFull on Project {\n  id\n  name\n  path\n  status\n  temporary\n  createdAt\n  updatedAt\n  version\n  size\n  readOnly\n  __typename\n}\n\nquery Projects {\n  projects {\n    ...ProjectFull\n    __typename\n  }\n}"
+
 
 class CreateProjectCreateprojectNameTakenUserErrorInlineFragment(BaseModel):
-    typename: Literal['NameTakenUserError'] = Field(alias='__typename', default='NameTakenUserError')
+    typename: Literal["NameTakenUserError"] = Field(
+        alias="__typename", default="NameTakenUserError"
+    )
+
 
 class CreateProjectCreateprojectPermissionDeniedUserErrorInlineFragment(BaseModel):
-    typename: Literal['PermissionDeniedUserError'] = Field(alias='__typename', default='PermissionDeniedUserError')
+    typename: Literal["PermissionDeniedUserError"] = Field(
+        alias="__typename", default="PermissionDeniedUserError"
+    )
+
 
 class CreateProjectCreateprojectCloudUserErrorInlineFragment(BaseModel):
-    typename: Literal['CloudUserError'] = Field(alias='__typename', default='CloudUserError')
+    typename: Literal["CloudUserError"] = Field(
+        alias="__typename", default="CloudUserError"
+    )
+
 
 class CreateProjectCreateprojectOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class CreateProjectCreateproject(BaseModel):
     """No documentation"""
-    typename: Literal['CreateProjectPayload'] = Field(alias='__typename', default='CreateProjectPayload')
-    error: Optional[Union[CreateProjectCreateprojectNameTakenUserErrorInlineFragment, CreateProjectCreateprojectPermissionDeniedUserErrorInlineFragment, CreateProjectCreateprojectCloudUserErrorInlineFragment, CreateProjectCreateprojectOtherUserErrorInlineFragment]] = Field(default=None)
+
+    typename: Literal["CreateProjectPayload"] = Field(
+        alias="__typename", default="CreateProjectPayload"
+    )
+    error: Optional[
+        Union[
+            CreateProjectCreateprojectNameTakenUserErrorInlineFragment,
+            CreateProjectCreateprojectPermissionDeniedUserErrorInlineFragment,
+            CreateProjectCreateprojectCloudUserErrorInlineFragment,
+            CreateProjectCreateprojectOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
     project: Optional[ProjectFull] = Field(default=None)
+
 
 class CreateProject(BaseModel):
     """No documentation found for this operation."""
+
     createProject: CreateProjectCreateproject
 
     class Arguments(BaseModel):
-        """Arguments for CreateProject """
+        """Arguments for CreateProject"""
+
         input: CreateProjectInput
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for CreateProject """
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment CloudUserErrorFull on CloudUserError {\n  ...UserErrorFull\n  cloudReason: reason\n  __typename\n}\n\nfragment NameTakenUserErrorFull on NameTakenUserError {\n  ...UserErrorFull\n  name\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {\n  ...UserErrorFull\n  permissionReason: reason\n  __typename\n}\n\nfragment ProjectFull on Project {\n  id\n  name\n  path\n  status\n  temporary\n  createdAt\n  updatedAt\n  version\n  size\n  readOnly\n  __typename\n}\n\nmutation CreateProject($input: CreateProjectInput!) {\n  createProject(input: $input) {\n    error {\n      __typename\n      ... on NameTakenUserError {\n        ...NameTakenUserErrorFull\n      }\n      ... on PermissionDeniedUserError {\n        ...PermissionDeniedUserErrorFull\n      }\n      ... on CloudUserError {\n        ...CloudUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    project {\n      ...ProjectFull\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for CreateProject"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment CloudUserErrorFull on CloudUserError {\n  ...UserErrorFull\n  cloudReason: reason\n  __typename\n}\n\nfragment NameTakenUserErrorFull on NameTakenUserError {\n  ...UserErrorFull\n  name\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {\n  ...UserErrorFull\n  permissionReason: reason\n  __typename\n}\n\nfragment ProjectFull on Project {\n  id\n  name\n  path\n  status\n  temporary\n  createdAt\n  updatedAt\n  version\n  size\n  readOnly\n  __typename\n}\n\nmutation CreateProject($input: CreateProjectInput!) {\n  createProject(input: $input) {\n    error {\n      __typename\n      ... on NameTakenUserError {\n        ...NameTakenUserErrorFull\n      }\n      ... on PermissionDeniedUserError {\n        ...PermissionDeniedUserErrorFull\n      }\n      ... on CloudUserError {\n        ...CloudUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    project {\n      ...ProjectFull\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class DeleteProjectDeleteprojectProjectUserErrorInlineFragment(BaseModel):
-    typename: Literal['ProjectUserError'] = Field(alias='__typename', default='ProjectUserError')
+    typename: Literal["ProjectUserError"] = Field(
+        alias="__typename", default="ProjectUserError"
+    )
+
 
 class DeleteProjectDeleteprojectUnknownIdUserErrorInlineFragment(BaseModel):
-    typename: Literal['UnknownIdUserError'] = Field(alias='__typename', default='UnknownIdUserError')
+    typename: Literal["UnknownIdUserError"] = Field(
+        alias="__typename", default="UnknownIdUserError"
+    )
+
 
 class DeleteProjectDeleteprojectOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class DeleteProjectDeleteproject(BaseModel):
     """No documentation"""
-    typename: Literal['DeleteProjectPayload'] = Field(alias='__typename', default='DeleteProjectPayload')
+
+    typename: Literal["DeleteProjectPayload"] = Field(
+        alias="__typename", default="DeleteProjectPayload"
+    )
     deletedId: Optional[str] = Field(default=None)
-    error: Optional[Union[DeleteProjectDeleteprojectProjectUserErrorInlineFragment, DeleteProjectDeleteprojectUnknownIdUserErrorInlineFragment, DeleteProjectDeleteprojectOtherUserErrorInlineFragment]] = Field(default=None)
+    error: Optional[
+        Union[
+            DeleteProjectDeleteprojectProjectUserErrorInlineFragment,
+            DeleteProjectDeleteprojectUnknownIdUserErrorInlineFragment,
+            DeleteProjectDeleteprojectOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
+
 
 class DeleteProject(BaseModel):
     """No documentation found for this operation."""
+
     deleteProject: DeleteProjectDeleteproject
 
     class Arguments(BaseModel):
-        """Arguments for DeleteProject """
+        """Arguments for DeleteProject"""
+
         id: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for DeleteProject """
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment ProjectUserErrorFull on ProjectUserError {\n  ...UserErrorFull\n  projectReason: reason\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nmutation DeleteProject($id: ID!) {\n  deleteProject(id: $id) {\n    deletedId\n    error {\n      __typename\n      ... on ProjectUserError {\n        ...ProjectUserErrorFull\n      }\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    __typename\n  }\n}'
+        """Meta class for DeleteProject"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment ProjectUserErrorFull on ProjectUserError {\n  ...UserErrorFull\n  projectReason: reason\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nmutation DeleteProject($id: ID!) {\n  deleteProject(id: $id) {\n    deletedId\n    error {\n      __typename\n      ... on ProjectUserError {\n        ...ProjectUserErrorFull\n      }\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    __typename\n  }\n}"
+
 
 class RenameProjectRenameprojectNameTakenUserErrorInlineFragment(BaseModel):
-    typename: Literal['NameTakenUserError'] = Field(alias='__typename', default='NameTakenUserError')
+    typename: Literal["NameTakenUserError"] = Field(
+        alias="__typename", default="NameTakenUserError"
+    )
     code: str
     name: str
 
+
 class RenameProjectRenameprojectUnknownIdUserErrorInlineFragment(BaseModel):
-    typename: Literal['UnknownIdUserError'] = Field(alias='__typename', default='UnknownIdUserError')
+    typename: Literal["UnknownIdUserError"] = Field(
+        alias="__typename", default="UnknownIdUserError"
+    )
     code: str
     id: str
 
+
 class RenameProjectRenameprojectOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
     code: str
+
 
 class RenameProjectRenameproject(BaseModel):
     """No documentation"""
-    typename: Literal['RenameProjectPayload'] = Field(alias='__typename', default='RenameProjectPayload')
-    error: Optional[Union[RenameProjectRenameprojectNameTakenUserErrorInlineFragment, RenameProjectRenameprojectUnknownIdUserErrorInlineFragment, RenameProjectRenameprojectOtherUserErrorInlineFragment]] = Field(default=None)
+
+    typename: Literal["RenameProjectPayload"] = Field(
+        alias="__typename", default="RenameProjectPayload"
+    )
+    error: Optional[
+        Union[
+            RenameProjectRenameprojectNameTakenUserErrorInlineFragment,
+            RenameProjectRenameprojectUnknownIdUserErrorInlineFragment,
+            RenameProjectRenameprojectOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
     project: Optional[ProjectFull] = Field(default=None)
+
 
 class RenameProject(BaseModel):
     """No documentation found for this operation."""
+
     renameProject: RenameProjectRenameproject
 
     class Arguments(BaseModel):
-        """Arguments for RenameProject """
+        """Arguments for RenameProject"""
+
         id: str
         name: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for RenameProject """
-        document = 'fragment ProjectFull on Project {\n  id\n  name\n  path\n  status\n  temporary\n  createdAt\n  updatedAt\n  version\n  size\n  readOnly\n  __typename\n}\n\nmutation RenameProject($id: ID!, $name: String!) {\n  renameProject(id: $id, name: $name) {\n    error {\n      __typename\n      ... on NameTakenUserError {\n        code\n        name\n      }\n      ... on UnknownIdUserError {\n        code\n        id\n      }\n      ... on OtherUserError {\n        code\n      }\n    }\n    project {\n      ...ProjectFull\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for RenameProject"""
+
+        document = "fragment ProjectFull on Project {\n  id\n  name\n  path\n  status\n  temporary\n  createdAt\n  updatedAt\n  version\n  size\n  readOnly\n  __typename\n}\n\nmutation RenameProject($id: ID!, $name: String!) {\n  renameProject(id: $id, name: $name) {\n    error {\n      __typename\n      ... on NameTakenUserError {\n        code\n        name\n      }\n      ... on UnknownIdUserError {\n        code\n        id\n      }\n      ... on OtherUserError {\n        code\n      }\n    }\n    project {\n      ...ProjectFull\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class SelectProjectSelectprojectCurrentproject(BaseModel):
     """No documentation"""
-    typename: Literal['CurrentProject'] = Field(alias='__typename', default='CurrentProject')
+
+    typename: Literal["CurrentProject"] = Field(
+        alias="__typename", default="CurrentProject"
+    )
     project: ProjectFull
 
+
 class SelectProjectSelectprojectProjectUserErrorInlineFragment(BaseModel):
-    typename: Literal['ProjectUserError'] = Field(alias='__typename', default='ProjectUserError')
+    typename: Literal["ProjectUserError"] = Field(
+        alias="__typename", default="ProjectUserError"
+    )
+
 
 class SelectProjectSelectprojectUnknownIdUserErrorInlineFragment(BaseModel):
-    typename: Literal['UnknownIdUserError'] = Field(alias='__typename', default='UnknownIdUserError')
+    typename: Literal["UnknownIdUserError"] = Field(
+        alias="__typename", default="UnknownIdUserError"
+    )
+
 
 class SelectProjectSelectprojectOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class SelectProjectSelectproject(BaseModel):
     """No documentation"""
-    typename: Literal['SelectProjectPayload'] = Field(alias='__typename', default='SelectProjectPayload')
-    currentProject: Optional[SelectProjectSelectprojectCurrentproject] = Field(default=None)
-    error: Optional[Union[SelectProjectSelectprojectProjectUserErrorInlineFragment, SelectProjectSelectprojectUnknownIdUserErrorInlineFragment, SelectProjectSelectprojectOtherUserErrorInlineFragment]] = Field(default=None)
+
+    typename: Literal["SelectProjectPayload"] = Field(
+        alias="__typename", default="SelectProjectPayload"
+    )
+    currentProject: Optional[SelectProjectSelectprojectCurrentproject] = Field(
+        default=None
+    )
+    error: Optional[
+        Union[
+            SelectProjectSelectprojectProjectUserErrorInlineFragment,
+            SelectProjectSelectprojectUnknownIdUserErrorInlineFragment,
+            SelectProjectSelectprojectOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
+
 
 class SelectProject(BaseModel):
     """No documentation found for this operation."""
+
     selectProject: SelectProjectSelectproject
 
     class Arguments(BaseModel):
-        """Arguments for SelectProject """
+        """Arguments for SelectProject"""
+
         id: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for SelectProject """
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment ProjectFull on Project {\n  id\n  name\n  path\n  status\n  temporary\n  createdAt\n  updatedAt\n  version\n  size\n  readOnly\n  __typename\n}\n\nfragment ProjectUserErrorFull on ProjectUserError {\n  ...UserErrorFull\n  projectReason: reason\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nmutation SelectProject($id: ID!) {\n  selectProject(id: $id) {\n    currentProject {\n      project {\n        ...ProjectFull\n        __typename\n      }\n      __typename\n    }\n    error {\n      __typename\n      ... on ProjectUserError {\n        ...ProjectUserErrorFull\n      }\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    __typename\n  }\n}'
+        """Meta class for SelectProject"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment ProjectFull on Project {\n  id\n  name\n  path\n  status\n  temporary\n  createdAt\n  updatedAt\n  version\n  size\n  readOnly\n  __typename\n}\n\nfragment ProjectUserErrorFull on ProjectUserError {\n  ...UserErrorFull\n  projectReason: reason\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nmutation SelectProject($id: ID!) {\n  selectProject(id: $id) {\n    currentProject {\n      project {\n        ...ProjectFull\n        __typename\n      }\n      __typename\n    }\n    error {\n      __typename\n      ... on ProjectUserError {\n        ...ProjectUserErrorFull\n      }\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    __typename\n  }\n}"
+
 
 class ReplayEntry(BaseModel):
     """No documentation found for this operation."""
+
     replayEntry: Optional[ReplayEntryFull] = Field(default=None)
 
     class Arguments(BaseModel):
-        """Arguments for ReplayEntry """
+        """Arguments for ReplayEntry"""
+
         id: str
         includeReplayRaw: bool
         includeRequestRaw: bool
@@ -1793,43 +2740,57 @@ class ReplayEntry(BaseModel):
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for ReplayEntry """
-        document = 'fragment ReplayEnvironmentPreprocessorFull on ReplayEnvironmentPreprocessor {\n  __typename\n  variableName\n}\n\nfragment ReplayPrefixPreprocessorFull on ReplayPrefixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplaySuffixPreprocessorFull on ReplaySuffixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplayUrlEncodePreprocessorFull on ReplayUrlEncodePreprocessor {\n  __typename\n  charset\n  nonAscii\n}\n\nfragment ReplayWorkflowPreprocessorFull on ReplayWorkflowPreprocessor {\n  __typename\n  id\n}\n\nfragment RangeFull on Range {\n  start\n  end\n  __typename\n}\n\nfragment ReplayPreprocessorFull on ReplayPreprocessor {\n  __typename\n  options {\n    ... on ReplayPrefixPreprocessor {\n      ...ReplayPrefixPreprocessorFull\n    }\n    ... on ReplaySuffixPreprocessor {\n      ...ReplaySuffixPreprocessorFull\n    }\n    ... on ReplayUrlEncodePreprocessor {\n      ...ReplayUrlEncodePreprocessorFull\n    }\n    ... on ReplayWorkflowPreprocessor {\n      ...ReplayWorkflowPreprocessorFull\n    }\n    ... on ReplayEnvironmentPreprocessor {\n      ...ReplayEnvironmentPreprocessorFull\n    }\n    __typename\n  }\n}\n\nfragment ResponseFull on Response {\n  id\n  statusCode\n  roundtripTime\n  length\n  createdAt\n  raw @include(if: $includeResponseRaw)\n  __typename\n}\n\nfragment ConnectionInfoFull on ConnectionInfo {\n  __typename\n  host\n  port\n  isTLS\n  SNI\n}\n\nfragment ReplayPlaceholderFull on ReplayPlaceholder {\n  __typename\n  inputRange {\n    ...RangeFull\n    __typename\n  }\n  outputRange {\n    ...RangeFull\n    __typename\n  }\n  preprocessors {\n    ...ReplayPreprocessorFull\n    __typename\n  }\n}\n\nfragment RequestFull on Request {\n  id\n  host\n  port\n  method\n  path\n  query\n  isTls\n  metadata {\n    id\n    color\n    __typename\n  }\n  createdAt\n  raw @include(if: $includeRequestRaw)\n  response {\n    ...ResponseFull\n    __typename\n  }\n  __typename\n}\n\nfragment ReplayEntryFull on ReplayEntry {\n  connection {\n    ...ConnectionInfoFull\n    __typename\n  }\n  createdAt\n  error\n  id\n  raw @include(if: $includeReplayRaw)\n  request {\n    ...RequestFull\n    __typename\n  }\n  session {\n    id\n    __typename\n  }\n  settings {\n    placeholders {\n      ...ReplayPlaceholderFull\n      __typename\n    }\n    __typename\n  }\n  __typename\n}\n\nquery ReplayEntry($id: ID!, $includeReplayRaw: Boolean!, $includeRequestRaw: Boolean!, $includeResponseRaw: Boolean!) {\n  replayEntry(id: $id) {\n    ...ReplayEntryFull\n    __typename\n  }\n}'
+        """Meta class for ReplayEntry"""
+
+        document = "fragment ReplayEnvironmentPreprocessorFull on ReplayEnvironmentPreprocessor {\n  __typename\n  variableName\n}\n\nfragment ReplayPrefixPreprocessorFull on ReplayPrefixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplaySuffixPreprocessorFull on ReplaySuffixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplayUrlEncodePreprocessorFull on ReplayUrlEncodePreprocessor {\n  __typename\n  charset\n  nonAscii\n}\n\nfragment ReplayWorkflowPreprocessorFull on ReplayWorkflowPreprocessor {\n  __typename\n  id\n}\n\nfragment RangeFull on Range {\n  start\n  end\n  __typename\n}\n\nfragment ReplayPreprocessorFull on ReplayPreprocessor {\n  __typename\n  options {\n    ... on ReplayPrefixPreprocessor {\n      ...ReplayPrefixPreprocessorFull\n    }\n    ... on ReplaySuffixPreprocessor {\n      ...ReplaySuffixPreprocessorFull\n    }\n    ... on ReplayUrlEncodePreprocessor {\n      ...ReplayUrlEncodePreprocessorFull\n    }\n    ... on ReplayWorkflowPreprocessor {\n      ...ReplayWorkflowPreprocessorFull\n    }\n    ... on ReplayEnvironmentPreprocessor {\n      ...ReplayEnvironmentPreprocessorFull\n    }\n    __typename\n  }\n}\n\nfragment ResponseFull on Response {\n  id\n  statusCode\n  roundtripTime\n  length\n  createdAt\n  raw @include(if: $includeResponseRaw)\n  __typename\n}\n\nfragment ConnectionInfoFull on ConnectionInfo {\n  __typename\n  host\n  port\n  isTLS\n  SNI\n}\n\nfragment ReplayPlaceholderFull on ReplayPlaceholder {\n  __typename\n  inputRange {\n    ...RangeFull\n    __typename\n  }\n  outputRange {\n    ...RangeFull\n    __typename\n  }\n  preprocessors {\n    ...ReplayPreprocessorFull\n    __typename\n  }\n}\n\nfragment RequestFull on Request {\n  id\n  host\n  port\n  method\n  path\n  query\n  isTls\n  metadata {\n    id\n    color\n    __typename\n  }\n  createdAt\n  raw @include(if: $includeRequestRaw)\n  response {\n    ...ResponseFull\n    __typename\n  }\n  __typename\n}\n\nfragment ReplayEntryFull on ReplayEntry {\n  connection {\n    ...ConnectionInfoFull\n    __typename\n  }\n  createdAt\n  error\n  id\n  raw @include(if: $includeReplayRaw)\n  request {\n    ...RequestFull\n    __typename\n  }\n  session {\n    id\n    __typename\n  }\n  settings {\n    placeholders {\n      ...ReplayPlaceholderFull\n      __typename\n    }\n    __typename\n  }\n  __typename\n}\n\nquery ReplayEntry($id: ID!, $includeReplayRaw: Boolean!, $includeRequestRaw: Boolean!, $includeResponseRaw: Boolean!) {\n  replayEntry(id: $id) {\n    ...ReplayEntryFull\n    __typename\n  }\n}"
+
 
 class ReplaySessionsReplaysessionsEdges(BaseModel):
     """An edge in a connection."""
-    typename: Literal['ReplaySessionEdge'] = Field(alias='__typename', default='ReplaySessionEdge')
+
+    typename: Literal["ReplaySessionEdge"] = Field(
+        alias="__typename", default="ReplaySessionEdge"
+    )
     cursor: str
-    'A cursor for use in pagination'
+    "A cursor for use in pagination"
     node: ReplaySessionMeta
-    'The item at the end of the edge'
+    "The item at the end of the edge"
+
 
 class ReplaySessionsReplaysessionsPageinfo(BaseModel):
     """Information about pagination in a connection"""
-    typename: Literal['PageInfo'] = Field(alias='__typename', default='PageInfo')
+
+    typename: Literal["PageInfo"] = Field(alias="__typename", default="PageInfo")
     hasNextPage: bool
-    'When paginating forwards, are there more items?'
+    "When paginating forwards, are there more items?"
     hasPreviousPage: bool
-    'When paginating backwards, are there more items?'
+    "When paginating backwards, are there more items?"
     startCursor: Optional[str] = Field(default=None)
-    'When paginating backwards, the cursor to continue.'
+    "When paginating backwards, the cursor to continue."
     endCursor: Optional[str] = Field(default=None)
-    'When paginating forwards, the cursor to continue.'
+    "When paginating forwards, the cursor to continue."
+
 
 class ReplaySessionsReplaysessions(BaseModel):
     """No documentation"""
-    typename: Literal['ReplaySessionConnection'] = Field(alias='__typename', default='ReplaySessionConnection')
+
+    typename: Literal["ReplaySessionConnection"] = Field(
+        alias="__typename", default="ReplaySessionConnection"
+    )
     edges: List[ReplaySessionsReplaysessionsEdges]
-    'A list of edges.'
+    "A list of edges."
     pageInfo: ReplaySessionsReplaysessionsPageinfo
-    'Information to aid in pagination.'
+    "Information to aid in pagination."
+
 
 class ReplaySessions(BaseModel):
     """No documentation found for this operation."""
+
     replaySessions: ReplaySessionsReplaysessions
 
     class Arguments(BaseModel):
-        """Arguments for ReplaySessions """
+        """Arguments for ReplaySessions"""
+
         first: Optional[int] = Field(default=None)
         after: Optional[str] = Field(default=None)
         last: Optional[int] = Field(default=None)
@@ -1837,48 +2798,66 @@ class ReplaySessions(BaseModel):
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for ReplaySessions """
-        document = 'fragment ReplaySessionMeta on ReplaySession {\n  id\n  name\n  collection {\n    id\n    __typename\n  }\n  activeEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nquery ReplaySessions($first: Int, $after: String, $last: Int, $before: String) {\n  replaySessions(first: $first, after: $after, last: $last, before: $before) {\n    edges {\n      cursor\n      node {\n        ...ReplaySessionMeta\n        __typename\n      }\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for ReplaySessions"""
+
+        document = "fragment ReplaySessionMeta on ReplaySession {\n  id\n  name\n  collection {\n    id\n    __typename\n  }\n  activeEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nquery ReplaySessions($first: Int, $after: String, $last: Int, $before: String) {\n  replaySessions(first: $first, after: $after, last: $last, before: $before) {\n    edges {\n      cursor\n      node {\n        ...ReplaySessionMeta\n        __typename\n      }\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class ReplaySessionEntriesReplaysessionEntriesEdges(BaseModel):
     """An edge in a connection."""
-    typename: Literal['ReplayEntryEdge'] = Field(alias='__typename', default='ReplayEntryEdge')
+
+    typename: Literal["ReplayEntryEdge"] = Field(
+        alias="__typename", default="ReplayEntryEdge"
+    )
     cursor: str
-    'A cursor for use in pagination'
+    "A cursor for use in pagination"
     node: ReplayEntryFull
-    'The item at the end of the edge'
+    "The item at the end of the edge"
+
 
 class ReplaySessionEntriesReplaysessionEntriesPageinfo(BaseModel):
     """Information about pagination in a connection"""
-    typename: Literal['PageInfo'] = Field(alias='__typename', default='PageInfo')
+
+    typename: Literal["PageInfo"] = Field(alias="__typename", default="PageInfo")
     hasNextPage: bool
-    'When paginating forwards, are there more items?'
+    "When paginating forwards, are there more items?"
     hasPreviousPage: bool
-    'When paginating backwards, are there more items?'
+    "When paginating backwards, are there more items?"
     startCursor: Optional[str] = Field(default=None)
-    'When paginating backwards, the cursor to continue.'
+    "When paginating backwards, the cursor to continue."
     endCursor: Optional[str] = Field(default=None)
-    'When paginating forwards, the cursor to continue.'
+    "When paginating forwards, the cursor to continue."
+
 
 class ReplaySessionEntriesReplaysessionEntries(BaseModel):
     """No documentation"""
-    typename: Literal['ReplayEntryConnection'] = Field(alias='__typename', default='ReplayEntryConnection')
+
+    typename: Literal["ReplayEntryConnection"] = Field(
+        alias="__typename", default="ReplayEntryConnection"
+    )
     edges: List[ReplaySessionEntriesReplaysessionEntriesEdges]
-    'A list of edges.'
+    "A list of edges."
     pageInfo: ReplaySessionEntriesReplaysessionEntriesPageinfo
-    'Information to aid in pagination.'
+    "Information to aid in pagination."
+
 
 class ReplaySessionEntriesReplaysession(BaseModel):
     """No documentation"""
-    typename: Literal['ReplaySession'] = Field(alias='__typename', default='ReplaySession')
+
+    typename: Literal["ReplaySession"] = Field(
+        alias="__typename", default="ReplaySession"
+    )
     entries: ReplaySessionEntriesReplaysessionEntries
+
 
 class ReplaySessionEntries(BaseModel):
     """No documentation found for this operation."""
+
     replaySession: Optional[ReplaySessionEntriesReplaysession] = Field(default=None)
 
     class Arguments(BaseModel):
-        """Arguments for ReplaySessionEntries """
+        """Arguments for ReplaySessionEntries"""
+
         id: str
         after: Optional[str] = Field(default=None)
         before: Optional[str] = Field(default=None)
@@ -1890,56 +2869,74 @@ class ReplaySessionEntries(BaseModel):
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for ReplaySessionEntries """
-        document = 'fragment ReplayEnvironmentPreprocessorFull on ReplayEnvironmentPreprocessor {\n  __typename\n  variableName\n}\n\nfragment ReplayPrefixPreprocessorFull on ReplayPrefixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplaySuffixPreprocessorFull on ReplaySuffixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplayUrlEncodePreprocessorFull on ReplayUrlEncodePreprocessor {\n  __typename\n  charset\n  nonAscii\n}\n\nfragment ReplayWorkflowPreprocessorFull on ReplayWorkflowPreprocessor {\n  __typename\n  id\n}\n\nfragment RangeFull on Range {\n  start\n  end\n  __typename\n}\n\nfragment ReplayPreprocessorFull on ReplayPreprocessor {\n  __typename\n  options {\n    ... on ReplayPrefixPreprocessor {\n      ...ReplayPrefixPreprocessorFull\n    }\n    ... on ReplaySuffixPreprocessor {\n      ...ReplaySuffixPreprocessorFull\n    }\n    ... on ReplayUrlEncodePreprocessor {\n      ...ReplayUrlEncodePreprocessorFull\n    }\n    ... on ReplayWorkflowPreprocessor {\n      ...ReplayWorkflowPreprocessorFull\n    }\n    ... on ReplayEnvironmentPreprocessor {\n      ...ReplayEnvironmentPreprocessorFull\n    }\n    __typename\n  }\n}\n\nfragment ResponseFull on Response {\n  id\n  statusCode\n  roundtripTime\n  length\n  createdAt\n  raw @include(if: $includeResponseRaw)\n  __typename\n}\n\nfragment ConnectionInfoFull on ConnectionInfo {\n  __typename\n  host\n  port\n  isTLS\n  SNI\n}\n\nfragment ReplayPlaceholderFull on ReplayPlaceholder {\n  __typename\n  inputRange {\n    ...RangeFull\n    __typename\n  }\n  outputRange {\n    ...RangeFull\n    __typename\n  }\n  preprocessors {\n    ...ReplayPreprocessorFull\n    __typename\n  }\n}\n\nfragment RequestFull on Request {\n  id\n  host\n  port\n  method\n  path\n  query\n  isTls\n  metadata {\n    id\n    color\n    __typename\n  }\n  createdAt\n  raw @include(if: $includeRequestRaw)\n  response {\n    ...ResponseFull\n    __typename\n  }\n  __typename\n}\n\nfragment ReplayEntryFull on ReplayEntry {\n  connection {\n    ...ConnectionInfoFull\n    __typename\n  }\n  createdAt\n  error\n  id\n  raw @include(if: $includeReplayRaw)\n  request {\n    ...RequestFull\n    __typename\n  }\n  session {\n    id\n    __typename\n  }\n  settings {\n    placeholders {\n      ...ReplayPlaceholderFull\n      __typename\n    }\n    __typename\n  }\n  __typename\n}\n\nquery ReplaySessionEntries($id: ID!, $after: String, $before: String, $first: Int, $last: Int, $includeReplayRaw: Boolean!, $includeRequestRaw: Boolean!, $includeResponseRaw: Boolean!) {\n  replaySession(id: $id) {\n    entries(after: $after, before: $before, first: $first, last: $last) {\n      edges {\n        cursor\n        node {\n          ...ReplayEntryFull\n          __typename\n        }\n        __typename\n      }\n      pageInfo {\n        hasNextPage\n        hasPreviousPage\n        startCursor\n        endCursor\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for ReplaySessionEntries"""
+
+        document = "fragment ReplayEnvironmentPreprocessorFull on ReplayEnvironmentPreprocessor {\n  __typename\n  variableName\n}\n\nfragment ReplayPrefixPreprocessorFull on ReplayPrefixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplaySuffixPreprocessorFull on ReplaySuffixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplayUrlEncodePreprocessorFull on ReplayUrlEncodePreprocessor {\n  __typename\n  charset\n  nonAscii\n}\n\nfragment ReplayWorkflowPreprocessorFull on ReplayWorkflowPreprocessor {\n  __typename\n  id\n}\n\nfragment RangeFull on Range {\n  start\n  end\n  __typename\n}\n\nfragment ReplayPreprocessorFull on ReplayPreprocessor {\n  __typename\n  options {\n    ... on ReplayPrefixPreprocessor {\n      ...ReplayPrefixPreprocessorFull\n    }\n    ... on ReplaySuffixPreprocessor {\n      ...ReplaySuffixPreprocessorFull\n    }\n    ... on ReplayUrlEncodePreprocessor {\n      ...ReplayUrlEncodePreprocessorFull\n    }\n    ... on ReplayWorkflowPreprocessor {\n      ...ReplayWorkflowPreprocessorFull\n    }\n    ... on ReplayEnvironmentPreprocessor {\n      ...ReplayEnvironmentPreprocessorFull\n    }\n    __typename\n  }\n}\n\nfragment ResponseFull on Response {\n  id\n  statusCode\n  roundtripTime\n  length\n  createdAt\n  raw @include(if: $includeResponseRaw)\n  __typename\n}\n\nfragment ConnectionInfoFull on ConnectionInfo {\n  __typename\n  host\n  port\n  isTLS\n  SNI\n}\n\nfragment ReplayPlaceholderFull on ReplayPlaceholder {\n  __typename\n  inputRange {\n    ...RangeFull\n    __typename\n  }\n  outputRange {\n    ...RangeFull\n    __typename\n  }\n  preprocessors {\n    ...ReplayPreprocessorFull\n    __typename\n  }\n}\n\nfragment RequestFull on Request {\n  id\n  host\n  port\n  method\n  path\n  query\n  isTls\n  metadata {\n    id\n    color\n    __typename\n  }\n  createdAt\n  raw @include(if: $includeRequestRaw)\n  response {\n    ...ResponseFull\n    __typename\n  }\n  __typename\n}\n\nfragment ReplayEntryFull on ReplayEntry {\n  connection {\n    ...ConnectionInfoFull\n    __typename\n  }\n  createdAt\n  error\n  id\n  raw @include(if: $includeReplayRaw)\n  request {\n    ...RequestFull\n    __typename\n  }\n  session {\n    id\n    __typename\n  }\n  settings {\n    placeholders {\n      ...ReplayPlaceholderFull\n      __typename\n    }\n    __typename\n  }\n  __typename\n}\n\nquery ReplaySessionEntries($id: ID!, $after: String, $before: String, $first: Int, $last: Int, $includeReplayRaw: Boolean!, $includeRequestRaw: Boolean!, $includeResponseRaw: Boolean!) {\n  replaySession(id: $id) {\n    entries(after: $after, before: $before, first: $first, last: $last) {\n      edges {\n        cursor\n        node {\n          ...ReplayEntryFull\n          __typename\n        }\n        __typename\n      }\n      pageInfo {\n        hasNextPage\n        hasPreviousPage\n        startCursor\n        endCursor\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class ReplaySession(BaseModel):
     """No documentation found for this operation."""
+
     replaySession: Optional[ReplaySessionMeta] = Field(default=None)
 
     class Arguments(BaseModel):
-        """Arguments for ReplaySession """
+        """Arguments for ReplaySession"""
+
         id: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for ReplaySession """
-        document = 'fragment ReplaySessionMeta on ReplaySession {\n  id\n  name\n  collection {\n    id\n    __typename\n  }\n  activeEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nquery ReplaySession($id: ID!) {\n  replaySession(id: $id) {\n    ...ReplaySessionMeta\n    __typename\n  }\n}'
+        """Meta class for ReplaySession"""
+
+        document = "fragment ReplaySessionMeta on ReplaySession {\n  id\n  name\n  collection {\n    id\n    __typename\n  }\n  activeEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nquery ReplaySession($id: ID!) {\n  replaySession(id: $id) {\n    ...ReplaySessionMeta\n    __typename\n  }\n}"
+
 
 class ReplaySessionCollectionsReplaysessioncollectionsEdges(BaseModel):
     """An edge in a connection."""
-    typename: Literal['ReplaySessionCollectionEdge'] = Field(alias='__typename', default='ReplaySessionCollectionEdge')
+
+    typename: Literal["ReplaySessionCollectionEdge"] = Field(
+        alias="__typename", default="ReplaySessionCollectionEdge"
+    )
     cursor: str
-    'A cursor for use in pagination'
+    "A cursor for use in pagination"
     node: ReplaySessionCollectionMeta
-    'The item at the end of the edge'
+    "The item at the end of the edge"
+
 
 class ReplaySessionCollectionsReplaysessioncollectionsPageinfo(BaseModel):
     """Information about pagination in a connection"""
-    typename: Literal['PageInfo'] = Field(alias='__typename', default='PageInfo')
+
+    typename: Literal["PageInfo"] = Field(alias="__typename", default="PageInfo")
     hasNextPage: bool
-    'When paginating forwards, are there more items?'
+    "When paginating forwards, are there more items?"
     hasPreviousPage: bool
-    'When paginating backwards, are there more items?'
+    "When paginating backwards, are there more items?"
     startCursor: Optional[str] = Field(default=None)
-    'When paginating backwards, the cursor to continue.'
+    "When paginating backwards, the cursor to continue."
     endCursor: Optional[str] = Field(default=None)
-    'When paginating forwards, the cursor to continue.'
+    "When paginating forwards, the cursor to continue."
+
 
 class ReplaySessionCollectionsReplaysessioncollections(BaseModel):
     """No documentation"""
-    typename: Literal['ReplaySessionCollectionConnection'] = Field(alias='__typename', default='ReplaySessionCollectionConnection')
+
+    typename: Literal["ReplaySessionCollectionConnection"] = Field(
+        alias="__typename", default="ReplaySessionCollectionConnection"
+    )
     edges: List[ReplaySessionCollectionsReplaysessioncollectionsEdges]
-    'A list of edges.'
+    "A list of edges."
     pageInfo: ReplaySessionCollectionsReplaysessioncollectionsPageinfo
-    'Information to aid in pagination.'
+    "Information to aid in pagination."
+
 
 class ReplaySessionCollections(BaseModel):
     """No documentation found for this operation."""
+
     replaySessionCollections: ReplaySessionCollectionsReplaysessioncollections
 
     class Arguments(BaseModel):
-        """Arguments for ReplaySessionCollections """
+        """Arguments for ReplaySessionCollections"""
+
         first: Optional[int] = Field(default=None)
         after: Optional[str] = Field(default=None)
         last: Optional[int] = Field(default=None)
@@ -1947,253 +2944,370 @@ class ReplaySessionCollections(BaseModel):
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for ReplaySessionCollections """
-        document = 'fragment ReplaySessionCollectionMeta on ReplaySessionCollection {\n  id\n  name\n  __typename\n}\n\nquery ReplaySessionCollections($first: Int, $after: String, $last: Int, $before: String) {\n  replaySessionCollections(\n    first: $first\n    after: $after\n    last: $last\n    before: $before\n  ) {\n    edges {\n      cursor\n      node {\n        ...ReplaySessionCollectionMeta\n        __typename\n      }\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for ReplaySessionCollections"""
+
+        document = "fragment ReplaySessionCollectionMeta on ReplaySessionCollection {\n  id\n  name\n  __typename\n}\n\nquery ReplaySessionCollections($first: Int, $after: String, $last: Int, $before: String) {\n  replaySessionCollections(\n    first: $first\n    after: $after\n    last: $last\n    before: $before\n  ) {\n    edges {\n      cursor\n      node {\n        ...ReplaySessionCollectionMeta\n        __typename\n      }\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class CreateReplaySessionCreatereplaysession(BaseModel):
     """No documentation"""
-    typename: Literal['CreateReplaySessionPayload'] = Field(alias='__typename', default='CreateReplaySessionPayload')
+
+    typename: Literal["CreateReplaySessionPayload"] = Field(
+        alias="__typename", default="CreateReplaySessionPayload"
+    )
     session: Optional[ReplaySessionMeta] = Field(default=None)
+
 
 class CreateReplaySession(BaseModel):
     """No documentation found for this operation."""
+
     createReplaySession: CreateReplaySessionCreatereplaysession
 
     class Arguments(BaseModel):
-        """Arguments for CreateReplaySession """
+        """Arguments for CreateReplaySession"""
+
         input: CreateReplaySessionInput
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for CreateReplaySession """
-        document = 'fragment ReplaySessionMeta on ReplaySession {\n  id\n  name\n  collection {\n    id\n    __typename\n  }\n  activeEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nmutation CreateReplaySession($input: CreateReplaySessionInput!) {\n  createReplaySession(input: $input) {\n    session {\n      ...ReplaySessionMeta\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for CreateReplaySession"""
+
+        document = "fragment ReplaySessionMeta on ReplaySession {\n  id\n  name\n  collection {\n    id\n    __typename\n  }\n  activeEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nmutation CreateReplaySession($input: CreateReplaySessionInput!) {\n  createReplaySession(input: $input) {\n    session {\n      ...ReplaySessionMeta\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class CreateReplaySessionCollectionCreatereplaysessioncollection(BaseModel):
     """No documentation"""
-    typename: Literal['CreateReplaySessionCollectionPayload'] = Field(alias='__typename', default='CreateReplaySessionCollectionPayload')
+
+    typename: Literal["CreateReplaySessionCollectionPayload"] = Field(
+        alias="__typename", default="CreateReplaySessionCollectionPayload"
+    )
     collection: Optional[ReplaySessionCollectionMeta] = Field(default=None)
+
 
 class CreateReplaySessionCollection(BaseModel):
     """No documentation found for this operation."""
-    createReplaySessionCollection: CreateReplaySessionCollectionCreatereplaysessioncollection
+
+    createReplaySessionCollection: (
+        CreateReplaySessionCollectionCreatereplaysessioncollection
+    )
 
     class Arguments(BaseModel):
-        """Arguments for CreateReplaySessionCollection """
+        """Arguments for CreateReplaySessionCollection"""
+
         input: CreateReplaySessionCollectionInput
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for CreateReplaySessionCollection """
-        document = 'fragment ReplaySessionCollectionMeta on ReplaySessionCollection {\n  id\n  name\n  __typename\n}\n\nmutation CreateReplaySessionCollection($input: CreateReplaySessionCollectionInput!) {\n  createReplaySessionCollection(input: $input) {\n    collection {\n      ...ReplaySessionCollectionMeta\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for CreateReplaySessionCollection"""
+
+        document = "fragment ReplaySessionCollectionMeta on ReplaySessionCollection {\n  id\n  name\n  __typename\n}\n\nmutation CreateReplaySessionCollection($input: CreateReplaySessionCollectionInput!) {\n  createReplaySessionCollection(input: $input) {\n    collection {\n      ...ReplaySessionCollectionMeta\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class DeleteReplaySessionsDeletereplaysessions(BaseModel):
     """No documentation"""
-    typename: Literal['DeleteReplaySessionsPayload'] = Field(alias='__typename', default='DeleteReplaySessionsPayload')
+
+    typename: Literal["DeleteReplaySessionsPayload"] = Field(
+        alias="__typename", default="DeleteReplaySessionsPayload"
+    )
     deletedIds: Optional[List[str]] = Field(default=None)
+
 
 class DeleteReplaySessions(BaseModel):
     """No documentation found for this operation."""
+
     deleteReplaySessions: DeleteReplaySessionsDeletereplaysessions
 
     class Arguments(BaseModel):
-        """Arguments for DeleteReplaySessions """
+        """Arguments for DeleteReplaySessions"""
+
         ids: List[str]
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for DeleteReplaySessions """
-        document = 'mutation DeleteReplaySessions($ids: [ID!]!) {\n  deleteReplaySessions(ids: $ids) {\n    deletedIds\n    __typename\n  }\n}'
+        """Meta class for DeleteReplaySessions"""
+
+        document = "mutation DeleteReplaySessions($ids: [ID!]!) {\n  deleteReplaySessions(ids: $ids) {\n    deletedIds\n    __typename\n  }\n}"
+
 
 class DeleteReplaySessionCollectionDeletereplaysessioncollection(BaseModel):
     """No documentation"""
-    typename: Literal['DeleteReplaySessionCollectionPayload'] = Field(alias='__typename', default='DeleteReplaySessionCollectionPayload')
+
+    typename: Literal["DeleteReplaySessionCollectionPayload"] = Field(
+        alias="__typename", default="DeleteReplaySessionCollectionPayload"
+    )
     deletedId: Optional[str] = Field(default=None)
+
 
 class DeleteReplaySessionCollection(BaseModel):
     """No documentation found for this operation."""
-    deleteReplaySessionCollection: DeleteReplaySessionCollectionDeletereplaysessioncollection
+
+    deleteReplaySessionCollection: (
+        DeleteReplaySessionCollectionDeletereplaysessioncollection
+    )
 
     class Arguments(BaseModel):
-        """Arguments for DeleteReplaySessionCollection """
+        """Arguments for DeleteReplaySessionCollection"""
+
         id: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for DeleteReplaySessionCollection """
-        document = 'mutation DeleteReplaySessionCollection($id: ID!) {\n  deleteReplaySessionCollection(id: $id) {\n    deletedId\n    __typename\n  }\n}'
+        """Meta class for DeleteReplaySessionCollection"""
+
+        document = "mutation DeleteReplaySessionCollection($id: ID!) {\n  deleteReplaySessionCollection(id: $id) {\n    deletedId\n    __typename\n  }\n}"
+
 
 class MoveReplaySessionMovereplaysession(BaseModel):
     """No documentation"""
-    typename: Literal['MoveReplaySessionPayload'] = Field(alias='__typename', default='MoveReplaySessionPayload')
+
+    typename: Literal["MoveReplaySessionPayload"] = Field(
+        alias="__typename", default="MoveReplaySessionPayload"
+    )
     session: Optional[ReplaySessionMeta] = Field(default=None)
+
 
 class MoveReplaySession(BaseModel):
     """No documentation found for this operation."""
+
     moveReplaySession: MoveReplaySessionMovereplaysession
 
     class Arguments(BaseModel):
-        """Arguments for MoveReplaySession """
+        """Arguments for MoveReplaySession"""
+
         id: str
         collectionId: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for MoveReplaySession """
-        document = 'fragment ReplaySessionMeta on ReplaySession {\n  id\n  name\n  collection {\n    id\n    __typename\n  }\n  activeEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nmutation MoveReplaySession($id: ID!, $collectionId: ID!) {\n  moveReplaySession(id: $id, collectionId: $collectionId) {\n    session {\n      ...ReplaySessionMeta\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for MoveReplaySession"""
+
+        document = "fragment ReplaySessionMeta on ReplaySession {\n  id\n  name\n  collection {\n    id\n    __typename\n  }\n  activeEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nmutation MoveReplaySession($id: ID!, $collectionId: ID!) {\n  moveReplaySession(id: $id, collectionId: $collectionId) {\n    session {\n      ...ReplaySessionMeta\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class RenameReplaySessionRenamereplaysession(BaseModel):
     """No documentation"""
-    typename: Literal['RenameReplaySessionPayload'] = Field(alias='__typename', default='RenameReplaySessionPayload')
+
+    typename: Literal["RenameReplaySessionPayload"] = Field(
+        alias="__typename", default="RenameReplaySessionPayload"
+    )
     session: Optional[ReplaySessionMeta] = Field(default=None)
+
 
 class RenameReplaySession(BaseModel):
     """No documentation found for this operation."""
+
     renameReplaySession: RenameReplaySessionRenamereplaysession
 
     class Arguments(BaseModel):
-        """Arguments for RenameReplaySession """
+        """Arguments for RenameReplaySession"""
+
         id: str
         name: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for RenameReplaySession """
-        document = 'fragment ReplaySessionMeta on ReplaySession {\n  id\n  name\n  collection {\n    id\n    __typename\n  }\n  activeEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nmutation RenameReplaySession($id: ID!, $name: String!) {\n  renameReplaySession(id: $id, name: $name) {\n    session {\n      ...ReplaySessionMeta\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for RenameReplaySession"""
+
+        document = "fragment ReplaySessionMeta on ReplaySession {\n  id\n  name\n  collection {\n    id\n    __typename\n  }\n  activeEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nmutation RenameReplaySession($id: ID!, $name: String!) {\n  renameReplaySession(id: $id, name: $name) {\n    session {\n      ...ReplaySessionMeta\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class RenameReplaySessionCollectionRenamereplaysessioncollection(BaseModel):
     """No documentation"""
-    typename: Literal['RenameReplaySessionCollectionPayload'] = Field(alias='__typename', default='RenameReplaySessionCollectionPayload')
+
+    typename: Literal["RenameReplaySessionCollectionPayload"] = Field(
+        alias="__typename", default="RenameReplaySessionCollectionPayload"
+    )
     collection: Optional[ReplaySessionCollectionMeta] = Field(default=None)
+
 
 class RenameReplaySessionCollection(BaseModel):
     """No documentation found for this operation."""
-    renameReplaySessionCollection: RenameReplaySessionCollectionRenamereplaysessioncollection
+
+    renameReplaySessionCollection: (
+        RenameReplaySessionCollectionRenamereplaysessioncollection
+    )
 
     class Arguments(BaseModel):
-        """Arguments for RenameReplaySessionCollection """
+        """Arguments for RenameReplaySessionCollection"""
+
         id: str
         name: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for RenameReplaySessionCollection """
-        document = 'fragment ReplaySessionCollectionMeta on ReplaySessionCollection {\n  id\n  name\n  __typename\n}\n\nmutation RenameReplaySessionCollection($id: ID!, $name: String!) {\n  renameReplaySessionCollection(id: $id, name: $name) {\n    collection {\n      ...ReplaySessionCollectionMeta\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for RenameReplaySessionCollection"""
+
+        document = "fragment ReplaySessionCollectionMeta on ReplaySessionCollection {\n  id\n  name\n  __typename\n}\n\nmutation RenameReplaySessionCollection($id: ID!, $name: String!) {\n  renameReplaySessionCollection(id: $id, name: $name) {\n    collection {\n      ...ReplaySessionCollectionMeta\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class SetActiveReplaySessionEntrySetactivereplaysessionentry(BaseModel):
     """No documentation"""
-    typename: Literal['SetActiveReplaySessionEntryPayload'] = Field(alias='__typename', default='SetActiveReplaySessionEntryPayload')
+
+    typename: Literal["SetActiveReplaySessionEntryPayload"] = Field(
+        alias="__typename", default="SetActiveReplaySessionEntryPayload"
+    )
     session: Optional[ReplaySessionMeta] = Field(default=None)
+
 
 class SetActiveReplaySessionEntry(BaseModel):
     """No documentation found for this operation."""
+
     setActiveReplaySessionEntry: SetActiveReplaySessionEntrySetactivereplaysessionentry
-    'DEPRECATED Remove usage, no replacement: : None '
+    "DEPRECATED Remove usage, no replacement: : None "
 
     class Arguments(BaseModel):
-        """Arguments for SetActiveReplaySessionEntry """
+        """Arguments for SetActiveReplaySessionEntry"""
+
         id: str
         entryId: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for SetActiveReplaySessionEntry """
-        document = 'fragment ReplaySessionMeta on ReplaySession {\n  id\n  name\n  collection {\n    id\n    __typename\n  }\n  activeEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nmutation SetActiveReplaySessionEntry($id: ID!, $entryId: ID!) {\n  setActiveReplaySessionEntry(id: $id, entryId: $entryId) {\n    session {\n      ...ReplaySessionMeta\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for SetActiveReplaySessionEntry"""
+
+        document = "fragment ReplaySessionMeta on ReplaySession {\n  id\n  name\n  collection {\n    id\n    __typename\n  }\n  activeEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nmutation SetActiveReplaySessionEntry($id: ID!, $entryId: ID!) {\n  setActiveReplaySessionEntry(id: $id, entryId: $entryId) {\n    session {\n      ...ReplaySessionMeta\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class StartReplayTaskStartreplaytaskCloudUserErrorInlineFragment(BaseModel):
-    typename: Literal['CloudUserError'] = Field(alias='__typename', default='CloudUserError')
+    typename: Literal["CloudUserError"] = Field(
+        alias="__typename", default="CloudUserError"
+    )
+
 
 class StartReplayTaskStartreplaytaskPermissionDeniedUserErrorInlineFragment(BaseModel):
-    typename: Literal['PermissionDeniedUserError'] = Field(alias='__typename', default='PermissionDeniedUserError')
+    typename: Literal["PermissionDeniedUserError"] = Field(
+        alias="__typename", default="PermissionDeniedUserError"
+    )
+
 
 class StartReplayTaskStartreplaytaskTaskInProgressUserErrorInlineFragment(BaseModel):
-    typename: Literal['TaskInProgressUserError'] = Field(alias='__typename', default='TaskInProgressUserError')
+    typename: Literal["TaskInProgressUserError"] = Field(
+        alias="__typename", default="TaskInProgressUserError"
+    )
+
 
 class StartReplayTaskStartreplaytaskOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class StartReplayTaskStartreplaytask(BaseModel):
     """No documentation"""
-    typename: Literal['StartReplayTaskPayload'] = Field(alias='__typename', default='StartReplayTaskPayload')
-    error: Optional[Union[StartReplayTaskStartreplaytaskCloudUserErrorInlineFragment, StartReplayTaskStartreplaytaskPermissionDeniedUserErrorInlineFragment, StartReplayTaskStartreplaytaskTaskInProgressUserErrorInlineFragment, StartReplayTaskStartreplaytaskOtherUserErrorInlineFragment]] = Field(default=None)
+
+    typename: Literal["StartReplayTaskPayload"] = Field(
+        alias="__typename", default="StartReplayTaskPayload"
+    )
+    error: Optional[
+        Union[
+            StartReplayTaskStartreplaytaskCloudUserErrorInlineFragment,
+            StartReplayTaskStartreplaytaskPermissionDeniedUserErrorInlineFragment,
+            StartReplayTaskStartreplaytaskTaskInProgressUserErrorInlineFragment,
+            StartReplayTaskStartreplaytaskOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
     task: Optional[ReplayTaskMeta] = Field(default=None)
+
 
 class StartReplayTask(BaseModel):
     """No documentation found for this operation."""
+
     startReplayTask: StartReplayTaskStartreplaytask
 
     class Arguments(BaseModel):
-        """Arguments for StartReplayTask """
+        """Arguments for StartReplayTask"""
+
         sessionId: str
         input: StartReplayTaskInput
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for StartReplayTask """
-        document = 'fragment TaskMeta on Task {\n  __typename\n  id\n  createdAt\n}\n\nfragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment CloudUserErrorFull on CloudUserError {\n  ...UserErrorFull\n  cloudReason: reason\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {\n  ...UserErrorFull\n  permissionReason: reason\n  __typename\n}\n\nfragment ReplayTaskMeta on ReplayTask {\n  ...TaskMeta\n  replayEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nfragment TaskInProgressUserErrorFull on TaskInProgressUserError {\n  ...UserErrorFull\n  taskId\n  __typename\n}\n\nmutation StartReplayTask($sessionId: ID!, $input: StartReplayTaskInput!) {\n  startReplayTask(sessionId: $sessionId, input: $input) {\n    error {\n      __typename\n      ... on CloudUserError {\n        ...CloudUserErrorFull\n      }\n      ... on PermissionDeniedUserError {\n        ...PermissionDeniedUserErrorFull\n      }\n      ... on TaskInProgressUserError {\n        ...TaskInProgressUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    task {\n      ...ReplayTaskMeta\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for StartReplayTask"""
+
+        document = "fragment TaskMeta on Task {\n  __typename\n  id\n  createdAt\n}\n\nfragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment CloudUserErrorFull on CloudUserError {\n  ...UserErrorFull\n  cloudReason: reason\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {\n  ...UserErrorFull\n  permissionReason: reason\n  __typename\n}\n\nfragment ReplayTaskMeta on ReplayTask {\n  ...TaskMeta\n  replayEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nfragment TaskInProgressUserErrorFull on TaskInProgressUserError {\n  ...UserErrorFull\n  taskId\n  __typename\n}\n\nmutation StartReplayTask($sessionId: ID!, $input: StartReplayTaskInput!) {\n  startReplayTask(sessionId: $sessionId, input: $input) {\n    error {\n      __typename\n      ... on CloudUserError {\n        ...CloudUserErrorFull\n      }\n      ... on PermissionDeniedUserError {\n        ...PermissionDeniedUserErrorFull\n      }\n      ... on TaskInProgressUserError {\n        ...TaskInProgressUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    task {\n      ...ReplayTaskMeta\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class Request(BaseModel):
     """No documentation found for this operation."""
+
     request: Optional[RequestFull] = Field(default=None)
 
     class Arguments(BaseModel):
-        """Arguments for Request """
+        """Arguments for Request"""
+
         id: str
         includeRequestRaw: bool
         includeResponseRaw: bool
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for Request """
-        document = 'fragment ResponseFull on Response {\n  id\n  statusCode\n  roundtripTime\n  length\n  createdAt\n  raw @include(if: $includeResponseRaw)\n  __typename\n}\n\nfragment RequestFull on Request {\n  id\n  host\n  port\n  method\n  path\n  query\n  isTls\n  metadata {\n    id\n    color\n    __typename\n  }\n  createdAt\n  raw @include(if: $includeRequestRaw)\n  response {\n    ...ResponseFull\n    __typename\n  }\n  __typename\n}\n\nquery Request($id: ID!, $includeRequestRaw: Boolean!, $includeResponseRaw: Boolean!) {\n  request(id: $id) {\n    ...RequestFull\n    __typename\n  }\n}'
+        """Meta class for Request"""
+
+        document = "fragment ResponseFull on Response {\n  id\n  statusCode\n  roundtripTime\n  length\n  createdAt\n  raw @include(if: $includeResponseRaw)\n  __typename\n}\n\nfragment RequestFull on Request {\n  id\n  host\n  port\n  method\n  path\n  query\n  isTls\n  metadata {\n    id\n    color\n    __typename\n  }\n  createdAt\n  raw @include(if: $includeRequestRaw)\n  response {\n    ...ResponseFull\n    __typename\n  }\n  __typename\n}\n\nquery Request($id: ID!, $includeRequestRaw: Boolean!, $includeResponseRaw: Boolean!) {\n  request(id: $id) {\n    ...RequestFull\n    __typename\n  }\n}"
+
 
 class Response(BaseModel):
     """No documentation found for this operation."""
+
     response: Optional[ResponseFull] = Field(default=None)
 
     class Arguments(BaseModel):
-        """Arguments for Response """
+        """Arguments for Response"""
+
         id: str
         includeResponseRaw: bool
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for Response """
-        document = 'fragment ResponseFull on Response {\n  id\n  statusCode\n  roundtripTime\n  length\n  createdAt\n  raw @include(if: $includeResponseRaw)\n  __typename\n}\n\nquery Response($id: ID!, $includeResponseRaw: Boolean!) {\n  response(id: $id) {\n    ...ResponseFull\n    __typename\n  }\n}'
+        """Meta class for Response"""
+
+        document = "fragment ResponseFull on Response {\n  id\n  statusCode\n  roundtripTime\n  length\n  createdAt\n  raw @include(if: $includeResponseRaw)\n  __typename\n}\n\nquery Response($id: ID!, $includeResponseRaw: Boolean!) {\n  response(id: $id) {\n    ...ResponseFull\n    __typename\n  }\n}"
+
 
 class RequestsRequestsEdges(BaseModel):
     """An edge in a connection."""
-    typename: Literal['RequestEdge'] = Field(alias='__typename', default='RequestEdge')
+
+    typename: Literal["RequestEdge"] = Field(alias="__typename", default="RequestEdge")
     cursor: str
-    'A cursor for use in pagination'
+    "A cursor for use in pagination"
     node: RequestFull
-    'The item at the end of the edge'
+    "The item at the end of the edge"
+
 
 class RequestsRequestsPageinfo(BaseModel):
     """Information about pagination in a connection"""
-    typename: Literal['PageInfo'] = Field(alias='__typename', default='PageInfo')
+
+    typename: Literal["PageInfo"] = Field(alias="__typename", default="PageInfo")
     hasNextPage: bool
-    'When paginating forwards, are there more items?'
+    "When paginating forwards, are there more items?"
     hasPreviousPage: bool
-    'When paginating backwards, are there more items?'
+    "When paginating backwards, are there more items?"
     startCursor: Optional[str] = Field(default=None)
-    'When paginating backwards, the cursor to continue.'
+    "When paginating backwards, the cursor to continue."
     endCursor: Optional[str] = Field(default=None)
-    'When paginating forwards, the cursor to continue.'
+    "When paginating forwards, the cursor to continue."
+
 
 class RequestsRequests(BaseModel):
     """No documentation"""
-    typename: Literal['RequestConnection'] = Field(alias='__typename', default='RequestConnection')
+
+    typename: Literal["RequestConnection"] = Field(
+        alias="__typename", default="RequestConnection"
+    )
     edges: List[RequestsRequestsEdges]
-    'A list of edges.'
+    "A list of edges."
     pageInfo: RequestsRequestsPageinfo
-    'Information to aid in pagination.'
+    "Information to aid in pagination."
+
 
 class Requests(BaseModel):
     """No documentation found for this operation."""
+
     requests: RequestsRequests
 
     class Arguments(BaseModel):
-        """Arguments for Requests """
+        """Arguments for Requests"""
+
         first: Optional[int] = Field(default=None)
         after: Optional[str] = Field(default=None)
         last: Optional[int] = Field(default=None)
@@ -2206,478 +3320,934 @@ class Requests(BaseModel):
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for Requests """
-        document = 'fragment ResponseFull on Response {\n  id\n  statusCode\n  roundtripTime\n  length\n  createdAt\n  raw @include(if: $includeResponseRaw)\n  __typename\n}\n\nfragment RequestFull on Request {\n  id\n  host\n  port\n  method\n  path\n  query\n  isTls\n  metadata {\n    id\n    color\n    __typename\n  }\n  createdAt\n  raw @include(if: $includeRequestRaw)\n  response {\n    ...ResponseFull\n    __typename\n  }\n  __typename\n}\n\nquery Requests($first: Int, $after: String, $last: Int, $before: String, $filter: HTTPQL, $order: RequestResponseOrderInput, $scopeId: ID, $includeRequestRaw: Boolean!, $includeResponseRaw: Boolean!) {\n  requests(\n    first: $first\n    after: $after\n    last: $last\n    before: $before\n    filter: $filter\n    order: $order\n    scopeId: $scopeId\n  ) {\n    edges {\n      cursor\n      node {\n        ...RequestFull\n        __typename\n      }\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for Requests"""
+
+        document = "fragment ResponseFull on Response {\n  id\n  statusCode\n  roundtripTime\n  length\n  createdAt\n  raw @include(if: $includeResponseRaw)\n  __typename\n}\n\nfragment RequestFull on Request {\n  id\n  host\n  port\n  method\n  path\n  query\n  isTls\n  metadata {\n    id\n    color\n    __typename\n  }\n  createdAt\n  raw @include(if: $includeRequestRaw)\n  response {\n    ...ResponseFull\n    __typename\n  }\n  __typename\n}\n\nquery Requests($first: Int, $after: String, $last: Int, $before: String, $filter: HTTPQL, $order: RequestResponseOrderInput, $scopeId: ID, $includeRequestRaw: Boolean!, $includeResponseRaw: Boolean!) {\n  requests(\n    first: $first\n    after: $after\n    last: $last\n    before: $before\n    filter: $filter\n    order: $order\n    scopeId: $scopeId\n  ) {\n    edges {\n      cursor\n      node {\n        ...RequestFull\n        __typename\n      }\n      __typename\n    }\n    pageInfo {\n      hasNextPage\n      hasPreviousPage\n      startCursor\n      endCursor\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class Scopes(BaseModel):
     """No documentation found for this operation."""
+
     scopes: List[ScopeFull]
 
     class Arguments(BaseModel):
-        """Arguments for Scopes """
+        """Arguments for Scopes"""
+
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for Scopes """
-        document = 'fragment ScopeFull on Scope {\n  id\n  name\n  allowlist\n  denylist\n  indexed\n  __typename\n}\n\nquery Scopes {\n  scopes {\n    ...ScopeFull\n    __typename\n  }\n}'
+        """Meta class for Scopes"""
+
+        document = "fragment ScopeFull on Scope {\n  id\n  name\n  allowlist\n  denylist\n  indexed\n  __typename\n}\n\nquery Scopes {\n  scopes {\n    ...ScopeFull\n    __typename\n  }\n}"
+
 
 class Scope(BaseModel):
     """No documentation found for this operation."""
+
     scope: Optional[ScopeFull] = Field(default=None)
 
     class Arguments(BaseModel):
-        """Arguments for Scope """
+        """Arguments for Scope"""
+
         id: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for Scope """
-        document = 'fragment ScopeFull on Scope {\n  id\n  name\n  allowlist\n  denylist\n  indexed\n  __typename\n}\n\nquery Scope($id: ID!) {\n  scope(id: $id) {\n    ...ScopeFull\n    __typename\n  }\n}'
+        """Meta class for Scope"""
+
+        document = "fragment ScopeFull on Scope {\n  id\n  name\n  allowlist\n  denylist\n  indexed\n  __typename\n}\n\nquery Scope($id: ID!) {\n  scope(id: $id) {\n    ...ScopeFull\n    __typename\n  }\n}"
+
 
 class CreateScopeCreatescopeInvalidGlobTermsUserErrorInlineFragment(BaseModel):
-    typename: Literal['InvalidGlobTermsUserError'] = Field(alias='__typename', default='InvalidGlobTermsUserError')
+    typename: Literal["InvalidGlobTermsUserError"] = Field(
+        alias="__typename", default="InvalidGlobTermsUserError"
+    )
+
 
 class CreateScopeCreatescopeOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class CreateScopeCreatescope(BaseModel):
     """No documentation"""
-    typename: Literal['CreateScopePayload'] = Field(alias='__typename', default='CreateScopePayload')
-    error: Optional[Union[CreateScopeCreatescopeInvalidGlobTermsUserErrorInlineFragment, CreateScopeCreatescopeOtherUserErrorInlineFragment]] = Field(default=None)
+
+    typename: Literal["CreateScopePayload"] = Field(
+        alias="__typename", default="CreateScopePayload"
+    )
+    error: Optional[
+        Union[
+            CreateScopeCreatescopeInvalidGlobTermsUserErrorInlineFragment,
+            CreateScopeCreatescopeOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
     scope: Optional[ScopeFull] = Field(default=None)
+
 
 class CreateScope(BaseModel):
     """No documentation found for this operation."""
+
     createScope: CreateScopeCreatescope
 
     class Arguments(BaseModel):
-        """Arguments for CreateScope """
+        """Arguments for CreateScope"""
+
         input: CreateScopeInput
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for CreateScope """
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment InvalidGlobTermsUserErrorFull on InvalidGlobTermsUserError {\n  ...UserErrorFull\n  terms\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment ScopeFull on Scope {\n  id\n  name\n  allowlist\n  denylist\n  indexed\n  __typename\n}\n\nmutation CreateScope($input: CreateScopeInput!) {\n  createScope(input: $input) {\n    error {\n      __typename\n      ... on InvalidGlobTermsUserError {\n        ...InvalidGlobTermsUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    scope {\n      ...ScopeFull\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for CreateScope"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment InvalidGlobTermsUserErrorFull on InvalidGlobTermsUserError {\n  ...UserErrorFull\n  terms\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment ScopeFull on Scope {\n  id\n  name\n  allowlist\n  denylist\n  indexed\n  __typename\n}\n\nmutation CreateScope($input: CreateScopeInput!) {\n  createScope(input: $input) {\n    error {\n      __typename\n      ... on InvalidGlobTermsUserError {\n        ...InvalidGlobTermsUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    scope {\n      ...ScopeFull\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class UpdateScopeUpdatescopeInvalidGlobTermsUserErrorInlineFragment(BaseModel):
-    typename: Literal['InvalidGlobTermsUserError'] = Field(alias='__typename', default='InvalidGlobTermsUserError')
+    typename: Literal["InvalidGlobTermsUserError"] = Field(
+        alias="__typename", default="InvalidGlobTermsUserError"
+    )
+
 
 class UpdateScopeUpdatescopeOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class UpdateScopeUpdatescope(BaseModel):
     """No documentation"""
-    typename: Literal['UpdateScopePayload'] = Field(alias='__typename', default='UpdateScopePayload')
-    error: Optional[Union[UpdateScopeUpdatescopeInvalidGlobTermsUserErrorInlineFragment, UpdateScopeUpdatescopeOtherUserErrorInlineFragment]] = Field(default=None)
+
+    typename: Literal["UpdateScopePayload"] = Field(
+        alias="__typename", default="UpdateScopePayload"
+    )
+    error: Optional[
+        Union[
+            UpdateScopeUpdatescopeInvalidGlobTermsUserErrorInlineFragment,
+            UpdateScopeUpdatescopeOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
     scope: Optional[ScopeFull] = Field(default=None)
+
 
 class UpdateScope(BaseModel):
     """No documentation found for this operation."""
+
     updateScope: UpdateScopeUpdatescope
 
     class Arguments(BaseModel):
-        """Arguments for UpdateScope """
+        """Arguments for UpdateScope"""
+
         id: str
         input: UpdateScopeInput
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for UpdateScope """
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment InvalidGlobTermsUserErrorFull on InvalidGlobTermsUserError {\n  ...UserErrorFull\n  terms\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment ScopeFull on Scope {\n  id\n  name\n  allowlist\n  denylist\n  indexed\n  __typename\n}\n\nmutation UpdateScope($id: ID!, $input: UpdateScopeInput!) {\n  updateScope(id: $id, input: $input) {\n    error {\n      __typename\n      ... on InvalidGlobTermsUserError {\n        ...InvalidGlobTermsUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    scope {\n      ...ScopeFull\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for UpdateScope"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment InvalidGlobTermsUserErrorFull on InvalidGlobTermsUserError {\n  ...UserErrorFull\n  terms\n  __typename\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment ScopeFull on Scope {\n  id\n  name\n  allowlist\n  denylist\n  indexed\n  __typename\n}\n\nmutation UpdateScope($id: ID!, $input: UpdateScopeInput!) {\n  updateScope(id: $id, input: $input) {\n    error {\n      __typename\n      ... on InvalidGlobTermsUserError {\n        ...InvalidGlobTermsUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    scope {\n      ...ScopeFull\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class DeleteScopeDeletescope(BaseModel):
     """No documentation"""
-    typename: Literal['DeleteScopePayload'] = Field(alias='__typename', default='DeleteScopePayload')
+
+    typename: Literal["DeleteScopePayload"] = Field(
+        alias="__typename", default="DeleteScopePayload"
+    )
     deletedId: str
+
 
 class DeleteScope(BaseModel):
     """No documentation found for this operation."""
+
     deleteScope: DeleteScopeDeletescope
 
     class Arguments(BaseModel):
-        """Arguments for DeleteScope """
+        """Arguments for DeleteScope"""
+
         id: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for DeleteScope """
-        document = 'mutation DeleteScope($id: ID!) {\n  deleteScope(id: $id) {\n    deletedId\n    __typename\n  }\n}'
+        """Meta class for DeleteScope"""
+
+        document = "mutation DeleteScope($id: ID!) {\n  deleteScope(id: $id) {\n    deletedId\n    __typename\n  }\n}"
+
 
 class TasksTasksBase(BaseModel):
     """No documentation"""
 
+
 class TasksTasksBaseDataExportTask(TaskMetaDataExportTask, TasksTasksBase, BaseModel):
     """No documentation"""
-    typename: Literal['DataExportTask'] = Field(alias='__typename', default='DataExportTask')
+
+    typename: Literal["DataExportTask"] = Field(
+        alias="__typename", default="DataExportTask"
+    )
+
 
 class TasksTasksBaseReplayTask(TaskMetaReplayTask, TasksTasksBase, BaseModel):
     """No documentation"""
-    typename: Literal['ReplayTask'] = Field(alias='__typename', default='ReplayTask')
+
+    typename: Literal["ReplayTask"] = Field(alias="__typename", default="ReplayTask")
+
 
 class TasksTasksBaseWorkflowTask(TaskMetaWorkflowTask, TasksTasksBase, BaseModel):
     """No documentation"""
-    typename: Literal['WorkflowTask'] = Field(alias='__typename', default='WorkflowTask')
+
+    typename: Literal["WorkflowTask"] = Field(
+        alias="__typename", default="WorkflowTask"
+    )
+
 
 class TasksTasksBaseCatchAll(TasksTasksBase, BaseModel):
     """Catch all class for TasksTasksBase"""
-    typename: str = Field(alias='__typename')
+
+    typename: str = Field(alias="__typename")
+
 
 class Tasks(BaseModel):
     """No documentation found for this operation."""
-    tasks: List[Union[Annotated[Union[TasksTasksBaseDataExportTask, TasksTasksBaseReplayTask, TasksTasksBaseWorkflowTask], Field(discriminator='typename')], TasksTasksBaseCatchAll]]
+
+    tasks: List[
+        Union[
+            Annotated[
+                Union[
+                    TasksTasksBaseDataExportTask,
+                    TasksTasksBaseReplayTask,
+                    TasksTasksBaseWorkflowTask,
+                ],
+                Field(discriminator="typename"),
+            ],
+            TasksTasksBaseCatchAll,
+        ]
+    ]
 
     class Arguments(BaseModel):
-        """Arguments for Tasks """
+        """Arguments for Tasks"""
+
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for Tasks """
-        document = 'fragment ReplayTaskMeta on ReplayTask {\n  ...TaskMeta\n  replayEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nfragment TaskMeta on Task {\n  __typename\n  id\n  createdAt\n}\n\nquery Tasks {\n  tasks {\n    ...TaskMeta\n    ... on ReplayTask {\n      ...ReplayTaskMeta\n    }\n    __typename\n  }\n}'
+        """Meta class for Tasks"""
+
+        document = "fragment ReplayTaskMeta on ReplayTask {\n  ...TaskMeta\n  replayEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nfragment TaskMeta on Task {\n  __typename\n  id\n  createdAt\n}\n\nquery Tasks {\n  tasks {\n    ...TaskMeta\n    ... on ReplayTask {\n      ...ReplayTaskMeta\n    }\n    __typename\n  }\n}"
+
 
 class cancelTaskCanceltaskUnknownIdUserErrorInlineFragment(BaseModel):
-    typename: Literal['UnknownIdUserError'] = Field(alias='__typename', default='UnknownIdUserError')
+    typename: Literal["UnknownIdUserError"] = Field(
+        alias="__typename", default="UnknownIdUserError"
+    )
+
 
 class cancelTaskCanceltaskOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class cancelTaskCanceltask(BaseModel):
     """No documentation"""
-    typename: Literal['CancelTaskPayload'] = Field(alias='__typename', default='CancelTaskPayload')
+
+    typename: Literal["CancelTaskPayload"] = Field(
+        alias="__typename", default="CancelTaskPayload"
+    )
     cancelledId: Optional[str] = Field(default=None)
-    error: Optional[Union[cancelTaskCanceltaskUnknownIdUserErrorInlineFragment, cancelTaskCanceltaskOtherUserErrorInlineFragment]] = Field(default=None)
+    error: Optional[
+        Union[
+            cancelTaskCanceltaskUnknownIdUserErrorInlineFragment,
+            cancelTaskCanceltaskOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
+
 
 class cancelTask(BaseModel):
     """No documentation found for this operation."""
+
     cancelTask: cancelTaskCanceltask
 
     class Arguments(BaseModel):
-        """Arguments for cancelTask """
+        """Arguments for cancelTask"""
+
         id: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for cancelTask """
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nmutation cancelTask($id: ID!) {\n  cancelTask(id: $id) {\n    cancelledId\n    error {\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for cancelTask"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nmutation cancelTask($id: ID!) {\n  cancelTask(id: $id) {\n    cancelledId\n    error {\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class FinishedTaskFinishedtaskTaskBase(BaseModel):
     """No documentation"""
 
-class FinishedTaskFinishedtaskTaskBaseDataExportTask(TaskMetaDataExportTask, FinishedTaskFinishedtaskTaskBase, BaseModel):
-    """No documentation"""
-    typename: Literal['DataExportTask'] = Field(alias='__typename', default='DataExportTask')
 
-class FinishedTaskFinishedtaskTaskBaseReplayTask(TaskMetaReplayTask, FinishedTaskFinishedtaskTaskBase, BaseModel):
+class FinishedTaskFinishedtaskTaskBaseDataExportTask(
+    TaskMetaDataExportTask, FinishedTaskFinishedtaskTaskBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['ReplayTask'] = Field(alias='__typename', default='ReplayTask')
 
-class FinishedTaskFinishedtaskTaskBaseWorkflowTask(TaskMetaWorkflowTask, FinishedTaskFinishedtaskTaskBase, BaseModel):
+    typename: Literal["DataExportTask"] = Field(
+        alias="__typename", default="DataExportTask"
+    )
+
+
+class FinishedTaskFinishedtaskTaskBaseReplayTask(
+    TaskMetaReplayTask, FinishedTaskFinishedtaskTaskBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['WorkflowTask'] = Field(alias='__typename', default='WorkflowTask')
 
-class FinishedTaskFinishedtaskTaskBaseCatchAll(FinishedTaskFinishedtaskTaskBase, BaseModel):
+    typename: Literal["ReplayTask"] = Field(alias="__typename", default="ReplayTask")
+
+
+class FinishedTaskFinishedtaskTaskBaseWorkflowTask(
+    TaskMetaWorkflowTask, FinishedTaskFinishedtaskTaskBase, BaseModel
+):
+    """No documentation"""
+
+    typename: Literal["WorkflowTask"] = Field(
+        alias="__typename", default="WorkflowTask"
+    )
+
+
+class FinishedTaskFinishedtaskTaskBaseCatchAll(
+    FinishedTaskFinishedtaskTaskBase, BaseModel
+):
     """Catch all class for FinishedTaskFinishedtaskTaskBase"""
-    typename: str = Field(alias='__typename')
+
+    typename: str = Field(alias="__typename")
+
 
 class FinishedTaskFinishedtaskErrorBase(BaseModel):
     """No documentation"""
+
     code: str
 
-class FinishedTaskFinishedtaskErrorBaseAIUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
-    """No documentation"""
-    typename: Literal['AIUserError'] = Field(alias='__typename', default='AIUserError')
 
-class FinishedTaskFinishedtaskErrorBaseAliasTakenUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+class FinishedTaskFinishedtaskErrorBaseAIUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['AliasTakenUserError'] = Field(alias='__typename', default='AliasTakenUserError')
 
-class FinishedTaskFinishedtaskErrorBaseAssistantUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["AIUserError"] = Field(alias="__typename", default="AIUserError")
+
+
+class FinishedTaskFinishedtaskErrorBaseAliasTakenUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['AssistantUserError'] = Field(alias='__typename', default='AssistantUserError')
 
-class FinishedTaskFinishedtaskErrorBaseAuthenticationUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["AliasTakenUserError"] = Field(
+        alias="__typename", default="AliasTakenUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseAssistantUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['AuthenticationUserError'] = Field(alias='__typename', default='AuthenticationUserError')
 
-class FinishedTaskFinishedtaskErrorBaseAuthorizationUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["AssistantUserError"] = Field(
+        alias="__typename", default="AssistantUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseAuthenticationUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['AuthorizationUserError'] = Field(alias='__typename', default='AuthorizationUserError')
 
-class FinishedTaskFinishedtaskErrorBaseAutomateTaskUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["AuthenticationUserError"] = Field(
+        alias="__typename", default="AuthenticationUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseAuthorizationUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['AutomateTaskUserError'] = Field(alias='__typename', default='AutomateTaskUserError')
 
-class FinishedTaskFinishedtaskErrorBaseBackupUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["AuthorizationUserError"] = Field(
+        alias="__typename", default="AuthorizationUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseAutomateTaskUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['BackupUserError'] = Field(alias='__typename', default='BackupUserError')
 
-class FinishedTaskFinishedtaskErrorBaseCertificateUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["AutomateTaskUserError"] = Field(
+        alias="__typename", default="AutomateTaskUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseBackupUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['CertificateUserError'] = Field(alias='__typename', default='CertificateUserError')
 
-class FinishedTaskFinishedtaskErrorBaseCloudUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["BackupUserError"] = Field(
+        alias="__typename", default="BackupUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseCertificateUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['CloudUserError'] = Field(alias='__typename', default='CloudUserError')
 
-class FinishedTaskFinishedtaskErrorBaseInternalUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["CertificateUserError"] = Field(
+        alias="__typename", default="CertificateUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseCloudUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['InternalUserError'] = Field(alias='__typename', default='InternalUserError')
 
-class FinishedTaskFinishedtaskErrorBaseInvalidGlobTermsUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["CloudUserError"] = Field(
+        alias="__typename", default="CloudUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseInternalUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['InvalidGlobTermsUserError'] = Field(alias='__typename', default='InvalidGlobTermsUserError')
 
-class FinishedTaskFinishedtaskErrorBaseInvalidHTTPQLUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["InternalUserError"] = Field(
+        alias="__typename", default="InternalUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseInvalidGlobTermsUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['InvalidHTTPQLUserError'] = Field(alias='__typename', default='InvalidHTTPQLUserError')
 
-class FinishedTaskFinishedtaskErrorBaseInvalidRegexUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["InvalidGlobTermsUserError"] = Field(
+        alias="__typename", default="InvalidGlobTermsUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseInvalidHTTPQLUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['InvalidRegexUserError'] = Field(alias='__typename', default='InvalidRegexUserError')
 
-class FinishedTaskFinishedtaskErrorBaseNameTakenUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["InvalidHTTPQLUserError"] = Field(
+        alias="__typename", default="InvalidHTTPQLUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseInvalidRegexUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['NameTakenUserError'] = Field(alias='__typename', default='NameTakenUserError')
 
-class FinishedTaskFinishedtaskErrorBaseNewerVersionUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["InvalidRegexUserError"] = Field(
+        alias="__typename", default="InvalidRegexUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseNameTakenUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['NewerVersionUserError'] = Field(alias='__typename', default='NewerVersionUserError')
 
-class FinishedTaskFinishedtaskErrorBaseOtherUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["NameTakenUserError"] = Field(
+        alias="__typename", default="NameTakenUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseNewerVersionUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
 
-class FinishedTaskFinishedtaskErrorBasePermissionDeniedUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["NewerVersionUserError"] = Field(
+        alias="__typename", default="NewerVersionUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseOtherUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['PermissionDeniedUserError'] = Field(alias='__typename', default='PermissionDeniedUserError')
 
-class FinishedTaskFinishedtaskErrorBasePluginUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBasePermissionDeniedUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['PluginUserError'] = Field(alias='__typename', default='PluginUserError')
 
-class FinishedTaskFinishedtaskErrorBaseProjectUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["PermissionDeniedUserError"] = Field(
+        alias="__typename", default="PermissionDeniedUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBasePluginUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['ProjectUserError'] = Field(alias='__typename', default='ProjectUserError')
 
-class FinishedTaskFinishedtaskErrorBaseRankUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["PluginUserError"] = Field(
+        alias="__typename", default="PluginUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseProjectUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['RankUserError'] = Field(alias='__typename', default='RankUserError')
 
-class FinishedTaskFinishedtaskErrorBaseReadOnlyUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["ProjectUserError"] = Field(
+        alias="__typename", default="ProjectUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseRankUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['ReadOnlyUserError'] = Field(alias='__typename', default='ReadOnlyUserError')
 
-class FinishedTaskFinishedtaskErrorBaseRenderFailedUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["RankUserError"] = Field(
+        alias="__typename", default="RankUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseReadOnlyUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['RenderFailedUserError'] = Field(alias='__typename', default='RenderFailedUserError')
 
-class FinishedTaskFinishedtaskErrorBaseStoreUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["ReadOnlyUserError"] = Field(
+        alias="__typename", default="ReadOnlyUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseRenderFailedUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['StoreUserError'] = Field(alias='__typename', default='StoreUserError')
 
-class FinishedTaskFinishedtaskErrorBaseTaskInProgressUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["RenderFailedUserError"] = Field(
+        alias="__typename", default="RenderFailedUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseStoreUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['TaskInProgressUserError'] = Field(alias='__typename', default='TaskInProgressUserError')
 
-class FinishedTaskFinishedtaskErrorBaseUnknownIdUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["StoreUserError"] = Field(
+        alias="__typename", default="StoreUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseTaskInProgressUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['UnknownIdUserError'] = Field(alias='__typename', default='UnknownIdUserError')
 
-class FinishedTaskFinishedtaskErrorBaseUnsupportedPlatformUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["TaskInProgressUserError"] = Field(
+        alias="__typename", default="TaskInProgressUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseUnknownIdUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['UnsupportedPlatformUserError'] = Field(alias='__typename', default='UnsupportedPlatformUserError')
 
-class FinishedTaskFinishedtaskErrorBaseWorkflowUserError(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["UnknownIdUserError"] = Field(
+        alias="__typename", default="UnknownIdUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseUnsupportedPlatformUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """No documentation"""
-    typename: Literal['WorkflowUserError'] = Field(alias='__typename', default='WorkflowUserError')
 
-class FinishedTaskFinishedtaskErrorBaseCatchAll(FinishedTaskFinishedtaskErrorBase, BaseModel):
+    typename: Literal["UnsupportedPlatformUserError"] = Field(
+        alias="__typename", default="UnsupportedPlatformUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseWorkflowUserError(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
+    """No documentation"""
+
+    typename: Literal["WorkflowUserError"] = Field(
+        alias="__typename", default="WorkflowUserError"
+    )
+
+
+class FinishedTaskFinishedtaskErrorBaseCatchAll(
+    FinishedTaskFinishedtaskErrorBase, BaseModel
+):
     """Catch all class for FinishedTaskFinishedtaskErrorBase"""
-    typename: str = Field(alias='__typename')
+
+    typename: str = Field(alias="__typename")
+
 
 class FinishedTaskFinishedtask(BaseModel):
     """No documentation"""
-    typename: Literal['FinishedTaskPayload'] = Field(alias='__typename', default='FinishedTaskPayload')
-    task: Union[Annotated[Union[FinishedTaskFinishedtaskTaskBaseDataExportTask, FinishedTaskFinishedtaskTaskBaseReplayTask, FinishedTaskFinishedtaskTaskBaseWorkflowTask], Field(discriminator='typename')], FinishedTaskFinishedtaskTaskBaseCatchAll]
+
+    typename: Literal["FinishedTaskPayload"] = Field(
+        alias="__typename", default="FinishedTaskPayload"
+    )
+    task: Union[
+        Annotated[
+            Union[
+                FinishedTaskFinishedtaskTaskBaseDataExportTask,
+                FinishedTaskFinishedtaskTaskBaseReplayTask,
+                FinishedTaskFinishedtaskTaskBaseWorkflowTask,
+            ],
+            Field(discriminator="typename"),
+        ],
+        FinishedTaskFinishedtaskTaskBaseCatchAll,
+    ]
     status: TaskStatus
-    error: Optional[Union[Annotated[Union[FinishedTaskFinishedtaskErrorBaseAIUserError, FinishedTaskFinishedtaskErrorBaseAliasTakenUserError, FinishedTaskFinishedtaskErrorBaseAssistantUserError, FinishedTaskFinishedtaskErrorBaseAuthenticationUserError, FinishedTaskFinishedtaskErrorBaseAuthorizationUserError, FinishedTaskFinishedtaskErrorBaseAutomateTaskUserError, FinishedTaskFinishedtaskErrorBaseBackupUserError, FinishedTaskFinishedtaskErrorBaseCertificateUserError, FinishedTaskFinishedtaskErrorBaseCloudUserError, FinishedTaskFinishedtaskErrorBaseInternalUserError, FinishedTaskFinishedtaskErrorBaseInvalidGlobTermsUserError, FinishedTaskFinishedtaskErrorBaseInvalidHTTPQLUserError, FinishedTaskFinishedtaskErrorBaseInvalidRegexUserError, FinishedTaskFinishedtaskErrorBaseNameTakenUserError, FinishedTaskFinishedtaskErrorBaseNewerVersionUserError, FinishedTaskFinishedtaskErrorBaseOtherUserError, FinishedTaskFinishedtaskErrorBasePermissionDeniedUserError, FinishedTaskFinishedtaskErrorBasePluginUserError, FinishedTaskFinishedtaskErrorBaseProjectUserError, FinishedTaskFinishedtaskErrorBaseRankUserError, FinishedTaskFinishedtaskErrorBaseReadOnlyUserError, FinishedTaskFinishedtaskErrorBaseRenderFailedUserError, FinishedTaskFinishedtaskErrorBaseStoreUserError, FinishedTaskFinishedtaskErrorBaseTaskInProgressUserError, FinishedTaskFinishedtaskErrorBaseUnknownIdUserError, FinishedTaskFinishedtaskErrorBaseUnsupportedPlatformUserError, FinishedTaskFinishedtaskErrorBaseWorkflowUserError], Field(discriminator='typename')], FinishedTaskFinishedtaskErrorBaseCatchAll]] = Field(default=None)
+    error: Optional[
+        Union[
+            Annotated[
+                Union[
+                    FinishedTaskFinishedtaskErrorBaseAIUserError,
+                    FinishedTaskFinishedtaskErrorBaseAliasTakenUserError,
+                    FinishedTaskFinishedtaskErrorBaseAssistantUserError,
+                    FinishedTaskFinishedtaskErrorBaseAuthenticationUserError,
+                    FinishedTaskFinishedtaskErrorBaseAuthorizationUserError,
+                    FinishedTaskFinishedtaskErrorBaseAutomateTaskUserError,
+                    FinishedTaskFinishedtaskErrorBaseBackupUserError,
+                    FinishedTaskFinishedtaskErrorBaseCertificateUserError,
+                    FinishedTaskFinishedtaskErrorBaseCloudUserError,
+                    FinishedTaskFinishedtaskErrorBaseInternalUserError,
+                    FinishedTaskFinishedtaskErrorBaseInvalidGlobTermsUserError,
+                    FinishedTaskFinishedtaskErrorBaseInvalidHTTPQLUserError,
+                    FinishedTaskFinishedtaskErrorBaseInvalidRegexUserError,
+                    FinishedTaskFinishedtaskErrorBaseNameTakenUserError,
+                    FinishedTaskFinishedtaskErrorBaseNewerVersionUserError,
+                    FinishedTaskFinishedtaskErrorBaseOtherUserError,
+                    FinishedTaskFinishedtaskErrorBasePermissionDeniedUserError,
+                    FinishedTaskFinishedtaskErrorBasePluginUserError,
+                    FinishedTaskFinishedtaskErrorBaseProjectUserError,
+                    FinishedTaskFinishedtaskErrorBaseRankUserError,
+                    FinishedTaskFinishedtaskErrorBaseReadOnlyUserError,
+                    FinishedTaskFinishedtaskErrorBaseRenderFailedUserError,
+                    FinishedTaskFinishedtaskErrorBaseStoreUserError,
+                    FinishedTaskFinishedtaskErrorBaseTaskInProgressUserError,
+                    FinishedTaskFinishedtaskErrorBaseUnknownIdUserError,
+                    FinishedTaskFinishedtaskErrorBaseUnsupportedPlatformUserError,
+                    FinishedTaskFinishedtaskErrorBaseWorkflowUserError,
+                ],
+                Field(discriminator="typename"),
+            ],
+            FinishedTaskFinishedtaskErrorBaseCatchAll,
+        ]
+    ] = Field(default=None)
+
 
 class FinishedTask(BaseModel):
     """No documentation found for this operation."""
+
     finishedTask: FinishedTaskFinishedtask
 
     class Arguments(BaseModel):
-        """Arguments for FinishedTask """
+        """Arguments for FinishedTask"""
+
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for FinishedTask """
-        document = 'fragment ReplayTaskMeta on ReplayTask {\n  ...TaskMeta\n  replayEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nfragment TaskMeta on Task {\n  __typename\n  id\n  createdAt\n}\n\nsubscription FinishedTask {\n  finishedTask {\n    task {\n      ...TaskMeta\n      ... on ReplayTask {\n        ...ReplayTaskMeta\n      }\n      __typename\n    }\n    status\n    error {\n      code\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for FinishedTask"""
+
+        document = "fragment ReplayTaskMeta on ReplayTask {\n  ...TaskMeta\n  replayEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nfragment TaskMeta on Task {\n  __typename\n  id\n  createdAt\n}\n\nsubscription FinishedTask {\n  finishedTask {\n    task {\n      ...TaskMeta\n      ... on ReplayTask {\n        ...ReplayTaskMeta\n      }\n      __typename\n    }\n    status\n    error {\n      code\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class ViewerCloudUserInlineFragmentProfileIdentity(BaseModel):
     """No documentation"""
-    typename: Literal['UserIdentity'] = Field(alias='__typename', default='UserIdentity')
+
+    typename: Literal["UserIdentity"] = Field(
+        alias="__typename", default="UserIdentity"
+    )
     email: str
     name: str
 
+
 class ViewerCloudUserInlineFragmentProfileSubscriptionPlan(BaseModel):
     """No documentation"""
-    typename: Literal['UserSubscriptionPlan'] = Field(alias='__typename', default='UserSubscriptionPlan')
+
+    typename: Literal["UserSubscriptionPlan"] = Field(
+        alias="__typename", default="UserSubscriptionPlan"
+    )
     name: str
+
 
 class ViewerCloudUserInlineFragmentProfileSubscriptionEntitlements(BaseModel):
     """No documentation"""
-    typename: Literal['UserEntitlement'] = Field(alias='__typename', default='UserEntitlement')
+
+    typename: Literal["UserEntitlement"] = Field(
+        alias="__typename", default="UserEntitlement"
+    )
     name: str
+
 
 class ViewerCloudUserInlineFragmentProfileSubscription(BaseModel):
     """No documentation"""
-    typename: Literal['UserSubscription'] = Field(alias='__typename', default='UserSubscription')
+
+    typename: Literal["UserSubscription"] = Field(
+        alias="__typename", default="UserSubscription"
+    )
     plan: ViewerCloudUserInlineFragmentProfileSubscriptionPlan
     entitlements: List[ViewerCloudUserInlineFragmentProfileSubscriptionEntitlements]
 
+
 class ViewerCloudUserInlineFragmentProfile(BaseModel):
     """No documentation"""
-    typename: Literal['UserProfile'] = Field(alias='__typename', default='UserProfile')
+
+    typename: Literal["UserProfile"] = Field(alias="__typename", default="UserProfile")
     identity: ViewerCloudUserInlineFragmentProfileIdentity
     subscription: ViewerCloudUserInlineFragmentProfileSubscription
 
+
 class ViewerCloudUserInlineFragment(BaseModel):
-    typename: Literal['CloudUser'] = Field(alias='__typename', default='CloudUser')
+    typename: Literal["CloudUser"] = Field(alias="__typename", default="CloudUser")
     id: str
     profile: ViewerCloudUserInlineFragmentProfile
 
+
 class ViewerGuestUserInlineFragment(BaseModel):
-    typename: Literal['GuestUser'] = Field(alias='__typename', default='GuestUser')
+    typename: Literal["GuestUser"] = Field(alias="__typename", default="GuestUser")
     id: str
 
+
 class ViewerScriptUserInlineFragment(BaseModel):
-    typename: Literal['ScriptUser'] = Field(alias='__typename', default='ScriptUser')
+    typename: Literal["ScriptUser"] = Field(alias="__typename", default="ScriptUser")
     id: str
+
 
 class Viewer(BaseModel):
     """No documentation found for this operation."""
-    viewer: Union[ViewerCloudUserInlineFragment, ViewerGuestUserInlineFragment, ViewerScriptUserInlineFragment]
+
+    viewer: Union[
+        ViewerCloudUserInlineFragment,
+        ViewerGuestUserInlineFragment,
+        ViewerScriptUserInlineFragment,
+    ]
 
     class Arguments(BaseModel):
-        """Arguments for Viewer """
+        """Arguments for Viewer"""
+
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for Viewer """
-        document = 'query Viewer {\n  viewer {\n    ... on CloudUser {\n      __typename\n      id\n      profile {\n        identity {\n          email\n          name\n        }\n        subscription {\n          plan {\n            name\n          }\n          entitlements {\n            name\n          }\n        }\n      }\n    }\n    ... on GuestUser {\n      __typename\n      id\n    }\n    ... on ScriptUser {\n      __typename\n      id\n    }\n    __typename\n  }\n}'
+        """Meta class for Viewer"""
+
+        document = "query Viewer {\n  viewer {\n    ... on CloudUser {\n      __typename\n      id\n      profile {\n        identity {\n          email\n          name\n        }\n        subscription {\n          plan {\n            name\n          }\n          entitlements {\n            name\n          }\n        }\n      }\n    }\n    ... on GuestUser {\n      __typename\n      id\n    }\n    ... on ScriptUser {\n      __typename\n      id\n    }\n    __typename\n  }\n}"
+
 
 class Workflows(BaseModel):
     """No documentation found for this operation."""
+
     workflows: List[WorkflowFull]
 
     class Arguments(BaseModel):
-        """Arguments for Workflows """
+        """Arguments for Workflows"""
+
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for Workflows """
-        document = 'fragment WorkflowFull on Workflow {\n  id\n  name\n  kind\n  definition\n  enabled\n  global\n  readOnly\n  createdAt\n  updatedAt\n  __typename\n}\n\nquery Workflows {\n  workflows {\n    ...WorkflowFull\n    __typename\n  }\n}'
+        """Meta class for Workflows"""
+
+        document = "fragment WorkflowFull on Workflow {\n  id\n  name\n  kind\n  definition\n  enabled\n  global\n  readOnly\n  createdAt\n  updatedAt\n  __typename\n}\n\nquery Workflows {\n  workflows {\n    ...WorkflowFull\n    __typename\n  }\n}"
+
 
 class Workflow(BaseModel):
     """No documentation found for this operation."""
+
     workflow: Optional[WorkflowFull] = Field(default=None)
 
     class Arguments(BaseModel):
-        """Arguments for Workflow """
+        """Arguments for Workflow"""
+
         id: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for Workflow """
-        document = 'fragment WorkflowFull on Workflow {\n  id\n  name\n  kind\n  definition\n  enabled\n  global\n  readOnly\n  createdAt\n  updatedAt\n  __typename\n}\n\nquery Workflow($id: ID!) {\n  workflow(id: $id) {\n    ...WorkflowFull\n    __typename\n  }\n}'
+        """Meta class for Workflow"""
+
+        document = "fragment WorkflowFull on Workflow {\n  id\n  name\n  kind\n  definition\n  enabled\n  global\n  readOnly\n  createdAt\n  updatedAt\n  __typename\n}\n\nquery Workflow($id: ID!) {\n  workflow(id: $id) {\n    ...WorkflowFull\n    __typename\n  }\n}"
+
 
 class CreateWorkflowCreateworkflowWorkflowUserErrorInlineFragment(BaseModel):
-    typename: Literal['WorkflowUserError'] = Field(alias='__typename', default='WorkflowUserError')
+    typename: Literal["WorkflowUserError"] = Field(
+        alias="__typename", default="WorkflowUserError"
+    )
+
 
 class CreateWorkflowCreateworkflowOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class CreateWorkflowCreateworkflowPermissionDeniedUserErrorInlineFragment(BaseModel):
-    typename: Literal['PermissionDeniedUserError'] = Field(alias='__typename', default='PermissionDeniedUserError')
+    typename: Literal["PermissionDeniedUserError"] = Field(
+        alias="__typename", default="PermissionDeniedUserError"
+    )
+
 
 class CreateWorkflowCreateworkflow(BaseModel):
     """No documentation"""
-    typename: Literal['CreateWorkflowPayload'] = Field(alias='__typename', default='CreateWorkflowPayload')
-    error: Optional[Union[CreateWorkflowCreateworkflowWorkflowUserErrorInlineFragment, CreateWorkflowCreateworkflowOtherUserErrorInlineFragment, CreateWorkflowCreateworkflowPermissionDeniedUserErrorInlineFragment]] = Field(default=None)
+
+    typename: Literal["CreateWorkflowPayload"] = Field(
+        alias="__typename", default="CreateWorkflowPayload"
+    )
+    error: Optional[
+        Union[
+            CreateWorkflowCreateworkflowWorkflowUserErrorInlineFragment,
+            CreateWorkflowCreateworkflowOtherUserErrorInlineFragment,
+            CreateWorkflowCreateworkflowPermissionDeniedUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
     workflow: Optional[WorkflowFull] = Field(default=None)
+
 
 class CreateWorkflow(BaseModel):
     """No documentation found for this operation."""
+
     createWorkflow: CreateWorkflowCreateworkflow
 
     class Arguments(BaseModel):
-        """Arguments for CreateWorkflow """
+        """Arguments for CreateWorkflow"""
+
         input: CreateWorkflowInput
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for CreateWorkflow """
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {\n  ...UserErrorFull\n  permissionReason: reason\n  __typename\n}\n\nfragment WorkflowFull on Workflow {\n  id\n  name\n  kind\n  definition\n  enabled\n  global\n  readOnly\n  createdAt\n  updatedAt\n  __typename\n}\n\nfragment WorkflowUserErrorFull on WorkflowUserError {\n  ...UserErrorFull\n  node\n  message\n  reason\n  __typename\n}\n\nmutation CreateWorkflow($input: CreateWorkflowInput!) {\n  createWorkflow(input: $input) {\n    error {\n      __typename\n      ... on WorkflowUserError {\n        ...WorkflowUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n      ... on PermissionDeniedUserError {\n        ...PermissionDeniedUserErrorFull\n      }\n    }\n    workflow {\n      ...WorkflowFull\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for CreateWorkflow"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {\n  ...UserErrorFull\n  permissionReason: reason\n  __typename\n}\n\nfragment WorkflowFull on Workflow {\n  id\n  name\n  kind\n  definition\n  enabled\n  global\n  readOnly\n  createdAt\n  updatedAt\n  __typename\n}\n\nfragment WorkflowUserErrorFull on WorkflowUserError {\n  ...UserErrorFull\n  node\n  message\n  reason\n  __typename\n}\n\nmutation CreateWorkflow($input: CreateWorkflowInput!) {\n  createWorkflow(input: $input) {\n    error {\n      __typename\n      ... on WorkflowUserError {\n        ...WorkflowUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n      ... on PermissionDeniedUserError {\n        ...PermissionDeniedUserErrorFull\n      }\n    }\n    workflow {\n      ...WorkflowFull\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class UpdateWorkflowUpdateworkflowUnknownIdUserErrorInlineFragment(BaseModel):
-    typename: Literal['UnknownIdUserError'] = Field(alias='__typename', default='UnknownIdUserError')
+    typename: Literal["UnknownIdUserError"] = Field(
+        alias="__typename", default="UnknownIdUserError"
+    )
+
 
 class UpdateWorkflowUpdateworkflowWorkflowUserErrorInlineFragment(BaseModel):
-    typename: Literal['WorkflowUserError'] = Field(alias='__typename', default='WorkflowUserError')
+    typename: Literal["WorkflowUserError"] = Field(
+        alias="__typename", default="WorkflowUserError"
+    )
+
 
 class UpdateWorkflowUpdateworkflowOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class UpdateWorkflowUpdateworkflowReadOnlyUserErrorInlineFragment(BaseModel):
-    typename: Literal['ReadOnlyUserError'] = Field(alias='__typename', default='ReadOnlyUserError')
+    typename: Literal["ReadOnlyUserError"] = Field(
+        alias="__typename", default="ReadOnlyUserError"
+    )
+
 
 class UpdateWorkflowUpdateworkflow(BaseModel):
     """No documentation"""
-    typename: Literal['UpdateWorkflowPayload'] = Field(alias='__typename', default='UpdateWorkflowPayload')
-    error: Optional[Union[UpdateWorkflowUpdateworkflowUnknownIdUserErrorInlineFragment, UpdateWorkflowUpdateworkflowWorkflowUserErrorInlineFragment, UpdateWorkflowUpdateworkflowOtherUserErrorInlineFragment, UpdateWorkflowUpdateworkflowReadOnlyUserErrorInlineFragment]] = Field(default=None)
+
+    typename: Literal["UpdateWorkflowPayload"] = Field(
+        alias="__typename", default="UpdateWorkflowPayload"
+    )
+    error: Optional[
+        Union[
+            UpdateWorkflowUpdateworkflowUnknownIdUserErrorInlineFragment,
+            UpdateWorkflowUpdateworkflowWorkflowUserErrorInlineFragment,
+            UpdateWorkflowUpdateworkflowOtherUserErrorInlineFragment,
+            UpdateWorkflowUpdateworkflowReadOnlyUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
     workflow: Optional[WorkflowFull] = Field(default=None)
+
 
 class UpdateWorkflow(BaseModel):
     """No documentation found for this operation."""
+
     updateWorkflow: UpdateWorkflowUpdateworkflow
 
     class Arguments(BaseModel):
-        """Arguments for UpdateWorkflow """
+        """Arguments for UpdateWorkflow"""
+
         id: str
         input: UpdateWorkflowInput
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for UpdateWorkflow """
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment ReadOnlyUserErrorFull on ReadOnlyUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nfragment WorkflowFull on Workflow {\n  id\n  name\n  kind\n  definition\n  enabled\n  global\n  readOnly\n  createdAt\n  updatedAt\n  __typename\n}\n\nfragment WorkflowUserErrorFull on WorkflowUserError {\n  ...UserErrorFull\n  node\n  message\n  reason\n  __typename\n}\n\nmutation UpdateWorkflow($id: ID!, $input: UpdateWorkflowInput!) {\n  updateWorkflow(id: $id, input: $input) {\n    error {\n      __typename\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on WorkflowUserError {\n        ...WorkflowUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n      ... on ReadOnlyUserError {\n        ...ReadOnlyUserErrorFull\n      }\n    }\n    workflow {\n      ...WorkflowFull\n      __typename\n    }\n    __typename\n  }\n}'
+        """Meta class for UpdateWorkflow"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment ReadOnlyUserErrorFull on ReadOnlyUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nfragment WorkflowFull on Workflow {\n  id\n  name\n  kind\n  definition\n  enabled\n  global\n  readOnly\n  createdAt\n  updatedAt\n  __typename\n}\n\nfragment WorkflowUserErrorFull on WorkflowUserError {\n  ...UserErrorFull\n  node\n  message\n  reason\n  __typename\n}\n\nmutation UpdateWorkflow($id: ID!, $input: UpdateWorkflowInput!) {\n  updateWorkflow(id: $id, input: $input) {\n    error {\n      __typename\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on WorkflowUserError {\n        ...WorkflowUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n      ... on ReadOnlyUserError {\n        ...ReadOnlyUserErrorFull\n      }\n    }\n    workflow {\n      ...WorkflowFull\n      __typename\n    }\n    __typename\n  }\n}"
+
 
 class DeleteWorkflowDeleteworkflowUnknownIdUserErrorInlineFragment(BaseModel):
-    typename: Literal['UnknownIdUserError'] = Field(alias='__typename', default='UnknownIdUserError')
+    typename: Literal["UnknownIdUserError"] = Field(
+        alias="__typename", default="UnknownIdUserError"
+    )
+
 
 class DeleteWorkflowDeleteworkflowReadOnlyUserErrorInlineFragment(BaseModel):
-    typename: Literal['ReadOnlyUserError'] = Field(alias='__typename', default='ReadOnlyUserError')
+    typename: Literal["ReadOnlyUserError"] = Field(
+        alias="__typename", default="ReadOnlyUserError"
+    )
+
 
 class DeleteWorkflowDeleteworkflowOtherUserErrorInlineFragment(BaseModel):
-    typename: Literal['OtherUserError'] = Field(alias='__typename', default='OtherUserError')
+    typename: Literal["OtherUserError"] = Field(
+        alias="__typename", default="OtherUserError"
+    )
+
 
 class DeleteWorkflowDeleteworkflow(BaseModel):
     """No documentation"""
-    typename: Literal['DeleteWorkflowPayload'] = Field(alias='__typename', default='DeleteWorkflowPayload')
+
+    typename: Literal["DeleteWorkflowPayload"] = Field(
+        alias="__typename", default="DeleteWorkflowPayload"
+    )
     deletedId: Optional[str] = Field(default=None)
-    error: Optional[Union[DeleteWorkflowDeleteworkflowUnknownIdUserErrorInlineFragment, DeleteWorkflowDeleteworkflowReadOnlyUserErrorInlineFragment, DeleteWorkflowDeleteworkflowOtherUserErrorInlineFragment]] = Field(default=None)
+    error: Optional[
+        Union[
+            DeleteWorkflowDeleteworkflowUnknownIdUserErrorInlineFragment,
+            DeleteWorkflowDeleteworkflowReadOnlyUserErrorInlineFragment,
+            DeleteWorkflowDeleteworkflowOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
+
 
 class DeleteWorkflow(BaseModel):
     """No documentation found for this operation."""
+
     deleteWorkflow: DeleteWorkflowDeleteworkflow
 
     class Arguments(BaseModel):
-        """Arguments for DeleteWorkflow """
+        """Arguments for DeleteWorkflow"""
+
         id: str
         model_config = ConfigDict(populate_by_name=None)
 
     class Meta:
-        """Meta class for DeleteWorkflow """
-        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment ReadOnlyUserErrorFull on ReadOnlyUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nmutation DeleteWorkflow($id: ID!) {\n  deleteWorkflow(id: $id) {\n    deletedId\n    error {\n      __typename\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on ReadOnlyUserError {\n        ...ReadOnlyUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    __typename\n  }\n}'
+        """Meta class for DeleteWorkflow"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment ReadOnlyUserErrorFull on ReadOnlyUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nmutation DeleteWorkflow($id: ID!) {\n  deleteWorkflow(id: $id) {\n    deletedId\n    error {\n      __typename\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on ReadOnlyUserError {\n        ...ReadOnlyUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    __typename\n  }\n}"
+
+
 CreateEnvironmentInput.model_rebuild()
 CreateReplaySessionInput.model_rebuild()
 InstallPluginPackageInput.model_rebuild()
