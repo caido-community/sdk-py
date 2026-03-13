@@ -1,8 +1,9 @@
-from gql import FileVar
 from enum import Enum
-from typing import Union, List, Annotated, Literal, Optional
-from pydantic import ConfigDict, Field, BaseModel
+from typing import Annotated, List, Literal, Optional, Union
+
 from caido_sdk_client.utils.pydantic import BaseModel
+from gql import FileVar
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class CloudErrorReason(str, Enum):
