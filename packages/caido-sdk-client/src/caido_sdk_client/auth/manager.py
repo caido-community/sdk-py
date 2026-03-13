@@ -109,9 +109,7 @@ class AuthManager:
         await self._maybe_cache_token()
 
     async def refresh(self) -> None:
-        refresh_token = (
-            self._token_state.refresh_token if self._token_state else None
-        )
+        refresh_token = self._token_state.refresh_token if self._token_state else None
         if refresh_token is None:
             raise TokenRefreshError()
 
@@ -199,7 +197,9 @@ def _to_cached_token(state: _TokenState) -> CachedToken:
     return CachedToken(
         access_token=state.access_token,
         refresh_token=state.refresh_token,
-        expires_at=state.expires_at.isoformat() if state.expires_at is not None else None,
+        expires_at=state.expires_at.isoformat()
+        if state.expires_at is not None
+        else None,
     )
 
 

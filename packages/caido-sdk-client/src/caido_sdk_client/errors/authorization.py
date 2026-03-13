@@ -6,7 +6,6 @@ from caido_sdk_client.errors.base import BaseError
 
 
 class PermissionDeniedUserError(BaseError):
-
     def __init__(self) -> None:
         super().__init__("You don't have the required permissions for this action.")
 

@@ -13,9 +13,7 @@ class RestRequestError(BaseError):
     status: int
     error_text: str
 
-    def __init__(
-        self, method: str, path: str, status: int, error_text: str
-    ) -> None:
+    def __init__(self, method: str, path: str, status: int, error_text: str) -> None:
         super().__init__(
             f"REST request failed: {method} {path} - {status}: {error_text}"
         )

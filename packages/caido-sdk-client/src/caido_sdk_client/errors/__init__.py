@@ -32,7 +32,10 @@ from caido_sdk_client.errors.plugin import (
 )
 from caido_sdk_client.errors.project import ProjectUserError
 from caido_sdk_client.errors.rest import RestRequestError
-from caido_sdk_client.errors.sdk import NoViewerInResponseError, UnsupportedViewerTypeError
+from caido_sdk_client.errors.sdk import (
+    NoViewerInResponseError,
+    UnsupportedViewerTypeError,
+)
 from caido_sdk_client.errors.tasks import TaskInProgressUserError
 from caido_sdk_client.errors.version import NewerVersionUserError
 from caido_sdk_client.errors.workflow import WorkflowUserError

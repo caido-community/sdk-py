@@ -19,7 +19,11 @@ class PluginFunctionCallError(BaseError):
     kind: str
 
     def __init__(self, name: str, error: Any) -> None:
-        kind = error.get("kind") if isinstance(error, dict) else getattr(error, "kind", None)
+        kind = (
+            error.get("kind")
+            if isinstance(error, dict)
+            else getattr(error, "kind", None)
+        )
         match kind:
             case "invalid_procedure":
                 fn_name = (
@@ -92,7 +96,6 @@ class PluginUserError(BaseError):
 
 
 class StoreUserError(BaseError):
-
     def __init__(self, error: StoreUserErrorFull) -> None:
         match error.storeReason:
             case StoreErrorReason.FILE_UNAVAILABLE:
