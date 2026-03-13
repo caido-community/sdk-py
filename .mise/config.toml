@@ -22,7 +22,6 @@ depends = ["fmt", "lint"]
 
 [tasks.generate]
 run = "cd packages/caido-sdk-client && uv run turms gen"
-depends_post = ["fmt", "lint"]
 
 [tasks.validate]
 depends = ["fmt-check", "lint-check", "typecheck"]
