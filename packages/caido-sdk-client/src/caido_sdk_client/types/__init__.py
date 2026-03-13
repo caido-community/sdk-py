@@ -1,5 +1,8 @@
 """Public type exports."""
 
+from __future__ import annotations
+
+from .project import CreateProjectOptions, Project, ProjectStatus
 from .user import (
     CloudUser,
     GuestUser,
@@ -22,4 +25,7 @@ __all__ = [
     "UserIdentity",
     "UserProfile",
     "UserSubscription",
+    "CreateProjectOptions",
+    "Project",
+    "ProjectStatus",
 ]

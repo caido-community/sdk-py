@@ -17,3 +17,10 @@ class UnsupportedViewerTypeError(BaseError):
 
     def __init__(self, typename: object) -> None:
         super().__init__(f"Unsupported viewer type: {typename!r}")
+
+
+class MissingExpectedValueError(BaseError):
+    """Raised when a GraphQL payload is missing an expected non-null value."""
+
+    def __init__(self, path: str) -> None:
+        super().__init__(f"Missing expected value at {path}")
