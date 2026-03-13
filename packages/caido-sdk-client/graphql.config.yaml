@@ -20,7 +20,7 @@ projects:
           Rank: str
           Token: str
           Url: str
-          Upload: any
+          Upload: typing.Any
           JSON: dict
           JsonObject: dict
           Image: str
