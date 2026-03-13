@@ -1,0 +1,60 @@
+---
+description: Guidelines for porting the Caido JS SDK to Python
+alwaysApply: true
+---
+
+# JS to Python SDK Porting Guide
+
+## Reference
+
+The JS SDK source lives at `../sdk-js/packages/sdk-client`.
+Always read the corresponding JS file before writing or modifying a Python module.
+
+## Structure Mapping
+
+The Python package is at `packages/caido-sdk-client/src/caido_sdk_client/`.
+Mirror the JS `src/` layout as closely as possible:
+
+| JS path | Python path |
+|---------|-------------|
+| `src/errors/*.ts` | `errors/*.py` |
+| `src/utils/*.ts` | `utils/*.py` |
+| `src/sdks/*.ts` | `sdks/*.py` |
+| `src/types/*.ts` | `types/*.py` |
+| `src/graphql/client.ts` | `graphql/client.py` |
+| `src/graphql/utils.ts` | `graphql/utils.py` |
+| `src/graphql/documents/*.graphql` | `graphql/documents/*.graphql` (identical) |
+| `src/client.ts` | `client.py` |
+
+## Generated Code
+
+**NEVER modify files under `graphql/__generated__/`.**
+These are produced by turms from `.graphql` documents and `schema.graphql`.
+To regenerate, run `uv run turms gen` from the `packages/caido-sdk-client` directory.
+Turms requires fragments to be referenced by at least one operation; standalone fragment-only documents won't pass validation.
+
+The `schema.graphql` file comes from the JS SDK's `node_modules/@caido/schema-proxy/schema.graphql`.
+
+## GraphQL Documents
+
+Copy `.graphql` documents from the JS SDK into `graphql/documents/`.
+Turms config is in `graphql.config.yaml` at the package root.
+
+## Conventions
+
+- Stay as close to the JS code as possible in naming, structure, and logic.
+- Use `from __future__ import annotations` in every module.
+- Error classes extend `BaseError` (in `errors/base.py`), which mirrors the JS `BaseError extends Error`.
+- `from` is a Python keyword; the JS `errors/from.ts` is named `errors/from_error.py` with a `from_error()` function.
+- Use generated pydantic models and enums from `graphql/__generated__/schema.py` for typed error constructors and fragment types.
+- Use `match`/`case` on pydantic model instances (structural pattern matching) in `from_error()` instead of string `__typename` dispatch.
+- Use `match`/`case` on enum values in error constructors (e.g., `CloudErrorReason.UNAVAILABLE`).
+- `PluginFunctionCallError` takes REST `Any` payloads (not GraphQL fragments) since it comes from the REST API.
+- The top-level `__init__.py` re-exports the public API. Keep it updated when adding new modules.
+- Port one folder/feature at a time. Don't get distracted by issues in files not currently being ported.
+
+## Dependencies
+
+Managed via `uv` with workspace layout. Package deps are in `packages/caido-sdk-client/pyproject.toml`.
+Current deps: `gql[aiohttp,websockets]`, `pydantic`.
+Dev deps (workspace root): `ruff`, `ty`, `turms`.
