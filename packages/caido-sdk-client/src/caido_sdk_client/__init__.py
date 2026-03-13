@@ -20,7 +20,7 @@ from caido_sdk_client.errors import (
     UnsupportedViewerTypeError,
     from_error,
 )
-from caido_sdk_client.graphql import GraphQLClient, GraphQLClientOptions
+from caido_sdk_client.graphql import GraphQLClient
 from caido_sdk_client.logger import ConsoleLogger, Logger
 from caido_sdk_client.sdks import UserSDK
 from caido_sdk_client.types import (
@@ -48,7 +48,6 @@ __all__ = [
     "ConsoleLogger",
     "FileTokenCache",
     "GraphQLClient",
-    "GraphQLClientOptions",
     "GuestUser",
     "Health",
     "InstanceNotReadyError",

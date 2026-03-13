@@ -9,7 +9,7 @@ import aiohttp
 
 from caido_sdk_client.auth import AuthManager, AuthOptions
 from caido_sdk_client.errors import InstanceNotReadyError
-from caido_sdk_client.graphql import GraphQLClient, GraphQLClientOptions
+from caido_sdk_client.graphql import GraphQLClient
 from caido_sdk_client.logger import ConsoleLogger, Logger
 from caido_sdk_client.sdks import UserSDK
 from caido_sdk_client.utils import sleep
@@ -73,12 +73,10 @@ class Client:
             auth_options=auth,
         )
         self.graphql = GraphQLClient(
-            GraphQLClientOptions(
-                base_url=url,
-                headers=dict(headers) if headers is not None else None,
-                timeout_ms=timeout_ms,
-                auth=self._auth,
-            )
+            url,
+            self._auth,
+            headers=headers,
+            timeout_ms=timeout_ms,
         )
         self.user = UserSDK(self.graphql)
 

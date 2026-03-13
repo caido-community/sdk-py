@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterator, Mapping
-from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 from urllib.parse import urlparse
 
@@ -29,38 +28,34 @@ if TYPE_CHECKING:
     from caido_sdk_client.auth.manager import AuthManager
 
 
-@dataclass(frozen=True, slots=True)
-class GraphQLClientOptions:
-    """Options used to configure GraphQLClient."""
-
-    base_url: str
-    headers: Mapping[str, str] | None = None
-    timeout_ms: int | None = None
-    auth: AuthManager | None = None
-
-
 class GraphQLClient:
     """Low-level GraphQL client for query/mutation/subscription operations."""
 
-    def __init__(self, options: GraphQLClientOptions) -> None:
-        normalized_url = options.base_url.rstrip("/")
+    def __init__(
+        self,
+        base_url: str,
+        auth: AuthManager,
+        *,
+        headers: Mapping[str, str] | None = None,
+        timeout_ms: int | None = None,
+    ) -> None:
+        normalized_url = base_url.rstrip("/")
         self._graphql_url = f"{normalized_url}/graphql"
         self._websocket_url = self._to_websocket_url(normalized_url)
-        self._static_headers = (
-            dict(options.headers) if options.headers is not None else {}
-        )
+        self._static_headers = dict(headers) if headers is not None else {}
         self._timeout_seconds = (
-            int(options.timeout_ms / 1000) if options.timeout_ms is not None else None
+            int(timeout_ms / 1000) if timeout_ms is not None else None
         )
-        self._auth = options.auth
+        self._auth = auth
 
         self._http_transport, self._http_client = self._create_http_client()
         self._ws_transport, self._ws_client = self._create_ws_client()
 
     def _create_http_client(self) -> tuple[AIOHTTPTransport, Client]:
+        access_token = self._auth.get_access_token()
         transport = AIOHTTPTransport(
             url=self._graphql_url,
-            headers=self._build_headers(),
+            headers={"Authorization": f"Bearer {access_token}"},
             timeout=self._timeout_seconds,
         )
         client = Client(
@@ -70,9 +65,10 @@ class GraphQLClient:
         return transport, client
 
     def _create_ws_client(self) -> tuple[WebsocketsTransport, Client]:
+        access_token = self._auth.get_access_token()
         transport = WebsocketsTransport(
             url=self._websocket_url,
-            headers=self._build_headers(),
+            init_payload={"Authorization": f"Bearer {access_token}"},
             close_timeout=2,
         )
         client = Client(
@@ -86,14 +82,6 @@ class GraphQLClient:
         parsed = urlparse(base_url)
         scheme = "wss" if parsed.scheme == "https" else "ws"
         return f"{scheme}://{parsed.netloc}/ws/graphql"
-
-    def _build_headers(self) -> dict[str, str]:
-        headers = dict(self._static_headers)
-        if self._auth is not None:
-            access_token = self._auth.get_access_token()
-            if access_token is not None:
-                headers["Authorization"] = f"Bearer {access_token}"
-        return headers
 
     @staticmethod
     def _request(document: str | DocumentNode) -> GraphQLRequest:
@@ -120,7 +108,6 @@ class GraphQLClient:
         document: str | DocumentNode,
         variables: Mapping[str, Any] | None,
     ) -> dict[str, Any]:
-        self._http_transport.headers = self._build_headers()
         try:
             result = await self._http_client.execute_async(
                 self._request(document),
@@ -145,7 +132,6 @@ class GraphQLClient:
         variables: Mapping[str, Any] | None = None,
     ) -> AsyncIterator[dict[str, Any]]:
         """Subscribe to a GraphQL subscription and yield payloads."""
-        self._ws_transport.adapter.headers = self._build_headers()
         try:
             async with self._ws_client as session:
                 subscription = session.subscribe(
