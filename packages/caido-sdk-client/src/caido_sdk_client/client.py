@@ -7,8 +7,10 @@ from dataclasses import dataclass
 
 import aiohttp
 
+from caido_sdk_client.auth import AuthManager, AuthOptions
 from caido_sdk_client.errors import InstanceNotReadyError
 from caido_sdk_client.graphql import GraphQLClient, GraphQLClientOptions
+from caido_sdk_client.logger import ConsoleLogger, Logger
 from caido_sdk_client.sdks import UserSDK
 from caido_sdk_client.utils import sleep
 
@@ -58,15 +60,24 @@ class Client:
         self,
         url: str,
         *,
+        auth: AuthOptions | None = None,
         headers: Mapping[str, str] | None = None,
         timeout_ms: int | None = None,
+        logger: Logger | None = None,
     ) -> None:
         self._url = url.rstrip("/")
+        self._logger = logger or ConsoleLogger()
+        self._auth = AuthManager(
+            instance_url=self._url,
+            logger=self._logger,
+            auth_options=auth,
+        )
         self.graphql = GraphQLClient(
             GraphQLClientOptions(
                 base_url=url,
                 headers=dict(headers) if headers is not None else None,
                 timeout_ms=timeout_ms,
+                auth=self._auth,
             )
         )
         self.user = UserSDK(self.graphql)
@@ -90,13 +101,15 @@ class Client:
         """Connect to the Caido instance.
 
         This must be called before making any API requests.
-        It will optionally wait for the instance to be ready.
+        It will wait for the instance to be ready and then authenticate.
         """
         ready_option = options.ready if options is not None else True
         if ready_option is not False:
             await self.ready(
                 ready_option if isinstance(ready_option, ReadyOptions) else None
             )
+
+        await self._auth.authenticate()
 
     async def health(self, *, timeout: int | None = None) -> Health:
         """Check the health status of the Caido instance.

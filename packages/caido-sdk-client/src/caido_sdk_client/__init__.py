@@ -1,5 +1,17 @@
 """Public package exports."""
 
+from caido_sdk_client.auth import (
+    AuthCacheFile,
+    AuthManager,
+    AuthOptions,
+    BrowserAuthOptions,
+    CachedToken,
+    FileTokenCache,
+    PATAuthOptions,
+    TokenAuthOptions,
+    TokenCache,
+    TokenPair,
+)
 from caido_sdk_client.client import Client, ConnectOptions, Health, ReadyOptions
 from caido_sdk_client.errors import (
     BaseError,
@@ -9,6 +21,7 @@ from caido_sdk_client.errors import (
     from_error,
 )
 from caido_sdk_client.graphql import GraphQLClient, GraphQLClientOptions
+from caido_sdk_client.logger import ConsoleLogger, Logger
 from caido_sdk_client.sdks import UserSDK
 from caido_sdk_client.types import (
     CloudUser,
@@ -23,20 +36,32 @@ from caido_sdk_client.types import (
 )
 
 __all__ = [
+    "AuthCacheFile",
+    "AuthManager",
+    "AuthOptions",
     "BaseError",
+    "BrowserAuthOptions",
+    "CachedToken",
     "Client",
     "CloudUser",
     "ConnectOptions",
+    "ConsoleLogger",
+    "FileTokenCache",
     "GraphQLClient",
     "GraphQLClientOptions",
     "GuestUser",
     "Health",
     "InstanceNotReadyError",
+    "Logger",
     "NoViewerInResponseError",
+    "PATAuthOptions",
     "ReadyOptions",
     "ScriptUser",
     "SubscriptionEntitlement",
     "SubscriptionPlan",
+    "TokenAuthOptions",
+    "TokenCache",
+    "TokenPair",
     "UnsupportedViewerTypeError",
     "User",
     "UserIdentity",
