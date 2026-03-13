@@ -22,4 +22,3 @@ def map_to_project(node: ProjectFull) -> Project:
         size=node.size,
         read_only=node.readOnly,
     )
-

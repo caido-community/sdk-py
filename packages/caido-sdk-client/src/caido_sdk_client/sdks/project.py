@@ -98,7 +98,9 @@ class ProjectSDK:
         if payload.error is not None:
             handle_graphql_error(cast(AllErrors, payload.error))
 
-        current: SelectProjectSelectprojectCurrentproject | None = payload.currentProject
+        current: SelectProjectSelectprojectCurrentproject | None = (
+            payload.currentProject
+        )
         if current is None:
             raise MissingExpectedValueError("selectProject.currentProject")
 

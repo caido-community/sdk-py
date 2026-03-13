@@ -30,4 +30,3 @@ class CreateProjectOptions:
 
     name: str
     temporary: bool
-
