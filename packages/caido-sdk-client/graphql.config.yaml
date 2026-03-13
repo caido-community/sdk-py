@@ -10,6 +10,8 @@ projects:
           - type: turms.plugins.inputs.InputsPlugin
           - type: turms.plugins.fragments.FragmentsPlugin
           - type: turms.plugins.operations.OperationsPlugin
+        object_bases:
+          - 'caido_sdk_client.utils.pydantic.BaseModel'
         scalar_definitions:
           DateTime: str
           Duration: int
@@ -20,7 +22,7 @@ projects:
           Rank: str
           Token: str
           Url: str
-          Upload: typing.Any
+          Upload: gql.FileVar
           JSON: dict
           JsonObject: dict
           Image: str

@@ -51,11 +51,17 @@ class GraphQLClient:
         self._http_transport, self._http_client = self._create_http_client()
         self._ws_transport, self._ws_client = self._create_ws_client()
 
+        # Keep transports in sync with auth token changes.
+        self._auth.on_token_refresh(self._on_token_refresh)
+
     def _create_http_client(self) -> tuple[AIOHTTPTransport, Client]:
         access_token = self._auth.get_access_token()
+        headers: dict[str, str] = dict(self._static_headers)
+        if access_token is not None:
+            headers["Authorization"] = f"Bearer {access_token}"
         transport = AIOHTTPTransport(
             url=self._graphql_url,
-            headers={"Authorization": f"Bearer {access_token}"},
+            headers=headers,
             timeout=self._timeout_seconds,
         )
         client = Client(
@@ -66,9 +72,12 @@ class GraphQLClient:
 
     def _create_ws_client(self) -> tuple[WebsocketsTransport, Client]:
         access_token = self._auth.get_access_token()
+        init_payload: dict[str, str] = {}
+        if access_token is not None:
+            init_payload["Authorization"] = f"Bearer {access_token}"
         transport = WebsocketsTransport(
             url=self._websocket_url,
-            init_payload={"Authorization": f"Bearer {access_token}"},
+            init_payload=init_payload,
             close_timeout=2,
         )
         client = Client(
@@ -76,6 +85,11 @@ class GraphQLClient:
             fetch_schema_from_transport=False,
         )
         return transport, client
+
+    def _on_token_refresh(self) -> None:
+        """Recreate transports when the auth token changes."""
+        self._http_transport, self._http_client = self._create_http_client()
+        self._ws_transport, self._ws_client = self._create_ws_client()
 
     @staticmethod
     def _to_websocket_url(base_url: str) -> str:

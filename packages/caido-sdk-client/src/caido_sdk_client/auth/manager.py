@@ -85,6 +85,7 @@ class AuthManager:
             if cached is not None:
                 self._logger.info("Loaded token from cache")
                 self._token_state = _from_cached_token(cached)
+                self._notify_token_refresh()
                 return
 
         if auth is not None and isinstance(auth, TokenAuthOptions):
@@ -96,6 +97,7 @@ class AuthManager:
                     access_token=auth.token.access_token,
                     refresh_token=auth.token.refresh_token,
                 )
+            self._notify_token_refresh()
             await self._maybe_cache_token()
             return
 
@@ -124,7 +126,10 @@ class AuthManager:
     def _get_or_create_auth_client(self) -> Any:
         if self._auth_client is None:
             try:
-                from caido_server_auth import AuthClient  # noqa: F811
+                from caido_server_auth import (
+                    AuthClient,
+                    AuthClientOptions,
+                )
             except ImportError as exc:
                 raise ImportError(
                     "caido-server-auth is required for PAT/browser authentication "
@@ -132,9 +137,11 @@ class AuthManager:
                 ) from exc
 
             approver = self._create_approver()
-            self._auth_client = AuthClient(  # type: ignore[call-arg]
-                instance_url=self._instance_url,  # type: ignore[call-arg]
-                approver=approver,  # type: ignore[call-arg]
+            self._auth_client = AuthClient(
+                AuthClientOptions(
+                    instance_url=self._instance_url,
+                    approver=approver,
+                )
             )
         return self._auth_client
 
@@ -143,12 +150,15 @@ class AuthManager:
 
         if auth is not None and is_pat_auth(auth):
             try:
-                from caido_server_auth import PATApprover  # noqa: F811
+                from caido_server_auth import (
+                    PATApprover,
+                    PATApproverOptions,
+                )
             except ImportError as exc:
                 raise ImportError(
                     "caido-server-auth is required for PAT authentication."
                 ) from exc
-            return PATApprover(pat=auth.pat)  # type: ignore[call-arg,union-attr]
+            return PATApprover(PATApproverOptions(pat=auth.pat))  # type: ignore[union-attr]
 
         try:
             from caido_server_auth import BrowserApprover  # noqa: F811
@@ -174,6 +184,7 @@ class AuthManager:
             refresh_token=token.refresh_token,
             expires_at=token.expires_at,
         )
+        self._notify_token_refresh()
 
     async def _maybe_cache_token(self) -> None:
         cache = self._cache

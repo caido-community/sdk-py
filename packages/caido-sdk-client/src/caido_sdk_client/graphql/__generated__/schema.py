@@ -1,6 +1,8 @@
-from pydantic import BaseModel, ConfigDict, Field
-from typing import Union, Literal, Optional, List, Annotated
+from typing import Optional, Union, Literal, Annotated, List
 from enum import Enum
+from pydantic import BaseModel, Field, ConfigDict
+from caido_sdk_client.utils.pydantic import BaseModel
+from gql import FileVar
 
 class CloudErrorReason(str, Enum):
     """No documentation"""
@@ -195,7 +197,7 @@ class InstallPluginPackageInput(BaseModel):
 
 class PluginPackageSource(BaseModel):
     """No documentation"""
-    file: Optional[any] = None
+    file: Optional[FileVar] = None
     manifestId: Optional[str] = None
     url: Optional[str] = None
 
@@ -321,7 +323,7 @@ class UpdateWorkflowInput(BaseModel):
 
 class UploadHostedFileInput(BaseModel):
     """No documentation"""
-    file: any
+    file: FileVar
     name: str
 
 class ConnectionInfoFull(BaseModel):
