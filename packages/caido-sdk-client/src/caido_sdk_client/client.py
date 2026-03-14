@@ -22,6 +22,7 @@ from caido_sdk_client.sdks import (
     ProjectSDK,
     RequestSDK,
     ScopeSDK,
+    TaskSDK,
     UserSDK,
 )
 from caido_sdk_client.utils import sleep
@@ -77,6 +78,7 @@ class Client:
     instance: InstanceSDK
     request: RequestSDK
     scope: ScopeSDK
+    task: TaskSDK
 
     def __init__(
         self,
@@ -116,6 +118,7 @@ class Client:
         self.instance = InstanceSDK(self.graphql)
         self.request = RequestSDK(self.graphql)
         self.scope = ScopeSDK(self.graphql)
+        self.task = TaskSDK(self.graphql)
 
     async def __aenter__(self) -> Client:
         return self

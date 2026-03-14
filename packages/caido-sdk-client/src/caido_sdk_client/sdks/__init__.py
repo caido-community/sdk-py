@@ -12,6 +12,7 @@ from .plugin import PluginPackage, PluginSDK
 from .project import ProjectSDK
 from .request import RequestSDK, RequestsListBuilder
 from .scope import ScopeSDK
+from .task import ReplayTask, Task, TaskSDK
 from .user import UserSDK
 
 __all__ = [
@@ -26,8 +27,11 @@ __all__ = [
     "PluginPackage",
     "PluginSDK",
     "ProjectSDK",
+    "ReplayTask",
     "RequestSDK",
     "RequestsListBuilder",
     "ScopeSDK",
+    "Task",
+    "TaskSDK",
     "UserSDK",
 ]

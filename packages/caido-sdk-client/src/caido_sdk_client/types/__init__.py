@@ -50,6 +50,7 @@ from .request import (
 )
 from .scope import CreateScopeOptions, Scope, UpdateScopeOptions
 from .strings import Cursor, CursorLike, Httpql, HttpqlLike, Id, IdLike
+from .task import TaskResult, TaskStatus
 from .user import (
     CloudUser,
     GuestUser,
@@ -116,6 +117,8 @@ __all__ = [
     "SetOnboardingSettingsInput",
     "SubscriptionEntitlement",
     "SubscriptionPlan",
+    "TaskResult",
+    "TaskStatus",
     "UpdateEnvironmentOptions",
     "UpdateFilterPresetOptions",
     "UpdateFindingOptions",
