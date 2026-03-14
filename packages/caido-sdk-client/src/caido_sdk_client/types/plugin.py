@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Union, Literal
+from typing import Any, Literal, Union
 
 from caido_sdk_client.types.strings import Id
 
