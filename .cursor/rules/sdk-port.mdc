@@ -53,6 +53,13 @@ Turms config is in `graphql.config.yaml` at the package root.
 - The top-level `__init__.py` re-exports the public API. Keep it updated when adding new modules.
 - Port one folder/feature at a time. Don't get distracted by issues in files not currently being ported.
 
+### Typed strings (Id, Cursor, Httpql)
+
+Use subclasses of `str` in `types/strings.py` to distinguish IDs, cursors, and HTTPQL in the type system without changing runtime behaviour (they are plain strings; JSON and Pydantic work as for `str`).
+
+- **Output types:** Use `Id`, `Cursor`, or `Httpql` on public dataclass fields and return types (e.g. `FilterPreset.id: Id`, `PageInfo.start_cursor: Cursor | None`, `FilterPreset.clause: Httpql`). In the convert layer, wrap values from GraphQL (e.g. `id=Id(node.id)`, `clause=Httpql(node.clause)`).
+- **Input types:** Use the `*Like` aliases so callers can pass either the typed class or a plain `str`: `IdLike = Id | str`, `CursorLike = Cursor | str`, `HttpqlLike = Httpql | str`. Annotate SDK method parameters and option dataclass fields with these (e.g. `id: IdLike`, `id: IdLike | None` for optional). Do not use raw `Id | str` in signatures; use `IdLike` (and `CursorLike` / `HttpqlLike`) for brevity and consistency.
+
 ### High-level SDKs (`sdks/*.py`)
 
 - High-level SDKs should:
