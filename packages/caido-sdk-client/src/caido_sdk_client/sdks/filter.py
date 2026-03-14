@@ -11,9 +11,11 @@ from caido_sdk_client.graphql import GraphQLClient
 from caido_sdk_client.graphql.__generated__.schema import (
     CreateFilterPreset,
     DeleteFilterPreset,
-    FilterPreset as FilterPresetOp,
     FilterPresets,
     UpdateFilterPreset,
+)
+from caido_sdk_client.graphql.__generated__.schema import (
+    FilterPreset as FilterPresetOp,
 )
 from caido_sdk_client.types import (
     CreateFilterPresetOptions,

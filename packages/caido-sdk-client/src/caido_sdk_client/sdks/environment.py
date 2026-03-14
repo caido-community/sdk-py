@@ -138,9 +138,7 @@ class EnvironmentSDK:
         if payload.error is not None:
             handle_graphql_error(cast(AllErrors, payload.error))
 
-    async def select(
-        self, id: IdLike | None = None
-    ) -> Optional["EnvironmentInstance"]:
+    async def select(self, id: IdLike | None = None) -> Optional["EnvironmentInstance"]:
         """Select an environment as the current environment.
 
         Pass None to deselect the current environment.

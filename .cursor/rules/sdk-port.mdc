@@ -74,3 +74,12 @@ Use subclasses of `str` in `types/strings.py` to distinguish IDs, cursors, and H
 Managed via `uv` with workspace layout. Package deps are in `packages/caido-sdk-client/pyproject.toml`.
 Current deps: `gql[aiohttp,websockets]`, `pydantic`.
 Dev deps (workspace root): `ruff`, `ty`, `turms`.
+
+## Before finishing
+
+Before considering a port or change fully done, run from the repo root:
+
+- `mise run fmt` — format code
+- `mise run lint` — run the linter
+
+Fix any issues they report.

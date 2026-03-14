@@ -18,7 +18,6 @@ from caido_sdk_client.graphql.__generated__.schema import (
     UpdateFinding,
 )
 from caido_sdk_client.types.connection import ConnectionQueryResult, Edge
-from caido_sdk_client.types.strings import Cursor, IdLike
 from caido_sdk_client.types.finding import (
     CreateFindingOptions,
     UpdateFindingOptions,
@@ -26,6 +25,7 @@ from caido_sdk_client.types.finding import (
 from caido_sdk_client.types.finding import (
     Finding as FindingType,
 )
+from caido_sdk_client.types.strings import Cursor, IdLike
 from caido_sdk_client.utils.errors import handle_graphql_error
 from caido_sdk_client.utils.list import ListBuilder, ListBuilderVars
 
@@ -117,9 +117,7 @@ class FindingSDK:
             raise MissingExpectedValueError("createFinding.finding")
         return map_to_finding(payload.finding)
 
-    async def update(
-        self, id: IdLike, options: UpdateFindingOptions
-    ) -> FindingType:
+    async def update(self, id: IdLike, options: UpdateFindingOptions) -> FindingType:
         """Update a finding."""
         raw = await self._graphql.mutation(
             UpdateFinding.Meta.document,
