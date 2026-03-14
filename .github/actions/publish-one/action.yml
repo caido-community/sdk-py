@@ -7,9 +7,9 @@ inputs:
     required: true
 
   check-url:
-    description: URL to use with uv --check-url.
+    description: Simple index URL for uv --check-url (PEP 503, e.g. https://pypi.org/simple).
     required: false
-    default: https://pypi.org/p
+    default: https://pypi.org/simple
 
 runs:
   using: composite
