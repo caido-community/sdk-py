@@ -162,6 +162,7 @@ name = "caido-sdk-client"
 version = "0.1.0"
 source = { editable = "packages/caido-sdk-client" }
 dependencies = [
+    { name = "caido-server-auth" },
     { name = "gql", extra = ["aiohttp", "websockets"] },
     { name = "pydantic" },
 ]
@@ -174,6 +175,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "caido-server-auth", editable = "packages/caido-server-auth" },
     { name = "gql", extras = ["aiohttp", "websockets"], specifier = ">=3.5.0" },
     { name = "pydantic", specifier = ">=2.11.0" },
 ]
@@ -211,7 +213,7 @@ dev = [
 
 [[package]]
 name = "caido-server-auth"
-version = "0.1.1"
+version = "0.1.2"
 source = { editable = "packages/caido-server-auth" }
 dependencies = [
     { name = "gql", extra = ["aiohttp", "websockets"] },

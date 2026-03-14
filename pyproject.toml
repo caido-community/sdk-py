@@ -6,8 +6,17 @@ requires-python = ">=3.12"
 [tool.uv.workspace]
 members = ["packages/*"]
 
+[tool.uv.sources]
+caido-server-auth = { workspace = true }
+
 [dependency-groups]
-dev = ["ruff==0.15.5", "turms>=0.10.1", "ty==0.0.22", "pytest>=8.0.0", "pytest-asyncio>=0.24.0"]
+dev = [
+  "ruff==0.15.5",
+  "turms>=0.10.1",
+  "ty==0.0.22",
+  "pytest>=8.0.0",
+  "pytest-asyncio>=0.24.0",
+]
 
 [tool.ruff]
 exclude = ["**/graphql/__generated__/**"]

@@ -5,7 +5,11 @@ description = "Client SDK for interacting with a Caido instance"
 readme = "README.md"
 authors = [{ name = "Caido Labs Inc.", email = "dev@caido.io" }]
 requires-python = ">=3.12"
-dependencies = ["gql[aiohttp,websockets]>=3.5.0", "pydantic>=2.11.0"]
+dependencies = [
+    "caido-server-auth>=0.1.2",
+    "gql[aiohttp,websockets]>=3.5.0",
+    "pydantic>=2.11.0",
+]
 
 [dependency-groups]
 dev = ["pytest>=8.0.0", "pytest-asyncio>=0.24.0"]

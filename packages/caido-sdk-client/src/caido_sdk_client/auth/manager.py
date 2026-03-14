@@ -7,6 +7,14 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
+from caido_server_auth import (
+    AuthClient,
+    AuthClientOptions,
+    BrowserApprover,
+    PATApprover,
+    PATApproverOptions,
+)
+
 from caido_sdk_client.auth.cache.types import CachedToken, TokenCache
 from caido_sdk_client.auth.types import (
     AuthOptions,
@@ -123,17 +131,6 @@ class AuthManager:
 
     def _get_or_create_auth_client(self) -> Any:
         if self._auth_client is None:
-            try:
-                from caido_server_auth import (
-                    AuthClient,
-                    AuthClientOptions,
-                )
-            except ImportError as exc:
-                raise ImportError(
-                    "caido-server-auth is required for PAT/browser authentication "
-                    "and token refresh. Install it with: pip install caido-server-auth"
-                ) from exc
-
             approver = self._create_approver()
             self._auth_client = AuthClient(
                 AuthClientOptions(
@@ -147,23 +144,7 @@ class AuthManager:
         auth = self._auth_options
 
         if auth is not None and is_pat_auth(auth):
-            try:
-                from caido_server_auth import (
-                    PATApprover,
-                    PATApproverOptions,
-                )
-            except ImportError as exc:
-                raise ImportError(
-                    "caido-server-auth is required for PAT authentication."
-                ) from exc
             return PATApprover(PATApproverOptions(pat=auth.pat))  # type: ignore[union-attr]
-
-        try:
-            from caido_server_auth import BrowserApprover  # noqa: F811
-        except ImportError as exc:
-            raise ImportError(
-                "caido-server-auth is required for browser authentication."
-            ) from exc
 
         logger = self._logger
         browser_auth = auth if isinstance(auth, BrowserAuthOptions) else None
