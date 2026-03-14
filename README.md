@@ -16,6 +16,7 @@
 
 This is the monorepo for all the Python SDK and related tooling of Caido. It contains the following packages:
 
+- `caido-sdk-client`: SDK to interact with a Caido Instance as a client
 - `caido-server-auth`: Library to authenticate with a Caido instance
 
 ## 💚 Community

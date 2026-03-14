@@ -113,19 +113,28 @@ class GraphQLClient:
         self,
         document: str | DocumentNode,
         variables: Mapping[str, Any] | None = None,
+        *,
+        upload_files: bool = False,
     ) -> dict[str, Any]:
-        """Execute a GraphQL mutation and return raw data payload."""
-        return await self._execute(document, variables)
+        """Execute a GraphQL mutation and return raw data payload.
+
+        Set upload_files=True when variables contain gql FileVar values
+        (e.g. for uploadHostedFile).
+        """
+        return await self._execute(document, variables, upload_files=upload_files)
 
     async def _execute(
         self,
         document: str | DocumentNode,
         variables: Mapping[str, Any] | None,
+        *,
+        upload_files: bool = False,
     ) -> dict[str, Any]:
         try:
             result = await self._http_client.execute_async(
                 self._request(document),
                 variable_values=dict(variables) if variables is not None else None,
+                upload_files=upload_files,
             )
         except TransportQueryError as exc:
             self._raise_from_query_error(exc)

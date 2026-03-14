@@ -52,6 +52,7 @@ Turms config is in `graphql.config.yaml` at the package root.
 - `PluginFunctionCallError` takes REST `Any` payloads (not GraphQL fragments) since it comes from the REST API.
 - The top-level `__init__.py` re-exports the public API. Keep it updated when adding new modules.
 - Port one folder/feature at a time. Don't get distracted by issues in files not currently being ported.
+- When the JS SDK has tests for a feature (e.g. under `**/*.test.ts` or similar), port those tests when porting the feature so they are available in the Python package.
 
 ### Typed strings (Id, Cursor, Httpql)
 

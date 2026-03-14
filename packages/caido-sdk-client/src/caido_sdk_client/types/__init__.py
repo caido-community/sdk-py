@@ -16,6 +16,7 @@ from .filter import (
     UpdateFilterPresetOptions,
 )
 from .finding import CreateFindingOptions, Finding, UpdateFindingOptions
+from .hosted_file import HostedFile, UploadHostedFileOptions
 from .project import CreateProjectOptions, Project, ProjectStatus
 from .strings import Cursor, CursorLike, Httpql, HttpqlLike, Id, IdLike
 from .user import (
@@ -49,6 +50,7 @@ __all__ = [
     "EnvironmentVariableKind",
     "FilterPreset",
     "Finding",
+    "HostedFile",
     "GuestUser",
     "PageInfo",
     "Project",
@@ -59,6 +61,7 @@ __all__ = [
     "UpdateEnvironmentOptions",
     "UpdateFilterPresetOptions",
     "UpdateFindingOptions",
+    "UploadHostedFileOptions",
     "User",
     "UserIdentity",
     "UserProfile",
