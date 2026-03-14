@@ -23,7 +23,7 @@ from caido_sdk_client.types import (
     EnvironmentVariable,
     UpdateEnvironmentOptions,
 )
-from caido_sdk_client.types.strings import Id
+from caido_sdk_client.types.strings import IdLike
 from caido_sdk_client.utils.errors import handle_graphql_error
 
 
@@ -39,7 +39,7 @@ class EnvironmentSDK:
         model = Environments.model_validate(result)
         return [map_to_environment(node) for node in model.environments]
 
-    async def get(self, id: Id | str) -> Optional["EnvironmentInstance"]:
+    async def get(self, id: IdLike) -> Optional["EnvironmentInstance"]:
         """Get an environment by ID.
 
         Returns an EnvironmentInstance for managing variables, or None if not found.
@@ -89,7 +89,7 @@ class EnvironmentSDK:
 
     async def update(
         self,
-        id: Id | str,
+        id: IdLike,
         options: UpdateEnvironmentOptions,
         *,
         version: int,
@@ -126,7 +126,7 @@ class EnvironmentSDK:
             map_to_environment(payload.environment),
         )
 
-    async def delete(self, id: Id | str) -> None:
+    async def delete(self, id: IdLike) -> None:
         """Delete an environment by ID."""
         result = await self._graphql.mutation(
             DeleteEnvironment.Meta.document,
@@ -139,7 +139,7 @@ class EnvironmentSDK:
             handle_graphql_error(cast(AllErrors, payload.error))
 
     async def select(
-        self, id: Id | str | None = None
+        self, id: IdLike | None = None
     ) -> Optional["EnvironmentInstance"]:
         """Select an environment as the current environment.
 

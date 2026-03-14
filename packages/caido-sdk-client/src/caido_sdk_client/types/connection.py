@@ -6,7 +6,7 @@ from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from typing import Generic, Literal, TypeVar
 
-from caido_sdk_client.types.strings import Cursor
+from caido_sdk_client.types.strings import Cursor, CursorLike
 
 T = TypeVar("T")
 
@@ -38,7 +38,7 @@ class ConnectionQueryResult(Generic[T]):
 
 
 ConnectionQueryFn = Callable[
-    [Cursor | str, Literal["next", "prev"]], Awaitable[ConnectionQueryResult[T]]
+    [CursorLike, Literal["next", "prev"]], Awaitable[ConnectionQueryResult[T]]
 ]
 
 

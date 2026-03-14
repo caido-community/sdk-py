@@ -18,7 +18,7 @@ from caido_sdk_client.graphql.__generated__.schema import (
     UpdateFinding,
 )
 from caido_sdk_client.types.connection import ConnectionQueryResult, Edge
-from caido_sdk_client.types.strings import Cursor, Id
+from caido_sdk_client.types.strings import Cursor, IdLike
 from caido_sdk_client.types.finding import (
     CreateFindingOptions,
     UpdateFindingOptions,
@@ -78,7 +78,7 @@ class FindingSDK:
     def __init__(self, graphql: GraphQLClient) -> None:
         self._graphql = graphql
 
-    async def get(self, id: Id | str) -> FindingType | None:
+    async def get(self, id: IdLike) -> FindingType | None:
         """Get a finding by ID. Returns None if it does not exist."""
         raw = await self._graphql.query(
             Finding.Meta.document,
@@ -94,7 +94,7 @@ class FindingSDK:
         return FindingsListBuilder(self._graphql)
 
     async def create(
-        self, request_id: Id | str, options: CreateFindingOptions
+        self, request_id: IdLike, options: CreateFindingOptions
     ) -> FindingType:
         """Create a finding for the given request."""
         raw = await self._graphql.mutation(
@@ -118,7 +118,7 @@ class FindingSDK:
         return map_to_finding(payload.finding)
 
     async def update(
-        self, id: Id | str, options: UpdateFindingOptions
+        self, id: IdLike, options: UpdateFindingOptions
     ) -> FindingType:
         """Update a finding."""
         raw = await self._graphql.mutation(

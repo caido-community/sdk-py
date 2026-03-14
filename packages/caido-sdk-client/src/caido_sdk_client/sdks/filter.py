@@ -20,7 +20,7 @@ from caido_sdk_client.types import (
     FilterPreset,
     UpdateFilterPresetOptions,
 )
-from caido_sdk_client.types.strings import Id
+from caido_sdk_client.types.strings import IdLike
 from caido_sdk_client.utils.errors import handle_graphql_error
 
 
@@ -36,7 +36,7 @@ class FilterSDK:
         model = FilterPresets.model_validate(result)
         return [map_to_filter_preset(node) for node in model.filterPresets]
 
-    async def get(self, id: Id | str) -> FilterPreset | None:
+    async def get(self, id: IdLike) -> FilterPreset | None:
         """Get a filter preset by ID."""
         result = await self._graphql.query(
             FilterPresetOp.Meta.document,
@@ -72,7 +72,7 @@ class FilterSDK:
 
     async def update(
         self,
-        id: Id | str,
+        id: IdLike,
         options: UpdateFilterPresetOptions,
     ) -> FilterPreset:
         """Update a filter preset."""
@@ -98,7 +98,7 @@ class FilterSDK:
 
         return map_to_filter_preset(payload.filter)
 
-    async def delete(self, id: Id | str) -> None:
+    async def delete(self, id: IdLike) -> None:
         """Delete a filter preset by ID."""
         result = await self._graphql.mutation(
             DeleteFilterPreset.Meta.document,

@@ -17,7 +17,7 @@ from .filter import (
 )
 from .finding import CreateFindingOptions, Finding, UpdateFindingOptions
 from .project import CreateProjectOptions, Project, ProjectStatus
-from .strings import Cursor, Httpql, Id
+from .strings import Cursor, CursorLike, Httpql, HttpqlLike, Id, IdLike
 from .user import (
     CloudUser,
     GuestUser,
@@ -35,8 +35,11 @@ __all__ = [
     "Connection",
     "CreateEnvironmentOptions",
     "Cursor",
+    "CursorLike",
     "Httpql",
+    "HttpqlLike",
     "Id",
+    "IdLike",
     "CreateFilterPresetOptions",
     "CreateFindingOptions",
     "CreateProjectOptions",

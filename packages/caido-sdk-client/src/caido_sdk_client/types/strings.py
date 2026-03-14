@@ -49,3 +49,9 @@ class Httpql(str):
         cls, source_type: Any, handler: Any
     ) -> core_schema.CoreSchema:
         return _make_str_subclass_schema(cls, handler)
+
+
+# Short aliases for input parameters (accept str or the typed class)
+IdLike = Id | str
+CursorLike = Cursor | str
+HttpqlLike = Httpql | str
