@@ -20,6 +20,7 @@ from caido_sdk_client.sdks import (
     InstanceSDK,
     PluginSDK,
     ProjectSDK,
+    ReplaySDK,
     RequestSDK,
     ScopeSDK,
     TaskSDK,
@@ -77,6 +78,7 @@ class Client:
     findings: FindingSDK
     hosted_file: HostedFileSDK
     instance: InstanceSDK
+    replay: ReplaySDK
     request: RequestSDK
     scope: ScopeSDK
     task: TaskSDK
@@ -118,6 +120,7 @@ class Client:
         self.findings = FindingSDK(self.graphql)
         self.hosted_file = HostedFileSDK(self.graphql)
         self.instance = InstanceSDK(self.graphql)
+        self.replay = ReplaySDK(self.graphql)
         self.request = RequestSDK(self.graphql)
         self.scope = ScopeSDK(self.graphql)
         self.task = TaskSDK(self.graphql)

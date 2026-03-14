@@ -31,6 +31,7 @@ from .instance_settings import (
     SetInstanceSettingsInput,
     SetOnboardingSettingsInput,
 )
+from .network import ConnectionInfo, ConnectionInfoInput
 from .plugin import (
     InstallPluginPackageOptions,
     InstallPluginPackageSourceFile,
@@ -41,6 +42,18 @@ from .plugin import (
     PluginWorkflow,
 )
 from .project import CreateProjectOptions, Project, ProjectStatus
+from .replay_collection import CreateReplaySessionCollectionOptions
+from .replay_entry import ReplayEntry
+from .replay_session import (
+    CreateReplaySessionFromId,
+    CreateReplaySessionFromRaw,
+    CreateReplaySessionOptions,
+    RangeInput,
+    ReplayPlaceholderInput,
+    ReplaySendOptions,
+    ReplaySendResult,
+    ReplaySendSettings,
+)
 from .request import (
     Request,
     RequestGetOptions,
@@ -74,7 +87,13 @@ __all__ = [
     "AnthropicAISetting",
     "CloudUser",
     "Connection",
+    "ConnectionInfo",
+    "ConnectionInfoInput",
     "CreateEnvironmentOptions",
+    "CreateReplaySessionCollectionOptions",
+    "CreateReplaySessionFromId",
+    "CreateReplaySessionFromRaw",
+    "CreateReplaySessionOptions",
     "Cursor",
     "CursorLike",
     "GoogleAISetting",
@@ -107,6 +126,12 @@ __all__ = [
     "PageInfo",
     "Project",
     "ProjectStatus",
+    "RangeInput",
+    "ReplayEntry",
+    "ReplayPlaceholderInput",
+    "ReplaySendOptions",
+    "ReplaySendResult",
+    "ReplaySendSettings",
     "Request",
     "RequestGetOptions",
     "RequestMetadata",
