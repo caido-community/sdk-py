@@ -17,7 +17,7 @@ projects:
           Duration: int
           Blob: str
           Port: int
-          Timestamp: str
+          Timestamp: int
           Snapshot: int
           Rank: str
           Token: str

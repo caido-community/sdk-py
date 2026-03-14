@@ -20,5 +20,5 @@ def map_to_finding(node: FindingFull) -> Finding:
         host=node.host,
         path=node.path,
         hidden=node.hidden,
-        created_at=datetime.fromisoformat(node.createdAt.replace("Z", "+00:00")),
+        created_at=datetime.fromtimestamp(node.createdAt / 1000.0),
     )

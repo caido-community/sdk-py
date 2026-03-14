@@ -1,8 +1,8 @@
-from pydantic import Field, BaseModel, ConfigDict
-from typing import Literal, Annotated, Optional, List, Union
-from enum import Enum
-from caido_sdk_client.utils.pydantic import BaseModel
+from typing import List, Union, Optional, Annotated, Literal
+from pydantic import ConfigDict, BaseModel, Field
 from gql import FileVar
+from caido_sdk_client.utils.pydantic import BaseModel
+from enum import Enum
 
 class CloudErrorReason(str, Enum):
     """No documentation"""
@@ -510,7 +510,7 @@ class FindingFull(BaseModel):
     host: str
     path: str
     hidden: bool
-    createdAt: str
+    createdAt: int
 
     class Meta:
         """Meta class for FindingFull"""
@@ -773,7 +773,7 @@ class ResponseFull(BaseModel):
     statusCode: int
     roundtripTime: int
     length: int
-    createdAt: str
+    createdAt: int
     raw: str
 
     class Meta:
@@ -1057,7 +1057,7 @@ class RequestFull(BaseModel):
     query: str
     isTls: bool
     metadata: RequestFullMetadata
-    createdAt: str
+    createdAt: int
     raw: str
     response: Optional[ResponseFull] = Field(default=None)
 
@@ -1097,7 +1097,7 @@ class ReplayEntryFull(BaseModel):
     """No documentation"""
     typename: Literal['ReplayEntry'] = Field(alias='__typename', default='ReplayEntry')
     connection: ConnectionInfoFull
-    createdAt: str
+    createdAt: int
     error: Optional[str] = Field(default=None)
     id: str
     raw: str
