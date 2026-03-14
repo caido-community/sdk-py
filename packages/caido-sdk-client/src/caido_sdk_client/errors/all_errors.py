@@ -14,6 +14,7 @@ from caido_sdk_client.graphql.__generated__.schema import (
     PermissionDeniedUserErrorFull,
     PluginUserErrorFull,
     ProjectUserErrorFull,
+    RankUserErrorFull,
     ReadOnlyUserErrorFull,
     StoreUserErrorFull,
     TaskInProgressUserErrorFull,
@@ -34,6 +35,7 @@ AllErrors = Union[
     CloudUserErrorFull,
     PluginUserErrorFull,
     StoreUserErrorFull,
+    RankUserErrorFull,
     TaskInProgressUserErrorFull,
     WorkflowUserErrorFull,
 ]

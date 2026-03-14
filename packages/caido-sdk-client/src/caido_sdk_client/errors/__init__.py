@@ -23,6 +23,7 @@ from caido_sdk_client.errors.health import InstanceNotReadyError
 from caido_sdk_client.errors.misc import (
     NotFoundUserError,
     OtherUserError,
+    RankUserError,
     ReadOnlyUserError,
 )
 from caido_sdk_client.errors.plugin import (
@@ -58,6 +59,7 @@ __all__ = [
     "PluginFunctionCallError",
     "PluginUserError",
     "ProjectUserError",
+    "RankUserError",
     "ReadOnlyUserError",
     "RestRequestError",
     "StoreUserError",

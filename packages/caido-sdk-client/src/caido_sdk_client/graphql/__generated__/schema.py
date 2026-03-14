@@ -1,7 +1,7 @@
-from typing import List, Union, Optional, Annotated, Literal
-from pydantic import ConfigDict, BaseModel, Field
 from gql import FileVar
 from caido_sdk_client.utils.pydantic import BaseModel
+from typing import Optional, Annotated, Union, Literal, List
+from pydantic import BaseModel, Field, ConfigDict
 from enum import Enum
 
 class CloudErrorReason(str, Enum):
@@ -60,6 +60,12 @@ class ProjectStatus(str, Enum):
     ERROR = 'ERROR'
     READY = 'READY'
     RESTORING = 'RESTORING'
+
+class RankErrorReason(str, Enum):
+    """No documentation"""
+    CONCURRENT_UPDATE = 'CONCURRENT_UPDATE'
+    INVALID_AFTER_BEFORE = 'INVALID_AFTER_BEFORE'
+    NOT_ENABLED = 'NOT_ENABLED'
 
 class RequestResponseOrderBy(str, Enum):
     """No documentation"""
@@ -969,6 +975,17 @@ class StoreUserErrorFull(UserErrorFullStoreUserError, BaseModel):
         document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment StoreUserErrorFull on StoreUserError {\n  ...UserErrorFull\n  storeReason: reason\n  __typename\n}'
         name = 'StoreUserErrorFull'
         type = 'StoreUserError'
+
+class RankUserErrorFull(UserErrorFullRankUserError, BaseModel):
+    """No documentation"""
+    typename: Literal['RankUserError'] = Field(alias='__typename', default='RankUserError')
+    rankReason: RankErrorReason
+
+    class Meta:
+        """Meta class for RankUserErrorFull"""
+        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment RankUserErrorFull on RankUserError {\n  ...UserErrorFull\n  rankReason: reason\n  __typename\n}'
+        name = 'RankUserErrorFull'
+        type = 'RankUserError'
 
 class TaskInProgressUserErrorFull(UserErrorFullTaskInProgressUserError, BaseModel):
     """No documentation"""
@@ -2511,7 +2528,7 @@ class FinishedTask(BaseModel):
 
     class Meta:
         """Meta class for FinishedTask """
-        document = 'fragment ReplayTaskMeta on ReplayTask {\n  ...TaskMeta\n  replayEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nfragment TaskMeta on Task {\n  __typename\n  id\n  createdAt\n}\n\nsubscription FinishedTask {\n  finishedTask {\n    task {\n      ...TaskMeta\n      ... on ReplayTask {\n        ...ReplayTaskMeta\n      }\n      __typename\n    }\n    status\n    error {\n      code\n      __typename\n    }\n    __typename\n  }\n}'
+        document = 'fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment RankUserErrorFull on RankUserError {\n  ...UserErrorFull\n  rankReason: reason\n  __typename\n}\n\nfragment ReplayTaskMeta on ReplayTask {\n  ...TaskMeta\n  replayEntry {\n    id\n    __typename\n  }\n  __typename\n}\n\nfragment TaskMeta on Task {\n  __typename\n  id\n  createdAt\n}\n\nsubscription FinishedTask {\n  finishedTask {\n    task {\n      ...TaskMeta\n      ... on ReplayTask {\n        ...ReplayTaskMeta\n      }\n      __typename\n    }\n    status\n    error {\n      __typename\n      code\n      ... on RankUserError {\n        ...RankUserErrorFull\n      }\n    }\n    __typename\n  }\n}'
 
 class ViewerCloudUserInlineFragmentProfileIdentity(BaseModel):
     """No documentation"""

@@ -13,6 +13,7 @@ from caido_sdk_client.errors.form import (
 from caido_sdk_client.errors.misc import (
     NotFoundUserError,
     OtherUserError,
+    RankUserError,
     ReadOnlyUserError,
 )
 from caido_sdk_client.errors.plugin import PluginUserError, StoreUserError
@@ -20,6 +21,7 @@ from caido_sdk_client.errors.project import ProjectUserError
 from caido_sdk_client.errors.tasks import TaskInProgressUserError
 from caido_sdk_client.errors.version import NewerVersionUserError
 from caido_sdk_client.errors.workflow import WorkflowUserError
+from caido_sdk_client.graphql.__generated__.schema import RankErrorReason
 
 
 def from_error(error: object) -> BaseError:
@@ -64,6 +66,19 @@ def from_error(error: object) -> BaseError:
 
         case "StoreUserError":
             return StoreUserError(error)  # type: ignore[arg-type]
+
+        case "RankUserError":
+            code = getattr(error, "code", "")
+            rank_reason_val = getattr(
+                error, "rankReason", getattr(error, "rank_reason", None)
+            )
+            if isinstance(rank_reason_val, RankErrorReason):
+                rank_reason = rank_reason_val
+            elif rank_reason_val is not None:
+                rank_reason = RankErrorReason(str(rank_reason_val))
+            else:
+                rank_reason = RankErrorReason.NOT_ENABLED  # fallback
+            return RankUserError(code, rank_reason)
 
         case "TaskInProgressUserError":
             return TaskInProgressUserError(getattr(error, "taskId", ""))

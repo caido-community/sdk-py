@@ -44,7 +44,11 @@ subscription FinishedTask {
     }
     status
     error {
+      __typename
       code
+      ... on RankUserError {
+        ...RankUserErrorFull
+      }
     }
   }
 }

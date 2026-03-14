@@ -61,10 +61,10 @@ fragment StoreUserErrorFull on StoreUserError {
   storeReason: reason
 }
 
-# fragment RankUserErrorFull on RankUserError {
-#   ...UserErrorFull
-#   rankReason: reason
-# }
+fragment RankUserErrorFull on RankUserError {
+  ...UserErrorFull
+  rankReason: reason
+}
 
 fragment TaskInProgressUserErrorFull on TaskInProgressUserError {
   ...UserErrorFull

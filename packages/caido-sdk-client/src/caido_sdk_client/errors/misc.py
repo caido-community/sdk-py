@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from caido_sdk_client.errors.base import BaseError
+from caido_sdk_client.graphql.__generated__.schema import RankErrorReason
 
 
 class NotFoundUserError(BaseError):
@@ -21,3 +22,8 @@ class OtherUserError(BaseError):
             super().__init__(message)
         else:
             super().__init__(f"An unknown user error occured: {code!r}")
+
+
+class RankUserError(BaseError):
+    def __init__(self, code: str, rank_reason: RankErrorReason) -> None:
+        super().__init__(f"Ranking failed: {code}: {rank_reason!s}")

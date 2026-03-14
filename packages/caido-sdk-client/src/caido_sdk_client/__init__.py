@@ -17,6 +17,7 @@ from caido_sdk_client.errors import (
     BaseError,
     InstanceNotReadyError,
     NoViewerInResponseError,
+    RankUserError,
     UnsupportedViewerTypeError,
     from_error,
 )
@@ -194,6 +195,7 @@ __all__ = [
     "PATAuthOptions",
     "ProjectSDK",
     "RangeInput",
+    "RankUserError",
     "ReadyOptions",
     "ReplayCollectionSDK",
     "ReplayCollectionsListBuilder",
