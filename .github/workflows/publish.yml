@@ -32,3 +32,8 @@ jobs:
         uses: ./.github/actions/publish-one
         with:
           project-path: packages/caido-server-auth
+
+      - name: Publish caido-sdk-client
+        uses: ./.github/actions/publish-one
+        with:
+          project-path: packages/caido-sdk-client
