@@ -8,6 +8,7 @@ from .finding import FindingSDK, FindingsListBuilder
 from .hosted_file import HostedFileSDK
 from .instance import InstanceSDK
 from .instance_settings import InstanceSettingsSDK
+from .plugin import PluginPackage, PluginSDK
 from .project import ProjectSDK
 from .user import UserSDK
 
@@ -20,6 +21,8 @@ __all__ = [
     "HostedFileSDK",
     "InstanceSDK",
     "InstanceSettingsSDK",
+    "PluginPackage",
+    "PluginSDK",
     "ProjectSDK",
     "UserSDK",
 ]

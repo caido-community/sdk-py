@@ -11,12 +11,14 @@ from caido_sdk_client.auth import AuthManager, AuthOptions
 from caido_sdk_client.errors import InstanceNotReadyError
 from caido_sdk_client.graphql import GraphQLClient
 from caido_sdk_client.logger import ConsoleLogger, Logger
+from caido_sdk_client.rest import RestClient
 from caido_sdk_client.sdks import (
     EnvironmentSDK,
     FilterSDK,
     FindingSDK,
     HostedFileSDK,
     InstanceSDK,
+    PluginSDK,
     ProjectSDK,
     UserSDK,
 )
@@ -62,7 +64,9 @@ class Client:
     """Client for interacting with a Caido instance."""
 
     graphql: GraphQLClient
+    rest: RestClient
     user: UserSDK
+    plugin: PluginSDK
     project: ProjectSDK
     environment: EnvironmentSDK
     filter: FilterSDK
@@ -92,7 +96,14 @@ class Client:
             headers=headers,
             timeout_ms=timeout_ms,
         )
+        self.rest = RestClient(
+            self._url,
+            self._auth,
+            self._logger,
+            timeout_ms=timeout_ms,
+        )
         self.user = UserSDK(self.graphql)
+        self.plugin = PluginSDK(self.graphql, self.rest)
         self.project = ProjectSDK(self.graphql)
         self.environment = EnvironmentSDK(self.graphql)
         self.filter = FilterSDK(self.graphql)

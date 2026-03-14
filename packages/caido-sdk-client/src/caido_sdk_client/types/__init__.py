@@ -31,6 +31,15 @@ from .instance_settings import (
     SetInstanceSettingsInput,
     SetOnboardingSettingsInput,
 )
+from .plugin import (
+    InstallPluginPackageOptions,
+    InstallPluginPackageSourceFile,
+    InstallPluginPackageSourceManifest,
+    Plugin,
+    PluginBackend,
+    PluginFrontend,
+    PluginWorkflow,
+)
 from .project import CreateProjectOptions, Project, ProjectStatus
 from .strings import Cursor, CursorLike, Httpql, HttpqlLike, Id, IdLike
 from .user import (
@@ -70,7 +79,14 @@ __all__ = [
     "Finding",
     "HostedFile",
     "GuestUser",
+    "InstallPluginPackageOptions",
+    "InstallPluginPackageSourceFile",
+    "InstallPluginPackageSourceManifest",
     "InstanceSettings",
+    "Plugin",
+    "PluginBackend",
+    "PluginFrontend",
+    "PluginWorkflow",
     "OnboardingSettings",
     "OpenAIAISetting",
     "OpenRouterAISetting",

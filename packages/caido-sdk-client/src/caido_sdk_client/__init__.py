@@ -22,6 +22,7 @@ from caido_sdk_client.errors import (
 )
 from caido_sdk_client.graphql import GraphQLClient
 from caido_sdk_client.logger import ConsoleLogger, Logger
+from caido_sdk_client.rest import RestClient
 from caido_sdk_client.sdks import (
     EnvironmentInstance,
     EnvironmentSDK,
@@ -30,6 +31,8 @@ from caido_sdk_client.sdks import (
     FindingsListBuilder,
     HostedFileSDK,
     InstanceSDK,
+    PluginPackage,
+    PluginSDK,
     UserSDK,
 )
 from caido_sdk_client.types import (
@@ -54,10 +57,17 @@ from caido_sdk_client.types import (
     HttpqlLike,
     Id,
     IdLike,
+    InstallPluginPackageOptions,
+    InstallPluginPackageSourceFile,
+    InstallPluginPackageSourceManifest,
     InstanceSettings,
     OnboardingSettings,
     OpenAIAISetting,
     OpenRouterAISetting,
+    Plugin,
+    PluginBackend,
+    PluginFrontend,
+    PluginWorkflow,
     ScriptUser,
     SetAISettingsInput,
     SetAnalyticsSettingsInput,
@@ -111,6 +121,9 @@ __all__ = [
     "GraphQLClient",
     "GuestUser",
     "Health",
+    "InstallPluginPackageOptions",
+    "InstallPluginPackageSourceFile",
+    "InstallPluginPackageSourceManifest",
     "Httpql",
     "HttpqlLike",
     "Id",
@@ -118,6 +131,12 @@ __all__ = [
     "InstanceNotReadyError",
     "InstanceSDK",
     "InstanceSettings",
+    "Plugin",
+    "PluginBackend",
+    "PluginFrontend",
+    "PluginPackage",
+    "PluginSDK",
+    "PluginWorkflow",
     "Logger",
     "NoViewerInResponseError",
     "OnboardingSettings",
@@ -125,6 +144,7 @@ __all__ = [
     "OpenRouterAISetting",
     "PATAuthOptions",
     "ReadyOptions",
+    "RestClient",
     "ScriptUser",
     "SetAISettingsInput",
     "SetAnalyticsSettingsInput",
