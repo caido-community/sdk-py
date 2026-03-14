@@ -17,11 +17,13 @@ from caido_sdk_client.graphql.__generated__.schema import (
     Findings,
     UpdateFinding,
 )
-from caido_sdk_client.types.connection import Edge, ConnectionQueryResult
+from caido_sdk_client.types.connection import ConnectionQueryResult, Edge
 from caido_sdk_client.types.finding import (
     CreateFindingOptions,
-    Finding as FindingType,
     UpdateFindingOptions,
+)
+from caido_sdk_client.types.finding import (
+    Finding as FindingType,
 )
 from caido_sdk_client.utils.errors import handle_graphql_error
 from caido_sdk_client.utils.list import ListBuilder, ListBuilderVars
@@ -36,7 +38,7 @@ class FindingsListBuilder(
         super().__init__(graphql)
         self._graphql = graphql
 
-    async def query(
+    async def _query(
         self,
         vars: ListBuilderVars[FilterClauseFindingInput, FindingOrderInput],
     ) -> ConnectionQueryResult[FindingType]:
@@ -84,7 +86,7 @@ class FindingSDK:
         return map_to_finding(model.finding)
 
     def list(self) -> FindingsListBuilder:
-        """List findings. Chain with .first(50), .filter(...), etc. then await .execute()."""
+        """List findings. Chain with .first(50), .filter(...), etc. then await the builder or await .execute()."""
         return FindingsListBuilder(self._graphql)
 
     async def create(

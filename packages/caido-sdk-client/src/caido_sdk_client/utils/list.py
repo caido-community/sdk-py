@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Generic, Literal, TypeVar
 
@@ -28,8 +29,12 @@ class ListBuilderVars(Generic[FilterT, OrderT]):
     order: OrderT | None = None
 
 
-class ListBuilder(Generic[T, FilterT, OrderT]):
-    """List builder: chain methods then await execute() to run the query."""
+class ListBuilder(ABC, Generic[T, FilterT, OrderT]):
+    """List builder: chain methods then await the builder or await execute() to run the query."""
+
+    def __await__(self):
+        """Make the builder directly awaitable so you can await the chain without calling .execute()."""
+        return self.execute().__await__()
 
     def __init__(self, graphql: GraphQLClient) -> None:
         self._graphql = graphql
@@ -60,14 +65,16 @@ class ListBuilder(Generic[T, FilterT, OrderT]):
         return self
 
     async def execute(self) -> Connection[T]:
-        result = await self.query(self._vars)
+        result = await self._query(self._vars)
         default_first = 100
 
         async def query_fn(
             cursor: str, direction: Literal["next", "prev"]
         ) -> ConnectionQueryResult[T]:
             vars = ListBuilderVars[FilterT, OrderT](
-                first=self._vars.first if self._vars.first is not None else default_first,
+                first=self._vars.first
+                if self._vars.first is not None
+                else default_first,
                 after=self._vars.after,
                 last=self._vars.last,
                 before=self._vars.before,
@@ -78,7 +85,7 @@ class ListBuilder(Generic[T, FilterT, OrderT]):
                 vars.after = cursor
             else:
                 vars.before = cursor
-            return await self.query(vars)
+            return await self._query(vars)
 
         return Connection(
             page_info=result.page_info,
@@ -86,8 +93,8 @@ class ListBuilder(Generic[T, FilterT, OrderT]):
             _query_fn=query_fn,
         )
 
-    async def query(
+    @abstractmethod
+    async def _query(
         self, vars: ListBuilderVars[FilterT, OrderT]
     ) -> ConnectionQueryResult[T]:
-        """Execute the connection query with the given variables. Override in subclasses."""
-        raise NotImplementedError
+        """Run the connection query with the given variables. Subclasses must implement."""

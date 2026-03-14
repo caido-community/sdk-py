@@ -41,7 +41,7 @@ ConnectionQueryFn = Callable[
 
 
 @dataclass(slots=True)
-class Connection:
+class Connection(Generic[T]):
     """A connection of items with cursor-based pagination."""
 
     page_info: PageInfo
