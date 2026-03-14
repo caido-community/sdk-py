@@ -11,7 +11,13 @@ from caido_sdk_client.auth import AuthManager, AuthOptions
 from caido_sdk_client.errors import InstanceNotReadyError
 from caido_sdk_client.graphql import GraphQLClient
 from caido_sdk_client.logger import ConsoleLogger, Logger
-from caido_sdk_client.sdks import EnvironmentSDK, FindingSDK, ProjectSDK, UserSDK
+from caido_sdk_client.sdks import (
+    EnvironmentSDK,
+    FilterSDK,
+    FindingSDK,
+    ProjectSDK,
+    UserSDK,
+)
 from caido_sdk_client.utils import sleep
 
 
@@ -57,6 +63,7 @@ class Client:
     user: UserSDK
     project: ProjectSDK
     environment: EnvironmentSDK
+    filter: FilterSDK
     findings: FindingSDK
 
     def __init__(
@@ -84,6 +91,7 @@ class Client:
         self.user = UserSDK(self.graphql)
         self.project = ProjectSDK(self.graphql)
         self.environment = EnvironmentSDK(self.graphql)
+        self.filter = FilterSDK(self.graphql)
         self.findings = FindingSDK(self.graphql)
 
     async def __aenter__(self) -> Client:

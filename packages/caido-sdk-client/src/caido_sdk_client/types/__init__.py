@@ -10,6 +10,11 @@ from .environment import (
     EnvironmentVariableKind,
     UpdateEnvironmentOptions,
 )
+from .filter import (
+    CreateFilterPresetOptions,
+    FilterPreset,
+    UpdateFilterPresetOptions,
+)
 from .finding import CreateFindingOptions, Finding, UpdateFindingOptions
 from .project import CreateProjectOptions, Project, ProjectStatus
 from .user import (
@@ -28,12 +33,14 @@ __all__ = [
     "CloudUser",
     "Connection",
     "CreateEnvironmentOptions",
+    "CreateFilterPresetOptions",
     "CreateFindingOptions",
     "CreateProjectOptions",
     "Edge",
     "Environment",
     "EnvironmentVariable",
     "EnvironmentVariableKind",
+    "FilterPreset",
     "Finding",
     "GuestUser",
     "PageInfo",
@@ -43,6 +50,7 @@ __all__ = [
     "SubscriptionEntitlement",
     "SubscriptionPlan",
     "UpdateEnvironmentOptions",
+    "UpdateFilterPresetOptions",
     "UpdateFindingOptions",
     "User",
     "UserIdentity",
