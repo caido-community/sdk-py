@@ -24,6 +24,7 @@ from caido_sdk_client.sdks import (
     ScopeSDK,
     TaskSDK,
     UserSDK,
+    WorkflowSDK,
 )
 from caido_sdk_client.utils import sleep
 
@@ -79,6 +80,7 @@ class Client:
     request: RequestSDK
     scope: ScopeSDK
     task: TaskSDK
+    workflow: WorkflowSDK
 
     def __init__(
         self,
@@ -119,6 +121,7 @@ class Client:
         self.request = RequestSDK(self.graphql)
         self.scope = ScopeSDK(self.graphql)
         self.task = TaskSDK(self.graphql)
+        self.workflow = WorkflowSDK(self.graphql)
 
     async def __aenter__(self) -> Client:
         return self

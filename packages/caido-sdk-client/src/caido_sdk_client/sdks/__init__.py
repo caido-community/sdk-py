@@ -14,6 +14,7 @@ from .request import RequestSDK, RequestsListBuilder
 from .scope import ScopeSDK
 from .task import ReplayTask, Task, TaskSDK
 from .user import UserSDK
+from .workflow import WorkflowSDK
 
 __all__ = [
     "EnvironmentInstance",
@@ -34,4 +35,5 @@ __all__ = [
     "Task",
     "TaskSDK",
     "UserSDK",
+    "WorkflowSDK",
 ]

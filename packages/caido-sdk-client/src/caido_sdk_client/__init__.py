@@ -40,6 +40,7 @@ from caido_sdk_client.sdks import (
     Task,
     TaskSDK,
     UserSDK,
+    WorkflowSDK,
 )
 from caido_sdk_client.types import (
     AISettings,
@@ -50,6 +51,7 @@ from caido_sdk_client.types import (
     CreateFilterPresetOptions,
     CreateFindingOptions,
     CreateScopeOptions,
+    CreateWorkflowOptions,
     Cursor,
     CursorLike,
     Environment,
@@ -94,11 +96,13 @@ from caido_sdk_client.types import (
     UpdateFilterPresetOptions,
     UpdateFindingOptions,
     UpdateScopeOptions,
+    UpdateWorkflowOptions,
     UploadHostedFileOptions,
     User,
     UserIdentity,
     UserProfile,
     UserSubscription,
+    Workflow,
 )
 
 __all__ = [
@@ -188,6 +192,10 @@ __all__ = [
     "TokenPair",
     "UnsupportedViewerTypeError",
     "UpdateEnvironmentOptions",
+    "CreateWorkflowOptions",
+    "UpdateWorkflowOptions",
+    "Workflow",
+    "WorkflowSDK",
     "UploadHostedFileOptions",
     "UpdateFilterPresetOptions",
     "UpdateFindingOptions",

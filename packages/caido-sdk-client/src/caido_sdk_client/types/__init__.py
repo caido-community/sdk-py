@@ -62,6 +62,11 @@ from .user import (
     UserProfile,
     UserSubscription,
 )
+from .workflow import (
+    CreateWorkflowOptions,
+    UpdateWorkflowOptions,
+    Workflow,
+)
 
 __all__ = [
     "AISettings",
@@ -127,4 +132,7 @@ __all__ = [
     "UserIdentity",
     "UserProfile",
     "UserSubscription",
+    "CreateWorkflowOptions",
+    "UpdateWorkflowOptions",
+    "Workflow",
 ]
