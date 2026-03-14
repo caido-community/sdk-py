@@ -47,6 +47,7 @@ Turms config is in `graphql.config.yaml` at the package root.
 - Error classes extend `BaseError` (in `errors/base.py`), which mirrors the JS `BaseError extends Error`.
 - `from` is a Python keyword; the JS `errors/from.ts` is named `errors/from_error.py` with a `from_error()` function.
 - Use generated pydantic models and enums from `graphql/__generated__/schema.py` for typed error constructors, operations, and fragment types.
+- Avoid `Any` as much as possible: prefer generated fragment/operation types (e.g. `ConnectionInfoFull`, `ReplayEntryFull`) for convert function parameters and internal variables; use `object` or a protocol only when you must accept multiple unrelated types.
 - In `from_error()`, prefer dispatching on the GraphQL `typename` string (mirroring the JS `error.__typename` switch) instead of structural pattern matching on specific pydantic model classes. This keeps the function compatible with both fragment `...Full` models and operation-specific inline fragment models, as long as they expose the required attributes. For new error families, mirror the existing `from_error()` style and raise a `ValueError` on unknown `typename`.
 - Use `match`/`case` on enum values in error constructors (e.g., `CloudErrorReason.UNAVAILABLE`).
 - `PluginFunctionCallError` takes REST `Any` payloads (not GraphQL fragments) since it comes from the REST API.
