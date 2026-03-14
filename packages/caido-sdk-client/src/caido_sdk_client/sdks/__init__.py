@@ -10,6 +10,7 @@ from .instance import InstanceSDK
 from .instance_settings import InstanceSettingsSDK
 from .plugin import PluginPackage, PluginSDK
 from .project import ProjectSDK
+from .request import RequestSDK, RequestsListBuilder
 from .user import UserSDK
 
 __all__ = [
@@ -24,5 +25,7 @@ __all__ = [
     "PluginPackage",
     "PluginSDK",
     "ProjectSDK",
+    "RequestSDK",
+    "RequestsListBuilder",
     "UserSDK",
 ]

@@ -5,7 +5,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from collections.abc import Awaitable, Generator
 from dataclasses import dataclass
-from typing import Any, Generic, Literal, TypeVar
+from typing import Any, Generic, Literal, Self, TypeVar
 
 from caido_sdk_client.graphql import GraphQLClient
 from caido_sdk_client.types.connection import (
@@ -41,27 +41,27 @@ class ListBuilder(ABC, Generic[T, FilterT, OrderT], Awaitable[Connection[T]]):
         self._graphql = graphql
         self._vars: ListBuilderVars[FilterT, OrderT] = ListBuilderVars()
 
-    def after(self, cursor: str) -> ListBuilder[T, FilterT, OrderT]:
+    def after(self, cursor: str) -> Self:
         self._vars.after = cursor
         return self
 
-    def before(self, cursor: str) -> ListBuilder[T, FilterT, OrderT]:
+    def before(self, cursor: str) -> Self:
         self._vars.before = cursor
         return self
 
-    def first(self, n: int) -> ListBuilder[T, FilterT, OrderT]:
+    def first(self, n: int) -> Self:
         self._vars.first = n
         return self
 
-    def last(self, n: int) -> ListBuilder[T, FilterT, OrderT]:
+    def last(self, n: int) -> Self:
         self._vars.last = n
         return self
 
-    def filter(self, filter: FilterT) -> ListBuilder[T, FilterT, OrderT]:
+    def filter(self, filter: FilterT) -> Self:
         self._vars.filter = filter
         return self
 
-    def order(self, order: OrderT) -> ListBuilder[T, FilterT, OrderT]:
+    def order(self, order: OrderT) -> Self:
         self._vars.order = order
         return self
 

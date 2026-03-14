@@ -41,6 +41,13 @@ from .plugin import (
     PluginWorkflow,
 )
 from .project import CreateProjectOptions, Project, ProjectStatus
+from .request import (
+    Request,
+    RequestGetOptions,
+    RequestMetadata,
+    RequestResponseOpt,
+    Response,
+)
 from .strings import Cursor, CursorLike, Httpql, HttpqlLike, Id, IdLike
 from .user import (
     CloudUser,
@@ -93,6 +100,11 @@ __all__ = [
     "PageInfo",
     "Project",
     "ProjectStatus",
+    "Request",
+    "RequestGetOptions",
+    "RequestMetadata",
+    "RequestResponseOpt",
+    "Response",
     "ScriptUser",
     "SetAISettingsInput",
     "SetAnalyticsSettingsInput",
