@@ -6,6 +6,8 @@ from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from typing import Generic, Literal, TypeVar
 
+from caido_sdk_client.types.strings import Cursor
+
 T = TypeVar("T")
 
 
@@ -15,15 +17,15 @@ class PageInfo:
 
     has_next_page: bool
     has_previous_page: bool
-    start_cursor: str | None
-    end_cursor: str | None
+    start_cursor: Cursor | None
+    end_cursor: Cursor | None
 
 
 @dataclass(frozen=True, slots=True)
 class Edge(Generic[T]):
     """An edge in a connection."""
 
-    cursor: str
+    cursor: Cursor
     node: T
 
 
@@ -36,7 +38,7 @@ class ConnectionQueryResult(Generic[T]):
 
 
 ConnectionQueryFn = Callable[
-    [str, Literal["next", "prev"]], Awaitable[ConnectionQueryResult[T]]
+    [Cursor | str, Literal["next", "prev"]], Awaitable[ConnectionQueryResult[T]]
 ]
 
 
@@ -50,9 +52,10 @@ class Connection(Generic[T]):
 
     async def next(self) -> Connection[T] | None:
         """Fetch the next page if available."""
-        if not self.page_info.has_next_page or not self.page_info.end_cursor:
+        end_cursor = self.page_info.end_cursor
+        if not self.page_info.has_next_page or not end_cursor:
             return None
-        result = await self._query_fn(self.page_info.end_cursor, "next")
+        result = await self._query_fn(end_cursor, "next")
         return Connection(
             page_info=result.page_info,
             edges=result.edges,
@@ -61,9 +64,10 @@ class Connection(Generic[T]):
 
     async def prev(self) -> Connection[T] | None:
         """Fetch the previous page if available."""
-        if not self.page_info.has_previous_page or not self.page_info.start_cursor:
+        start_cursor = self.page_info.start_cursor
+        if not self.page_info.has_previous_page or not start_cursor:
             return None
-        result = await self._query_fn(self.page_info.start_cursor, "prev")
+        result = await self._query_fn(start_cursor, "prev")
         return Connection(
             page_info=result.page_info,
             edges=result.edges,

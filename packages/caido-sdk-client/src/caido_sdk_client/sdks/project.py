@@ -17,6 +17,7 @@ from caido_sdk_client.graphql.__generated__.schema import (
     SelectProjectSelectprojectCurrentproject,
 )
 from caido_sdk_client.types import CreateProjectOptions, Project
+from caido_sdk_client.types.strings import Id
 from caido_sdk_client.utils.errors import handle_graphql_error
 
 
@@ -54,7 +55,7 @@ class ProjectSDK:
 
         return map_to_project(payload.project)
 
-    async def delete(self, project_id: str) -> None:
+    async def delete(self, project_id: Id | str) -> None:
         """Delete a project by ID."""
         result = await self._graphql.mutation(
             DeleteProject.Meta.document,
@@ -66,7 +67,7 @@ class ProjectSDK:
         if payload.error is not None:
             handle_graphql_error(cast(AllErrors, payload.error))
 
-    async def rename(self, project_id: str, name: str) -> Project:
+    async def rename(self, project_id: Id | str, name: str) -> Project:
         """Rename a project."""
         result = await self._graphql.mutation(
             RenameProject.Meta.document,
@@ -86,7 +87,7 @@ class ProjectSDK:
 
         return map_to_project(payload.project)
 
-    async def select(self, project_id: str) -> Project:
+    async def select(self, project_id: Id | str) -> Project:
         """Select a project as the current project."""
         result = await self._graphql.mutation(
             SelectProject.Meta.document,

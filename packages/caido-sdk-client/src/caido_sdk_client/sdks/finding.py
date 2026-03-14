@@ -18,6 +18,7 @@ from caido_sdk_client.graphql.__generated__.schema import (
     UpdateFinding,
 )
 from caido_sdk_client.types.connection import ConnectionQueryResult, Edge
+from caido_sdk_client.types.strings import Cursor, Id
 from caido_sdk_client.types.finding import (
     CreateFindingOptions,
     UpdateFindingOptions,
@@ -64,7 +65,10 @@ class FindingsListBuilder(
         model = Findings.model_validate(raw)
         conn = model.findings
         page_info = map_to_page_info(conn.pageInfo)
-        edges = [Edge(cursor=e.cursor, node=map_to_finding(e.node)) for e in conn.edges]
+        edges = [
+            Edge(cursor=Cursor(e.cursor), node=map_to_finding(e.node))
+            for e in conn.edges
+        ]
         return ConnectionQueryResult(page_info=page_info, edges=edges)
 
 
@@ -74,7 +78,7 @@ class FindingSDK:
     def __init__(self, graphql: GraphQLClient) -> None:
         self._graphql = graphql
 
-    async def get(self, id: str) -> FindingType | None:
+    async def get(self, id: Id | str) -> FindingType | None:
         """Get a finding by ID. Returns None if it does not exist."""
         raw = await self._graphql.query(
             Finding.Meta.document,
@@ -90,7 +94,7 @@ class FindingSDK:
         return FindingsListBuilder(self._graphql)
 
     async def create(
-        self, request_id: str, options: CreateFindingOptions
+        self, request_id: Id | str, options: CreateFindingOptions
     ) -> FindingType:
         """Create a finding for the given request."""
         raw = await self._graphql.mutation(
@@ -113,7 +117,9 @@ class FindingSDK:
             raise MissingExpectedValueError("createFinding.finding")
         return map_to_finding(payload.finding)
 
-    async def update(self, id: str, options: UpdateFindingOptions) -> FindingType:
+    async def update(
+        self, id: Id | str, options: UpdateFindingOptions
+    ) -> FindingType:
         """Update a finding."""
         raw = await self._graphql.mutation(
             UpdateFinding.Meta.document,

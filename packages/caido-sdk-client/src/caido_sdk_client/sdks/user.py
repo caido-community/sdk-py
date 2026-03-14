@@ -15,6 +15,7 @@ from caido_sdk_client.graphql.__generated__.schema import (
     ViewerGuestUserInlineFragment,
     ViewerScriptUserInlineFragment,
 )
+from caido_sdk_client.types.strings import Id
 from caido_sdk_client.types.user import (
     CloudUser,
     GuestUser,
@@ -58,7 +59,7 @@ class UserSDK:
             case ViewerCloudUserInlineFragment():
                 return CloudUser(
                     kind="CloudUser",
-                    id=viewer.id,
+                    id=Id(viewer.id),
                     profile=UserProfile(
                         identity=UserIdentity(
                             email=viewer.profile.identity.email,
@@ -76,9 +77,9 @@ class UserSDK:
                     ),
                 )
             case ViewerGuestUserInlineFragment():
-                return GuestUser(kind="GuestUser", id=viewer.id)
+                return GuestUser(kind="GuestUser", id=Id(viewer.id))
             case ViewerScriptUserInlineFragment():
-                return ScriptUser(kind="ScriptUser", id=viewer.id)
+                return ScriptUser(kind="ScriptUser", id=Id(viewer.id))
             case _:
                 typename = getattr(viewer, "typename", None)
                 raise UnsupportedViewerTypeError(typename)

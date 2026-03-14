@@ -5,6 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Literal
 
+from caido_sdk_client.types.strings import Id
+
 
 @dataclass(frozen=True)
 class UserIdentity:
@@ -37,20 +39,20 @@ class UserProfile:
 @dataclass(frozen=True)
 class CloudUser:
     kind: Literal["CloudUser"]
-    id: str
+    id: Id
     profile: UserProfile
 
 
 @dataclass(frozen=True)
 class GuestUser:
     kind: Literal["GuestUser"]
-    id: str
+    id: Id
 
 
 @dataclass(frozen=True)
 class ScriptUser:
     kind: Literal["ScriptUser"]
-    id: str
+    id: Id
 
 
 User = CloudUser | GuestUser | ScriptUser

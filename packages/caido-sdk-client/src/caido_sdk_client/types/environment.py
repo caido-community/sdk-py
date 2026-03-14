@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from caido_sdk_client.graphql.__generated__.schema import EnvironmentVariableKind
+from caido_sdk_client.types.strings import Id
 
 __all__ = [
     "Environment",
@@ -28,7 +29,7 @@ class EnvironmentVariable:
 class Environment:
     """Environment information."""
 
-    id: str
+    id: Id
     name: str
     version: int
     variables: list[EnvironmentVariable]

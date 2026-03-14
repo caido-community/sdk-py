@@ -6,13 +6,14 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from caido_sdk_client.graphql.__generated__.schema import ProjectStatus
+from caido_sdk_client.types.strings import Id
 
 
 @dataclass(frozen=True)
 class Project:
     """Project information."""
 
-    id: str
+    id: Id
     name: str
     path: str
     status: ProjectStatus

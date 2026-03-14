@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Protocol
 
 from caido_sdk_client.types.connection import PageInfo
+from caido_sdk_client.types.strings import Cursor
 
 
 class _PageInfoLike(Protocol):
@@ -21,6 +22,6 @@ def map_to_page_info(page_info: _PageInfoLike) -> PageInfo:
     return PageInfo(
         has_next_page=page_info.hasNextPage,
         has_previous_page=page_info.hasPreviousPage,
-        start_cursor=page_info.startCursor,
-        end_cursor=page_info.endCursor,
+        start_cursor=Cursor(c) if (c := page_info.startCursor) is not None else None,
+        end_cursor=Cursor(c) if (c := page_info.endCursor) is not None else None,
     )

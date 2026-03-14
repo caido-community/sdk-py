@@ -9,6 +9,7 @@ from caido_sdk_client.graphql.__generated__.schema import (
     SelectEnvironmentSelectenvironmentEnvironment,
 )
 from caido_sdk_client.types import Environment, EnvironmentVariable
+from caido_sdk_client.types.strings import Id
 
 
 def map_to_environment(
@@ -16,7 +17,7 @@ def map_to_environment(
 ) -> Environment:
     """Convert an Environment fragment into the public Environment type."""
     return Environment(
-        id=node.id,
+        id=Id(node.id),
         name=node.name,
         version=node.version,
         variables=[

@@ -5,13 +5,15 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 
+from caido_sdk_client.types.strings import Id
+
 
 @dataclass(frozen=True, slots=True)
 class Finding:
     """Security finding attached to a request."""
 
-    id: str
-    request_id: str
+    id: Id
+    request_id: Id
     title: str
     reporter: str
     description: str | None

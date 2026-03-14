@@ -6,13 +6,14 @@ from datetime import datetime
 
 from caido_sdk_client.graphql.__generated__.schema import FindingFull
 from caido_sdk_client.types.finding import Finding
+from caido_sdk_client.types.strings import Id
 
 
 def map_to_finding(node: FindingFull) -> Finding:
     """Convert a FindingFull fragment into the public Finding type."""
     return Finding(
-        id=node.id,
-        request_id=node.request.id,
+        id=Id(node.id),
+        request_id=Id(node.request.id),
         title=node.title,
         reporter=node.reporter,
         description=node.description,

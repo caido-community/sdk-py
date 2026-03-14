@@ -4,15 +4,17 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from caido_sdk_client.types.strings import Httpql, Id
+
 
 @dataclass(frozen=True)
 class FilterPreset:
     """Filter preset information."""
 
-    id: str
+    id: Id
     name: str
     alias: str
-    clause: str
+    clause: Httpql
 
 
 @dataclass(frozen=True)
@@ -25,8 +27,8 @@ class CreateFilterPresetOptions:
     alias: str
     """The alias of the filter preset."""
 
-    clause: str
-    """The HTTPQL clause of the filter preset."""
+    clause: Httpql | str
+    """The HTTPQL clause of the filter preset (accepts str or Httpql)."""
 
 
 @dataclass(frozen=True)
@@ -39,5 +41,5 @@ class UpdateFilterPresetOptions:
     alias: str
     """The alias of the filter preset."""
 
-    clause: str
-    """The HTTPQL clause of the filter preset."""
+    clause: Httpql | str
+    """The HTTPQL clause of the filter preset (accepts str or Httpql)."""

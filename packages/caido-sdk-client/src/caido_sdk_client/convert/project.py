@@ -6,12 +6,13 @@ from datetime import datetime
 
 from caido_sdk_client.graphql.__generated__.schema import ProjectFull
 from caido_sdk_client.types import Project
+from caido_sdk_client.types.strings import Id
 
 
 def map_to_project(node: ProjectFull) -> Project:
     """Convert a ProjectFull fragment into the public Project type."""
     return Project(
-        id=node.id,
+        id=Id(node.id),
         name=node.name,
         path=node.path,
         status=node.status,
