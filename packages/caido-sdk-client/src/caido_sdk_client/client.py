@@ -16,6 +16,7 @@ from caido_sdk_client.sdks import (
     FilterSDK,
     FindingSDK,
     HostedFileSDK,
+    InstanceSDK,
     ProjectSDK,
     UserSDK,
 )
@@ -67,6 +68,7 @@ class Client:
     filter: FilterSDK
     findings: FindingSDK
     hosted_file: HostedFileSDK
+    instance: InstanceSDK
 
     def __init__(
         self,
@@ -96,6 +98,7 @@ class Client:
         self.filter = FilterSDK(self.graphql)
         self.findings = FindingSDK(self.graphql)
         self.hosted_file = HostedFileSDK(self.graphql)
+        self.instance = InstanceSDK(self.graphql)
 
     async def __aenter__(self) -> Client:
         return self

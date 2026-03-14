@@ -17,6 +17,20 @@ from .filter import (
 )
 from .finding import CreateFindingOptions, Finding, UpdateFindingOptions
 from .hosted_file import HostedFile, UploadHostedFileOptions
+from .instance_settings import (
+    AISettings,
+    AnalyticsSettings,
+    AnthropicAISetting,
+    GoogleAISetting,
+    InstanceSettings,
+    OnboardingSettings,
+    OpenAIAISetting,
+    OpenRouterAISetting,
+    SetAISettingsInput,
+    SetAnalyticsSettingsInput,
+    SetInstanceSettingsInput,
+    SetOnboardingSettingsInput,
+)
 from .project import CreateProjectOptions, Project, ProjectStatus
 from .strings import Cursor, CursorLike, Httpql, HttpqlLike, Id, IdLike
 from .user import (
@@ -32,11 +46,15 @@ from .user import (
 )
 
 __all__ = [
+    "AISettings",
+    "AnalyticsSettings",
+    "AnthropicAISetting",
     "CloudUser",
     "Connection",
     "CreateEnvironmentOptions",
     "Cursor",
     "CursorLike",
+    "GoogleAISetting",
     "Httpql",
     "HttpqlLike",
     "Id",
@@ -52,10 +70,18 @@ __all__ = [
     "Finding",
     "HostedFile",
     "GuestUser",
+    "InstanceSettings",
+    "OnboardingSettings",
+    "OpenAIAISetting",
+    "OpenRouterAISetting",
     "PageInfo",
     "Project",
     "ProjectStatus",
     "ScriptUser",
+    "SetAISettingsInput",
+    "SetAnalyticsSettingsInput",
+    "SetInstanceSettingsInput",
+    "SetOnboardingSettingsInput",
     "SubscriptionEntitlement",
     "SubscriptionPlan",
     "UpdateEnvironmentOptions",
