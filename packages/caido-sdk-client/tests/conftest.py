@@ -13,7 +13,6 @@ import time
 from collections.abc import AsyncGenerator
 
 import pytest
-
 from caido_sdk_client import Client
 from caido_sdk_client.auth import AuthCacheFile, PATAuthOptions
 from caido_sdk_client.types import CreateProjectOptions, Project

@@ -5,7 +5,6 @@ from __future__ import annotations
 import os
 
 import aiohttp
-
 from caido_sdk_client import Client
 from caido_sdk_client.types import CreateFindingOptions, Finding
 

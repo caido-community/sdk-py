@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import pytest
-
 from caido_sdk_client import Client
+
 from tests.utils import create_mock_finding, create_mock_request
 
 
