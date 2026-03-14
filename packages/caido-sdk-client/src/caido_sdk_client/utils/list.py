@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from collections.abc import Awaitable, Generator
 from dataclasses import dataclass
-from typing import Generic, Literal, TypeVar
+from typing import Any, Generic, Literal, TypeVar
 
 from caido_sdk_client.graphql import GraphQLClient
 from caido_sdk_client.types.connection import (
@@ -29,10 +30,10 @@ class ListBuilderVars(Generic[FilterT, OrderT]):
     order: OrderT | None = None
 
 
-class ListBuilder(ABC, Generic[T, FilterT, OrderT]):
+class ListBuilder(ABC, Generic[T, FilterT, OrderT], Awaitable[Connection[T]]):
     """List builder: chain methods then await the builder or await execute() to run the query."""
 
-    def __await__(self):
+    def __await__(self) -> Generator[Any, None, Connection[T]]:
         """Make the builder directly awaitable so you can await the chain without calling .execute()."""
         return self.execute().__await__()
 
