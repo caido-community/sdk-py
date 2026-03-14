@@ -7,6 +7,16 @@ authors = [{ name = "Caido Labs Inc.", email = "dev@caido.io" }]
 requires-python = ">=3.12"
 dependencies = ["gql[aiohttp,websockets]>=3.5.0", "pydantic>=2.11.0"]
 
+[dependency-groups]
+dev = ["pytest>=8.0.0", "pytest-asyncio>=0.24.0"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+testpaths = ["tests"]
+# Run tests one at a time (no parallel workers); integration tests share one Caido instance
+addopts = ["-p", "no:xdist"]
+
 [build-system]
 requires = ["uv_build>=0.9.8,<0.10.0"]
 build-backend = "uv_build"
