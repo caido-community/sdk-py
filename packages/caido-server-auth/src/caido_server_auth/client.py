@@ -7,6 +7,7 @@ from typing import Any, cast
 from urllib.parse import urlparse
 
 from gql import Client
+from gql.graphql_request import GraphQLRequest
 from gql.transport.aiohttp import AIOHTTPTransport
 from gql.transport.websockets import WebsocketsTransport
 
@@ -91,7 +92,7 @@ class AuthClient:
         async with self._graphql_client as session:
             try:
                 result: dict[str, Any] = await session.execute(
-                    START_AUTHENTICATION_FLOW
+                    GraphQLRequest(START_AUTHENTICATION_FLOW)
                 )
             except Exception as exc:
                 raise InstanceError("GRAPHQL_ERROR", message=str(exc)) from exc
@@ -134,8 +135,10 @@ class AuthClient:
                 fetch_schema_from_transport=False,
             ) as session:
                 subscription = session.subscribe(
-                    CREATED_AUTHENTICATION_TOKEN,
-                    variable_values={"requestId": request_id},
+                    GraphQLRequest(
+                        CREATED_AUTHENTICATION_TOKEN,
+                        variable_values={"requestId": request_id},
+                    )
                 )
                 async for result in subscription:
                     token = self._process_subscription_result(result)
@@ -179,7 +182,10 @@ class AuthClient:
             try:
                 variable_values = {"refreshToken": refresh_token}
                 result: dict[str, Any] = await session.execute(
-                    REFRESH_AUTHENTICATION_TOKEN, variable_values=variable_values
+                    GraphQLRequest(
+                        REFRESH_AUTHENTICATION_TOKEN,
+                        variable_values=variable_values,
+                    )
                 )
             except Exception as exc:
                 raise InstanceError("GRAPHQL_ERROR", message=str(exc)) from exc
