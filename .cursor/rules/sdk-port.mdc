@@ -82,5 +82,6 @@ Before considering a port or change fully done, run from the repo root:
 
 - `mise run fmt` — format code
 - `mise run lint` — run the linter
+- `mise run typecheck` — run the type checker
 
-Fix any issues they report.
+Fix any issues they report. Do not run tests unless the user explicitly asks to run them.

@@ -98,8 +98,16 @@ class GraphQLClient:
         return f"{scheme}://{parsed.netloc}/ws/graphql"
 
     @staticmethod
-    def _request(document: str | DocumentNode) -> GraphQLRequest:
-        return GraphQLRequest(document)
+    def _request(
+        document: str | DocumentNode,
+        variable_values: dict[str, Any] | None = None,
+        operation_name: str | None = None,
+    ) -> GraphQLRequest:
+        return GraphQLRequest(
+            document,
+            variable_values=variable_values,
+            operation_name=operation_name,
+        )
 
     async def query(
         self,
@@ -131,9 +139,12 @@ class GraphQLClient:
         upload_files: bool = False,
     ) -> dict[str, Any]:
         try:
-            result = await self._http_client.execute_async(
-                self._request(document),
+            request = self._request(
+                document,
                 variable_values=dict(variables) if variables is not None else None,
+            )
+            result = await self._http_client.execute_async(
+                request,
                 upload_files=upload_files,
             )
         except TransportQueryError as exc:
@@ -156,11 +167,12 @@ class GraphQLClient:
     ) -> AsyncIterator[dict[str, Any]]:
         """Subscribe to a GraphQL subscription and yield payloads."""
         try:
+            request = self._request(
+                document,
+                variable_values=dict(variables) if variables is not None else None,
+            )
             async with self._ws_client as session:
-                subscription = session.subscribe(
-                    self._request(document),
-                    variable_values=dict(variables) if variables is not None else None,
-                )
+                subscription = session.subscribe(request)
                 async for result in subscription:
                     if not isinstance(result, dict):
                         raise NoDataUserError()
