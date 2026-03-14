@@ -29,10 +29,14 @@ runs:
         echo "$output"
 
         if [ "$status" -ne 0 ]; then
-          # Treat "already exists" responses from the index as success to avoid
-          # failing the workflow when this version is already published.
+          # Treat "already exists" or "local and index do not match" as success:
+          # this version is already on the index (same or different artifact hash).
           if echo "$output" | grep -qi "File already exists"; then
             echo "Artifacts already exist on the index; treating as success."
+            exit 0
+          fi
+          if echo "$output" | grep -qi "Local file and index file do not match"; then
+            echo "This version is already on the index with a different artifact; treating as success."
             exit 0
           fi
           exit "$status"
