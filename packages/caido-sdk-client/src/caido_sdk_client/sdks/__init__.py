@@ -11,6 +11,7 @@ from .instance_settings import InstanceSettingsSDK
 from .plugin import PluginPackage, PluginSDK
 from .project import ProjectSDK
 from .request import RequestSDK, RequestsListBuilder
+from .scope import ScopeSDK
 from .user import UserSDK
 
 __all__ = [
@@ -27,5 +28,6 @@ __all__ = [
     "ProjectSDK",
     "RequestSDK",
     "RequestsListBuilder",
+    "ScopeSDK",
     "UserSDK",
 ]

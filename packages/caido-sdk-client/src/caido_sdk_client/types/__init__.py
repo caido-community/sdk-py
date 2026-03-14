@@ -48,6 +48,7 @@ from .request import (
     RequestResponseOpt,
     Response,
 )
+from .scope import CreateScopeOptions, Scope, UpdateScopeOptions
 from .strings import Cursor, CursorLike, Httpql, HttpqlLike, Id, IdLike
 from .user import (
     CloudUser,
@@ -105,6 +106,9 @@ __all__ = [
     "RequestMetadata",
     "RequestResponseOpt",
     "Response",
+    "Scope",
+    "CreateScopeOptions",
+    "UpdateScopeOptions",
     "ScriptUser",
     "SetAISettingsInput",
     "SetAnalyticsSettingsInput",
