@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#MISE depends_post=["fmt","lint"]
+#MISE depends_post=["fix"]
 
 set -e
 

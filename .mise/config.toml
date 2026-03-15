@@ -1,3 +1,6 @@
+[settings]
+jobs = 1
+
 [tools]
 python = { version = "3.13" }
 uv = { version = "0.9.8" }
