@@ -1,6 +1,6 @@
 [project]
 name = "caido-sdk-client"
-version = "0.1.0"
+version = "0.1.1"
 description = "Client SDK for interacting with a Caido instance"
 readme = "README.md"
 authors = [{ name = "Caido Labs Inc.", email = "dev@caido.io" }]
