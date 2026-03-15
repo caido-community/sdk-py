@@ -1,6 +1,5 @@
-from pydantic import BaseModel as PydanticBaseModel
-from pydantic import ConfigDict
+from pydantic import BaseModel, ConfigDict
 
 
-class BaseModel(PydanticBaseModel):
+class Model(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)

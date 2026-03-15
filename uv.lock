@@ -158,6 +158,15 @@ wheels = [
 ]
 
 [[package]]
+name = "caido-schema-proxy"
+version = "0.55.3"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/04/90/f874aacfbd442256a0267a9413ae3d7fc668eb04c0f15de5c59e7312bc4f/caido_schema_proxy-0.55.3.tar.gz", hash = "sha256:89bd1bb152d0e8f8572af4890883f5edcf0d2c4a6f42289df630f1aacc1401ea", size = 19436, upload-time = "2026-03-15T00:30:37.598Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e8/0b/da6f4e1bc6a96ef9f6f18e4c6d054eca8de94fddc0009120e40f98a0af84/caido_schema_proxy-0.55.3-py3-none-any.whl", hash = "sha256:f1e6a250fa113acc5ef8b7f887f64d6cc34fcd6577ed10c515c6c101c19005d6", size = 20091, upload-time = "2026-03-15T00:30:36.602Z" },
+]
+
+[[package]]
 name = "caido-sdk-client"
 version = "0.1.0"
 source = { editable = "packages/caido-sdk-client" }
@@ -169,6 +178,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "caido-schema-proxy" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
 ]
@@ -182,6 +192,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "caido-schema-proxy", specifier = ">=0.55.3" },
     { name = "pytest", specifier = ">=8.0.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
 ]

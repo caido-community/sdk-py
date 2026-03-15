@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#MISE depends_post=["fmt","lint"]
+
+set -e
+
+cd packages/caido-sdk-client
+
+SCHEMA_PATH=$(uv run python -c "import importlib.resources; print(importlib.resources.files('caido_schema_proxy').joinpath('schema.graphql'))")
+ln -sf "$SCHEMA_PATH" ./schema.graphql
+
+uv run turms gen

@@ -20,8 +20,5 @@ run = "uv run --group dev ruff check packages --select I"
 [tasks.fix]
 depends = ["fmt", "lint"]
 
-[tasks.generate]
-run = "cd packages/caido-sdk-client && uv run turms gen"
-
 [tasks.validate]
 depends = ["fmt-check", "lint-check", "typecheck"]

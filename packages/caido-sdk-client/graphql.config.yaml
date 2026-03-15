@@ -1,6 +1,6 @@
 projects:
   default:
-    schema: ../../schema.graphql
+    schema: ./schema.graphql
     documents: src/caido_sdk_client/graphql/documents/**.graphql
     extensions:
       turms:
@@ -8,10 +8,12 @@ projects:
         plugins:
           - type: turms.plugins.enums.EnumsPlugin
           - type: turms.plugins.inputs.InputsPlugin
+            inputtype_bases:
+              - 'caido_sdk_client.utils.pydantic.Model'
           - type: turms.plugins.fragments.FragmentsPlugin
           - type: turms.plugins.operations.OperationsPlugin
         object_bases:
-          - 'caido_sdk_client.utils.pydantic.BaseModel'
+          - 'caido_sdk_client.utils.pydantic.Model'
         scalar_definitions:
           DateTime: str
           Duration: int
