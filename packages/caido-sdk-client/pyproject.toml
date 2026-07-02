@@ -4,6 +4,7 @@ version = "0.2.0"
 description = "Client SDK for interacting with a Caido instance"
 readme = "README.md"
 authors = [{ name = "Caido Labs Inc.", email = "dev@caido.io" }]
+license = "MIT"
 requires-python = ">=3.12"
 dependencies = [
   "caido-server-auth>=0.1.2",
