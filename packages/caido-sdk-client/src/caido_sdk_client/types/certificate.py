@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Union
 if TYPE_CHECKING:
     from gql import FileVar
 
-CertificateFileLike = Union[str, Path, "FileVar"]
+CertificateFileLike = Union[bytes, Path, "FileVar"]
 
 
 @dataclass(frozen=True, slots=True)

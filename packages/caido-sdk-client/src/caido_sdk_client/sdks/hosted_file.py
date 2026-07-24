@@ -4,8 +4,6 @@ from __future__ import annotations
 
 from typing import List
 
-from gql import FileVar
-
 from caido_sdk_client.convert.hosted_file import map_to_hosted_file
 from caido_sdk_client.errors.sdk import MissingExpectedValueError
 from caido_sdk_client.graphql import GraphQLClient
@@ -17,6 +15,7 @@ from caido_sdk_client.graphql.__generated__.schema import (
 )
 from caido_sdk_client.types import HostedFile, UploadHostedFileOptions
 from caido_sdk_client.types.strings import IdLike
+from caido_sdk_client.utils.file import to_file_var
 
 
 class HostedFileSDK:
@@ -33,17 +32,12 @@ class HostedFileSDK:
 
     async def upload(self, options: UploadHostedFileOptions) -> HostedFile:
         """Upload a new hosted file."""
-        file_var = (
-            options.file
-            if isinstance(options.file, FileVar)
-            else FileVar(str(options.file))
-        )
         result = await self._graphql.mutation(
             UploadHostedFile.Meta.document,
             variables={
                 "input": {
                     "name": options.name,
-                    "file": file_var,
+                    "file": to_file_var(options.file),
                 },
             },
             upload_files=True,

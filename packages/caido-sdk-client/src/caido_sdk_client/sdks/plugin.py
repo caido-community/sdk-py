@@ -5,8 +5,6 @@ from __future__ import annotations
 import json
 from typing import Any, cast
 
-from gql import FileVar
-
 from caido_sdk_client.errors import NotFoundUserError, PluginFunctionCallError
 from caido_sdk_client.errors.all_errors import AllErrors
 from caido_sdk_client.errors.sdk import MissingExpectedValueError
@@ -32,6 +30,7 @@ from caido_sdk_client.types.plugin import (
 )
 from caido_sdk_client.types.strings import Id
 from caido_sdk_client.utils.errors import handle_graphql_error
+from caido_sdk_client.utils.file import to_file_var
 
 
 def _map_plugin(
@@ -104,11 +103,7 @@ class PluginSDK:
         """
         source = options.source
         if isinstance(source, InstallPluginPackageSourceFile):
-            file_val = source.file
-            if isinstance(file_val, FileVar):
-                source_input = {"file": file_val}
-            else:
-                source_input = {"file": FileVar(str(file_val))}
+            source_input = {"file": to_file_var(source.file)}
         else:
             source_input = {"manifestId": source.manifest_id}
 

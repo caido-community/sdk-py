@@ -2,34 +2,20 @@
 
 from __future__ import annotations
 
-import base64
-
 import pytest
 from caido_sdk_client import Client
 from caido_sdk_client.types import (
     ConnectionInfoInput,
-    CreateReplaySessionFromRaw,
-    CreateReplaySessionOptions,
     ReplaySendOptions,
 )
+
+from tests.utils import create_mock_replay_session
 
 
 @pytest.mark.usefixtures("test_project")
 async def test_replay_send(caido: Client) -> None:
     """Create a replay session and send a request via replay."""
-    session = await caido.replay.sessions.create(
-        CreateReplaySessionOptions(
-            request_source=CreateReplaySessionFromRaw(
-                raw=base64.b64encode(b"").decode(),
-                connection=ConnectionInfoInput(
-                    host="localhost",
-                    port=8080,
-                    is_tls=False,
-                    sni="",
-                ),
-            ),
-        ),
-    )
+    session = await create_mock_replay_session(client=caido)
 
     result = await caido.replay.send(
         session.id,
@@ -48,7 +34,4 @@ async def test_replay_send(caido: Client) -> None:
     assert result.entry.response is not None
     assert result.entry.response.status_code == 200
     assert result.entry.response.raw is not None
-    assert (
-        b"reliably insecure" in result.entry.response.raw
-        or b"A reliably" in result.entry.response.raw
-    )
+    assert b"A reliably insecure connection" in result.entry.response.raw

@@ -2,11 +2,18 @@
 
 from __future__ import annotations
 
+import base64
 import os
 
 import aiohttp
-from caido_sdk_client import Client
-from caido_sdk_client.types import CreateFindingOptions, Finding
+from caido_sdk_client import Client, ReplaySession
+from caido_sdk_client.types import (
+    ConnectionInfoInput,
+    CreateFindingOptions,
+    CreateReplaySessionFromRaw,
+    CreateReplaySessionOptions,
+    Finding,
+)
 
 
 async def create_mock_request() -> None:
@@ -32,4 +39,21 @@ async def create_mock_finding(
             reporter="Test Reporter",
             description="Test Description",
         ),
+    )
+
+
+async def create_mock_replay_session(*, client: Client) -> ReplaySession:
+    """Create an empty replay session for integration tests."""
+    return await client.replay.sessions.create(
+        CreateReplaySessionOptions(
+            request_source=CreateReplaySessionFromRaw(
+                raw=base64.b64encode(b"").decode(),
+                connection=ConnectionInfoInput(
+                    host="localhost",
+                    port=8080,
+                    is_tls=False,
+                    sni="",
+                ),
+            ),
+        )
     )

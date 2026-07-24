@@ -4,8 +4,6 @@ from __future__ import annotations
 
 from typing import cast
 
-from gql import FileVar
-
 from caido_sdk_client.convert.certificate import (
     map_to_certificate,
     map_to_certificate_generation,
@@ -19,6 +17,7 @@ from caido_sdk_client.graphql.__generated__.schema import (
 )
 from caido_sdk_client.types.certificate import ImportCertificateOptions
 from caido_sdk_client.utils.errors import handle_graphql_error
+from caido_sdk_client.utils.file import to_file_var
 
 
 class CertificateSDK:
@@ -35,18 +34,15 @@ class CertificateSDK:
         return map_to_certificate(model.runtime.certificate.p12)
 
     async def import_(self, options: ImportCertificateOptions) -> None:
-        file_var = (
-            options.file
-            if isinstance(options.file, FileVar)
-            else FileVar(str(options.file))
-        )
         raw = await self._graphql.mutation(
             ImportCertificate.Meta.document,
             variables={
                 "input": {
                     "certificate": {
                         "p12": {
-                            "file": file_var,
+                            "file": to_file_var(
+                                options.file, filename="certificate.p12"
+                            ),
                             "password": options.password,
                         }
                     }
