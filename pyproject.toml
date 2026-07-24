@@ -14,7 +14,7 @@ turms = { git = "https://github.com/caido/dependency-turms.git", branch = "caido
 [dependency-groups]
 dev = [
   "ruff==0.15.5",
-  "turms>=0.10.1",
+  "turms>=1.0.1",
   "ty==0.0.22",
   "pytest>=8.0.0",
   "pytest-asyncio>=0.24.0",

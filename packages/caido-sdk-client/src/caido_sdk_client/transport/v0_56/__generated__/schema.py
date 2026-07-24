@@ -5,6 +5,16 @@ from caido_sdk_client.utils.pydantic import Model
 from pydantic import ConfigDict, Field
 
 
+class Deprecated:
+    """Marks a field as deprecated, carrying the GraphQL deprecation reason."""
+
+    def __init__(self, reason=None):
+        self.reason = reason
+
+    def __repr__(self):
+        return "Deprecated(" + repr(self.reason) + ")"
+
+
 class CloudErrorReason(str, Enum):
     """No documentation"""
 
@@ -529,58 +539,6 @@ class ReplayEnvironmentPreprocessorFull(Model):
         type = "ReplayEnvironmentPreprocessor"
 
 
-class ReplayPreprocessorFullReplayPrefixPreprocessorInlineFragment(
-    ReplayPrefixPreprocessorFull, Model
-):
-    pass
-
-
-class ReplayPreprocessorFullReplaySuffixPreprocessorInlineFragment(
-    ReplaySuffixPreprocessorFull, Model
-):
-    pass
-
-
-class ReplayPreprocessorFullReplayUrlEncodePreprocessorInlineFragment(
-    ReplayUrlEncodePreprocessorFull, Model
-):
-    pass
-
-
-class ReplayPreprocessorFullReplayWorkflowPreprocessorInlineFragment(
-    ReplayWorkflowPreprocessorFull, Model
-):
-    pass
-
-
-class ReplayPreprocessorFullReplayEnvironmentPreprocessorInlineFragment(
-    ReplayEnvironmentPreprocessorFull, Model
-):
-    pass
-
-
-class ReplayPreprocessorFull(Model):
-    """No documentation"""
-
-    typename: Literal["ReplayPreprocessor"] = Field(
-        alias="__typename", default="ReplayPreprocessor"
-    )
-    options: Union[
-        ReplayPreprocessorFullReplayPrefixPreprocessorInlineFragment,
-        ReplayPreprocessorFullReplaySuffixPreprocessorInlineFragment,
-        ReplayPreprocessorFullReplayUrlEncodePreprocessorInlineFragment,
-        ReplayPreprocessorFullReplayWorkflowPreprocessorInlineFragment,
-        ReplayPreprocessorFullReplayEnvironmentPreprocessorInlineFragment,
-    ]
-
-    class Meta:
-        """Meta class for ReplayPreprocessorFull"""
-
-        document = "fragment ReplayEnvironmentPreprocessorFull on ReplayEnvironmentPreprocessor {\n  __typename\n  variableName\n}\n\nfragment ReplayPrefixPreprocessorFull on ReplayPrefixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplaySuffixPreprocessorFull on ReplaySuffixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplayUrlEncodePreprocessorFull on ReplayUrlEncodePreprocessor {\n  __typename\n  charset\n  nonAscii\n}\n\nfragment ReplayWorkflowPreprocessorFull on ReplayWorkflowPreprocessor {\n  __typename\n  id\n}\n\nfragment ReplayPreprocessorFull on ReplayPreprocessor {\n  __typename\n  options {\n    ... on ReplayPrefixPreprocessor {\n      ...ReplayPrefixPreprocessorFull\n    }\n    ... on ReplaySuffixPreprocessor {\n      ...ReplaySuffixPreprocessorFull\n    }\n    ... on ReplayUrlEncodePreprocessor {\n      ...ReplayUrlEncodePreprocessorFull\n    }\n    ... on ReplayWorkflowPreprocessor {\n      ...ReplayWorkflowPreprocessorFull\n    }\n    ... on ReplayEnvironmentPreprocessor {\n      ...ReplayEnvironmentPreprocessorFull\n    }\n    __typename\n  }\n}"
-        name = "ReplayPreprocessorFull"
-        type = "ReplayPreprocessor"
-
-
 class ReplaySessionMetaCollection(Model):
     """No documentation"""
 
@@ -793,22 +751,56 @@ class TaskInProgressUserErrorFull(UserErrorFullTaskInProgressUserError, Model):
         type = "TaskInProgressUserError"
 
 
-class ReplayPlaceholderFull(Model):
+class ReplayPreprocessorFullReplayPrefixPreprocessorInlineFragment(
+    ReplayPrefixPreprocessorFull, Model
+):
+    pass
+
+
+class ReplayPreprocessorFullReplaySuffixPreprocessorInlineFragment(
+    ReplaySuffixPreprocessorFull, Model
+):
+    pass
+
+
+class ReplayPreprocessorFullReplayUrlEncodePreprocessorInlineFragment(
+    ReplayUrlEncodePreprocessorFull, Model
+):
+    pass
+
+
+class ReplayPreprocessorFullReplayWorkflowPreprocessorInlineFragment(
+    ReplayWorkflowPreprocessorFull, Model
+):
+    pass
+
+
+class ReplayPreprocessorFullReplayEnvironmentPreprocessorInlineFragment(
+    ReplayEnvironmentPreprocessorFull, Model
+):
+    pass
+
+
+class ReplayPreprocessorFull(Model):
     """No documentation"""
 
-    typename: Literal["ReplayPlaceholder"] = Field(
-        alias="__typename", default="ReplayPlaceholder"
+    typename: Literal["ReplayPreprocessor"] = Field(
+        alias="__typename", default="ReplayPreprocessor"
     )
-    inputRange: RangeFull
-    outputRange: RangeFull
-    preprocessors: List[ReplayPreprocessorFull]
+    options: Union[
+        ReplayPreprocessorFullReplayPrefixPreprocessorInlineFragment,
+        ReplayPreprocessorFullReplaySuffixPreprocessorInlineFragment,
+        ReplayPreprocessorFullReplayUrlEncodePreprocessorInlineFragment,
+        ReplayPreprocessorFullReplayWorkflowPreprocessorInlineFragment,
+        ReplayPreprocessorFullReplayEnvironmentPreprocessorInlineFragment,
+    ]
 
     class Meta:
-        """Meta class for ReplayPlaceholderFull"""
+        """Meta class for ReplayPreprocessorFull"""
 
-        document = "fragment ReplayEnvironmentPreprocessorFull on ReplayEnvironmentPreprocessor {\n  __typename\n  variableName\n}\n\nfragment ReplayPrefixPreprocessorFull on ReplayPrefixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplaySuffixPreprocessorFull on ReplaySuffixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplayUrlEncodePreprocessorFull on ReplayUrlEncodePreprocessor {\n  __typename\n  charset\n  nonAscii\n}\n\nfragment ReplayWorkflowPreprocessorFull on ReplayWorkflowPreprocessor {\n  __typename\n  id\n}\n\nfragment RangeFull on Range {\n  start\n  end\n  __typename\n}\n\nfragment ReplayPreprocessorFull on ReplayPreprocessor {\n  __typename\n  options {\n    ... on ReplayPrefixPreprocessor {\n      ...ReplayPrefixPreprocessorFull\n    }\n    ... on ReplaySuffixPreprocessor {\n      ...ReplaySuffixPreprocessorFull\n    }\n    ... on ReplayUrlEncodePreprocessor {\n      ...ReplayUrlEncodePreprocessorFull\n    }\n    ... on ReplayWorkflowPreprocessor {\n      ...ReplayWorkflowPreprocessorFull\n    }\n    ... on ReplayEnvironmentPreprocessor {\n      ...ReplayEnvironmentPreprocessorFull\n    }\n    __typename\n  }\n}\n\nfragment ReplayPlaceholderFull on ReplayPlaceholder {\n  __typename\n  inputRange {\n    ...RangeFull\n    __typename\n  }\n  outputRange {\n    ...RangeFull\n    __typename\n  }\n  preprocessors {\n    ...ReplayPreprocessorFull\n    __typename\n  }\n}"
-        name = "ReplayPlaceholderFull"
-        type = "ReplayPlaceholder"
+        document = "fragment ReplayEnvironmentPreprocessorFull on ReplayEnvironmentPreprocessor {\n  __typename\n  variableName\n}\n\nfragment ReplayPrefixPreprocessorFull on ReplayPrefixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplaySuffixPreprocessorFull on ReplaySuffixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplayUrlEncodePreprocessorFull on ReplayUrlEncodePreprocessor {\n  __typename\n  charset\n  nonAscii\n}\n\nfragment ReplayWorkflowPreprocessorFull on ReplayWorkflowPreprocessor {\n  __typename\n  id\n}\n\nfragment ReplayPreprocessorFull on ReplayPreprocessor {\n  __typename\n  options {\n    ... on ReplayPrefixPreprocessor {\n      ...ReplayPrefixPreprocessorFull\n    }\n    ... on ReplaySuffixPreprocessor {\n      ...ReplaySuffixPreprocessorFull\n    }\n    ... on ReplayUrlEncodePreprocessor {\n      ...ReplayUrlEncodePreprocessorFull\n    }\n    ... on ReplayWorkflowPreprocessor {\n      ...ReplayWorkflowPreprocessorFull\n    }\n    ... on ReplayEnvironmentPreprocessor {\n      ...ReplayEnvironmentPreprocessorFull\n    }\n    __typename\n  }\n}"
+        name = "ReplayPreprocessorFull"
+        type = "ReplayPreprocessor"
 
 
 class RequestFullMetadata(Model):
@@ -864,6 +856,24 @@ class ReplayTaskMeta(TaskMetaReplayTask, Model):
         document = "fragment TaskMeta on Task {\n  __typename\n  id\n  createdAt\n}\n\nfragment ReplayTaskMeta on ReplayTask {\n  ...TaskMeta\n  replayEntry {\n    id\n    __typename\n  }\n  __typename\n}"
         name = "ReplayTaskMeta"
         type = "ReplayTask"
+
+
+class ReplayPlaceholderFull(Model):
+    """No documentation"""
+
+    typename: Literal["ReplayPlaceholder"] = Field(
+        alias="__typename", default="ReplayPlaceholder"
+    )
+    inputRange: RangeFull
+    outputRange: RangeFull
+    preprocessors: List[ReplayPreprocessorFull]
+
+    class Meta:
+        """Meta class for ReplayPlaceholderFull"""
+
+        document = "fragment ReplayEnvironmentPreprocessorFull on ReplayEnvironmentPreprocessor {\n  __typename\n  variableName\n}\n\nfragment ReplayPrefixPreprocessorFull on ReplayPrefixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplaySuffixPreprocessorFull on ReplaySuffixPreprocessor {\n  __typename\n  value\n}\n\nfragment ReplayUrlEncodePreprocessorFull on ReplayUrlEncodePreprocessor {\n  __typename\n  charset\n  nonAscii\n}\n\nfragment ReplayWorkflowPreprocessorFull on ReplayWorkflowPreprocessor {\n  __typename\n  id\n}\n\nfragment RangeFull on Range {\n  start\n  end\n  __typename\n}\n\nfragment ReplayPreprocessorFull on ReplayPreprocessor {\n  __typename\n  options {\n    ... on ReplayPrefixPreprocessor {\n      ...ReplayPrefixPreprocessorFull\n    }\n    ... on ReplaySuffixPreprocessor {\n      ...ReplaySuffixPreprocessorFull\n    }\n    ... on ReplayUrlEncodePreprocessor {\n      ...ReplayUrlEncodePreprocessorFull\n    }\n    ... on ReplayWorkflowPreprocessor {\n      ...ReplayWorkflowPreprocessorFull\n    }\n    ... on ReplayEnvironmentPreprocessor {\n      ...ReplayEnvironmentPreprocessorFull\n    }\n    __typename\n  }\n}\n\nfragment ReplayPlaceholderFull on ReplayPlaceholder {\n  __typename\n  inputRange {\n    ...RangeFull\n    __typename\n  }\n  outputRange {\n    ...RangeFull\n    __typename\n  }\n  preprocessors {\n    ...ReplayPreprocessorFull\n    __typename\n  }\n}"
+        name = "ReplayPlaceholderFull"
+        type = "ReplayPlaceholder"
 
 
 class ReplayEntryFullSession(Model):
@@ -1332,8 +1342,11 @@ class SetActiveReplaySessionEntrySetactivereplaysessionentry(Model):
 class SetActiveReplaySessionEntry(Model):
     """No documentation found for this operation."""
 
-    setActiveReplaySessionEntry: SetActiveReplaySessionEntrySetactivereplaysessionentry
-    "DEPRECATED Remove usage, no replacement: : None "
+    setActiveReplaySessionEntry: Annotated[
+        SetActiveReplaySessionEntrySetactivereplaysessionentry,
+        Deprecated("Remove usage, no replacement"),
+    ]
+    "DEPRECATED: Remove usage, no replacement"
 
     class Arguments(Model):
         """Arguments for SetActiveReplaySessionEntry"""
@@ -1527,7 +1540,9 @@ class TasksTasksBaseDeleteStreamWsMessageTask(
     )
 
 
-class TasksTasksBaseReplayTask(TaskMetaReplayTask, TasksTasksBase, Model):
+class TasksTasksBaseReplayTask(
+    TaskMetaReplayTask, ReplayTaskMeta, TasksTasksBase, Model
+):
     """No documentation"""
 
     typename: Literal["ReplayTask"] = Field(alias="__typename", default="ReplayTask")
@@ -1643,7 +1658,7 @@ class FinishedTaskFinishedtaskTaskBaseDeleteStreamWsMessageTask(
 
 
 class FinishedTaskFinishedtaskTaskBaseReplayTask(
-    TaskMetaReplayTask, FinishedTaskFinishedtaskTaskBase, Model
+    TaskMetaReplayTask, ReplayTaskMeta, FinishedTaskFinishedtaskTaskBase, Model
 ):
     """No documentation"""
 
@@ -1861,7 +1876,7 @@ class FinishedTaskFinishedtaskErrorBaseProjectUserError(
 
 
 class FinishedTaskFinishedtaskErrorBaseRankUserError(
-    FinishedTaskFinishedtaskErrorBase, Model
+    RankUserErrorFull, FinishedTaskFinishedtaskErrorBase, Model
 ):
     """No documentation"""
 

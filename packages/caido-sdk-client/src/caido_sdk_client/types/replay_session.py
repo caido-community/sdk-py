@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Literal
+from typing import TYPE_CHECKING, Any, Literal
 
 from caido_sdk_client.types.network import ConnectionInfoInput
-from caido_sdk_client.types.replay_entry import ReplayEntry
 from caido_sdk_client.types.strings import IdLike
+
+if TYPE_CHECKING:
+    from caido_sdk_client.sdks.replay_entry import ReplayEntry
 
 
 @dataclass(frozen=True, slots=True)

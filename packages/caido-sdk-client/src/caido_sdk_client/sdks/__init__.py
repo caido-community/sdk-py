@@ -19,7 +19,7 @@ from .replay_collection import (
     ReplayCollectionsListBuilder,
     ReplaySessionCollection,
 )
-from .replay_entry import ReplayEntrySDK
+from .replay_entry import ReplayEntry, ReplayEntrySDK
 from .replay_session import (
     ReplaySession,
     ReplaySessionEntriesListBuilder,
@@ -49,6 +49,7 @@ __all__ = [
     "ProjectSDK",
     "ReplayCollectionSDK",
     "ReplayCollectionsListBuilder",
+    "ReplayEntry",
     "ReplayEntrySDK",
     "ReplaySDK",
     "ReplaySession",

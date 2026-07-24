@@ -53,7 +53,6 @@ from .plugin import (
 )
 from .project import CreateProjectOptions, Project, ProjectStatus
 from .replay_collection import CreateReplaySessionCollectionOptions
-from .replay_entry import ReplayEntry
 from .replay_session import (
     CreateReplaySessionFromId,
     CreateReplaySessionFromRaw,
@@ -149,7 +148,6 @@ __all__ = [
     "Project",
     "ProjectStatus",
     "RangeInput",
-    "ReplayEntry",
     "ReplayPlaceholderInput",
     "ReplaySendOptions",
     "ReplaySendResult",

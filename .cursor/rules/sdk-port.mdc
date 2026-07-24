@@ -47,11 +47,13 @@ Transport-specific converter implementations live under `transport/latest/conver
 ## Conventions
 
 - Stay as close to the JS code as possible in naming, structure, and logic.
+- Preserve the JS control flow and code paths, including version branches, operation order, absence/error checks, and return points. Do not combine distinct JS branches behind dynamic operations or generic helpers merely to reduce duplication.
 - Use `from __future__ import annotations` in every module.
 - Error classes extend `BaseError` (in `errors/base.py`), which mirrors the JS `BaseError extends Error`.
 - `from` is a Python keyword; the JS `errors/from.ts` is named `errors/from_error.py` with a `from_error()` function.
 - Import latest generated pydantic models and enums through `graphql/__generated__/schema.py`. Import a versioned transport directly only when implementing version-specific behavior.
 - Avoid `Any` as much as possible: prefer generated fragment/operation types (e.g. `ConnectionInfoFull`, `ReplayEntryFull`) for convert function parameters and internal variables; use `object` or a protocol only when you must accept multiple unrelated types.
+- Minimize `cast()` usage. Trust generated operation models and their fragment base classes, access validated fields directly, and narrow unions with normal control flow or `isinstance()`. Never extract raw response dictionaries or re-run `model_validate()` just to recover fragment fields already represented by the generated operation type. Cast only at unavoidable boundaries where the Python type system cannot preserve version correlation.
 - In `from_error()`, prefer dispatching on the GraphQL `typename` string (mirroring the JS `error.__typename` switch) instead of structural pattern matching on specific pydantic model classes. This keeps the function compatible with both fragment `...Full` models and operation-specific inline fragment models, as long as they expose the required attributes. For new error families, mirror the existing `from_error()` style and raise a `ValueError` on unknown `typename`.
 - Use `match`/`case` on enum values in error constructors (e.g., `CloudErrorReason.UNAVAILABLE`).
 - `PluginFunctionCallError` takes REST `Any` payloads (not GraphQL fragments) since it comes from the REST API.
