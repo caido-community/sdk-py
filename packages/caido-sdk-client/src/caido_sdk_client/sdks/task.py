@@ -12,6 +12,7 @@ from caido_sdk_client.graphql.__generated__.schema import (
     FinishedTask,
     FinishedTaskFinishedtask,
     Tasks,
+    WorkflowTaskMeta,
     cancelTask,
 )
 from caido_sdk_client.types.strings import Id, IdLike
@@ -110,3 +111,11 @@ class ReplayTask(Task):
         self.replay_entry_id: Id = (
             Id(replay_entry.id) if replay_entry is not None else Id("")
         )
+
+
+class WorkflowTask(Task):
+    """A workflow task."""
+
+    def __init__(self, graphql: GraphQLClient, data: WorkflowTaskMeta) -> None:
+        super().__init__(graphql, data)
+        self.workflow_id: Id = Id(data.workflow.id)

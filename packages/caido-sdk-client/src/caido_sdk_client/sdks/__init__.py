@@ -28,7 +28,7 @@ from .replay_session import (
 )
 from .request import RequestSDK, RequestsListBuilder
 from .scope import ScopeSDK
-from .task import ReplayTask, Task, TaskSDK
+from .task import ReplayTask, Task, TaskSDK, WorkflowTask
 from .user import UserSDK
 from .workflow import WorkflowSDK
 
@@ -65,4 +65,5 @@ __all__ = [
     "TaskSDK",
     "UserSDK",
     "WorkflowSDK",
+    "WorkflowTask",
 ]

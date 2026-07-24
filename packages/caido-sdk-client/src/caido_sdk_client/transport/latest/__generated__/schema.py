@@ -504,6 +504,18 @@ class RequestSourceInput(Model):
     raw: Optional[RequestRawInput] = None
 
 
+class ResponseRawInput(Model):
+    """No documentation"""
+
+    raw: str
+
+
+class RunActiveWorkflowInput(Model):
+    """No documentation"""
+
+    requestId: str
+
+
 class SetInstanceSettingsInput(Model):
     """No documentation"""
 
@@ -544,6 +556,29 @@ class StreamQLInput(Model):
     """No documentation"""
 
     code: str
+
+
+class TestWorkflowActiveInput(Model):
+    """No documentation"""
+
+    definition: dict
+    request: RequestRawInput
+    response: Optional[ResponseRawInput] = None
+
+
+class TestWorkflowConvertInput(Model):
+    """No documentation"""
+
+    data: str
+    definition: dict
+
+
+class TestWorkflowPassiveInput(Model):
+    """No documentation"""
+
+    definition: dict
+    request: RequestRawInput
+    response: Optional[ResponseRawInput] = None
 
 
 class UpdateEnvironmentInput(Model):
@@ -2206,6 +2241,29 @@ class ReplayTaskMeta(TaskMetaReplayTask, Model):
         document = "fragment TaskMeta on Task {\n  __typename\n  id\n  createdAt\n}\n\nfragment ReplayTaskMeta on ReplayTask {\n  ...TaskMeta\n  replayEntry {\n    id\n    __typename\n  }\n  __typename\n}"
         name = "ReplayTaskMeta"
         type = "ReplayTask"
+
+
+class WorkflowTaskMetaWorkflow(Model):
+    """No documentation"""
+
+    typename: Literal["Workflow"] = Field(alias="__typename", default="Workflow")
+    id: str
+
+
+class WorkflowTaskMeta(TaskMetaWorkflowTask, Model):
+    """No documentation"""
+
+    typename: Literal["WorkflowTask"] = Field(
+        alias="__typename", default="WorkflowTask"
+    )
+    workflow: WorkflowTaskMetaWorkflow
+
+    class Meta:
+        """Meta class for WorkflowTaskMeta"""
+
+        document = "fragment TaskMeta on Task {\n  __typename\n  id\n  createdAt\n}\n\nfragment WorkflowTaskMeta on WorkflowTask {\n  ...TaskMeta\n  workflow {\n    id\n    __typename\n  }\n  __typename\n}"
+        name = "WorkflowTaskMeta"
+        type = "WorkflowTask"
 
 
 class ReplayPlaceholderFull(Model):
@@ -5870,6 +5928,309 @@ class DeleteWorkflow(Model):
         """Meta class for DeleteWorkflow"""
 
         document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment ReadOnlyUserErrorFull on ReadOnlyUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nmutation DeleteWorkflow($id: ID!) {\n  deleteWorkflow(id: $id) {\n    deletedId\n    error {\n      __typename\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on ReadOnlyUserError {\n        ...ReadOnlyUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    __typename\n  }\n}"
+
+
+class TestWorkflowConvertTestworkflowconvertWorkflowUserErrorInlineFragment(
+    WorkflowUserErrorFull, Model
+):
+    pass
+
+
+class TestWorkflowConvertTestworkflowconvertPermissionDeniedUserErrorInlineFragment(
+    PermissionDeniedUserErrorFull, Model
+):
+    pass
+
+
+class TestWorkflowConvertTestworkflowconvertOtherUserErrorInlineFragment(
+    OtherUserErrorFull, Model
+):
+    pass
+
+
+class TestWorkflowConvertTestworkflowconvert(Model):
+    """No documentation"""
+
+    typename: Literal["TestWorkflowConvertPayload"] = Field(
+        alias="__typename", default="TestWorkflowConvertPayload"
+    )
+    error: Optional[
+        Union[
+            TestWorkflowConvertTestworkflowconvertWorkflowUserErrorInlineFragment,
+            TestWorkflowConvertTestworkflowconvertPermissionDeniedUserErrorInlineFragment,
+            TestWorkflowConvertTestworkflowconvertOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
+    output: Optional[str] = Field(default=None)
+    runState: Optional[dict] = Field(default=None)
+
+
+class TestWorkflowConvert(Model):
+    """No documentation found for this operation."""
+
+    testWorkflowConvert: TestWorkflowConvertTestworkflowconvert
+
+    class Arguments(Model):
+        """Arguments for TestWorkflowConvert"""
+
+        input: TestWorkflowConvertInput
+        model_config = ConfigDict(populate_by_name=None)
+
+    class Meta:
+        """Meta class for TestWorkflowConvert"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {\n  ...UserErrorFull\n  permissionReason: reason\n  __typename\n}\n\nfragment WorkflowUserErrorFull on WorkflowUserError {\n  ...UserErrorFull\n  node\n  message\n  reason\n  __typename\n}\n\nmutation TestWorkflowConvert($input: TestWorkflowConvertInput!) {\n  testWorkflowConvert(input: $input) {\n    error {\n      __typename\n      ... on WorkflowUserError {\n        ...WorkflowUserErrorFull\n      }\n      ... on PermissionDeniedUserError {\n        ...PermissionDeniedUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    output\n    runState\n    __typename\n  }\n}"
+
+
+class TestWorkflowPassiveTestworkflowpassiveWorkflowUserErrorInlineFragment(
+    WorkflowUserErrorFull, Model
+):
+    pass
+
+
+class TestWorkflowPassiveTestworkflowpassivePermissionDeniedUserErrorInlineFragment(
+    PermissionDeniedUserErrorFull, Model
+):
+    pass
+
+
+class TestWorkflowPassiveTestworkflowpassiveOtherUserErrorInlineFragment(
+    OtherUserErrorFull, Model
+):
+    pass
+
+
+class TestWorkflowPassiveTestworkflowpassive(Model):
+    """No documentation"""
+
+    typename: Literal["TestWorkflowPassivePayload"] = Field(
+        alias="__typename", default="TestWorkflowPassivePayload"
+    )
+    error: Optional[
+        Union[
+            TestWorkflowPassiveTestworkflowpassiveWorkflowUserErrorInlineFragment,
+            TestWorkflowPassiveTestworkflowpassivePermissionDeniedUserErrorInlineFragment,
+            TestWorkflowPassiveTestworkflowpassiveOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
+    runState: Optional[dict] = Field(default=None)
+
+
+class TestWorkflowPassive(Model):
+    """No documentation found for this operation."""
+
+    testWorkflowPassive: TestWorkflowPassiveTestworkflowpassive
+
+    class Arguments(Model):
+        """Arguments for TestWorkflowPassive"""
+
+        input: TestWorkflowPassiveInput
+        model_config = ConfigDict(populate_by_name=None)
+
+    class Meta:
+        """Meta class for TestWorkflowPassive"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {\n  ...UserErrorFull\n  permissionReason: reason\n  __typename\n}\n\nfragment WorkflowUserErrorFull on WorkflowUserError {\n  ...UserErrorFull\n  node\n  message\n  reason\n  __typename\n}\n\nmutation TestWorkflowPassive($input: TestWorkflowPassiveInput!) {\n  testWorkflowPassive(input: $input) {\n    error {\n      __typename\n      ... on WorkflowUserError {\n        ...WorkflowUserErrorFull\n      }\n      ... on PermissionDeniedUserError {\n        ...PermissionDeniedUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    runState\n    __typename\n  }\n}"
+
+
+class TestWorkflowActiveTestworkflowactiveWorkflowUserErrorInlineFragment(
+    WorkflowUserErrorFull, Model
+):
+    pass
+
+
+class TestWorkflowActiveTestworkflowactivePermissionDeniedUserErrorInlineFragment(
+    PermissionDeniedUserErrorFull, Model
+):
+    pass
+
+
+class TestWorkflowActiveTestworkflowactiveOtherUserErrorInlineFragment(
+    OtherUserErrorFull, Model
+):
+    pass
+
+
+class TestWorkflowActiveTestworkflowactive(Model):
+    """No documentation"""
+
+    typename: Literal["TestWorkflowActivePayload"] = Field(
+        alias="__typename", default="TestWorkflowActivePayload"
+    )
+    error: Optional[
+        Union[
+            TestWorkflowActiveTestworkflowactiveWorkflowUserErrorInlineFragment,
+            TestWorkflowActiveTestworkflowactivePermissionDeniedUserErrorInlineFragment,
+            TestWorkflowActiveTestworkflowactiveOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
+    runState: Optional[dict] = Field(default=None)
+
+
+class TestWorkflowActive(Model):
+    """No documentation found for this operation."""
+
+    testWorkflowActive: TestWorkflowActiveTestworkflowactive
+
+    class Arguments(Model):
+        """Arguments for TestWorkflowActive"""
+
+        input: TestWorkflowActiveInput
+        model_config = ConfigDict(populate_by_name=None)
+
+    class Meta:
+        """Meta class for TestWorkflowActive"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {\n  ...UserErrorFull\n  permissionReason: reason\n  __typename\n}\n\nfragment WorkflowUserErrorFull on WorkflowUserError {\n  ...UserErrorFull\n  node\n  message\n  reason\n  __typename\n}\n\nmutation TestWorkflowActive($input: TestWorkflowActiveInput!) {\n  testWorkflowActive(input: $input) {\n    error {\n      __typename\n      ... on WorkflowUserError {\n        ...WorkflowUserErrorFull\n      }\n      ... on PermissionDeniedUserError {\n        ...PermissionDeniedUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    runState\n    __typename\n  }\n}"
+
+
+class ToggleWorkflowToggleworkflowUnknownIdUserErrorInlineFragment(
+    UnknownIdUserErrorFull, Model
+):
+    pass
+
+
+class ToggleWorkflowToggleworkflowOtherUserErrorInlineFragment(
+    OtherUserErrorFull, Model
+):
+    pass
+
+
+class ToggleWorkflowToggleworkflow(Model):
+    """No documentation"""
+
+    typename: Literal["ToggleWorkflowPayload"] = Field(
+        alias="__typename", default="ToggleWorkflowPayload"
+    )
+    error: Optional[
+        Union[
+            ToggleWorkflowToggleworkflowUnknownIdUserErrorInlineFragment,
+            ToggleWorkflowToggleworkflowOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
+    workflow: Optional[WorkflowFull] = Field(default=None)
+
+
+class ToggleWorkflow(Model):
+    """No documentation found for this operation."""
+
+    toggleWorkflow: ToggleWorkflowToggleworkflow
+
+    class Arguments(Model):
+        """Arguments for ToggleWorkflow"""
+
+        id: str
+        enabled: bool
+        model_config = ConfigDict(populate_by_name=None)
+
+    class Meta:
+        """Meta class for ToggleWorkflow"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nfragment WorkflowFull on Workflow {\n  id\n  name\n  kind\n  definition\n  enabled\n  global\n  readOnly\n  createdAt\n  updatedAt\n  __typename\n}\n\nmutation ToggleWorkflow($id: ID!, $enabled: Boolean!) {\n  toggleWorkflow(id: $id, enabled: $enabled) {\n    error {\n      __typename\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    workflow {\n      ...WorkflowFull\n      __typename\n    }\n    __typename\n  }\n}"
+
+
+class RunConvertWorkflowRunconvertworkflowWorkflowUserErrorInlineFragment(
+    WorkflowUserErrorFull, Model
+):
+    pass
+
+
+class RunConvertWorkflowRunconvertworkflowPermissionDeniedUserErrorInlineFragment(
+    PermissionDeniedUserErrorFull, Model
+):
+    pass
+
+
+class RunConvertWorkflowRunconvertworkflowOtherUserErrorInlineFragment(
+    OtherUserErrorFull, Model
+):
+    pass
+
+
+class RunConvertWorkflowRunconvertworkflow(Model):
+    """No documentation"""
+
+    typename: Literal["RunConvertWorkflowPayload"] = Field(
+        alias="__typename", default="RunConvertWorkflowPayload"
+    )
+    error: Optional[
+        Union[
+            RunConvertWorkflowRunconvertworkflowWorkflowUserErrorInlineFragment,
+            RunConvertWorkflowRunconvertworkflowPermissionDeniedUserErrorInlineFragment,
+            RunConvertWorkflowRunconvertworkflowOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
+    output: Optional[str] = Field(default=None)
+
+
+class RunConvertWorkflow(Model):
+    """No documentation found for this operation."""
+
+    runConvertWorkflow: RunConvertWorkflowRunconvertworkflow
+
+    class Arguments(Model):
+        """Arguments for RunConvertWorkflow"""
+
+        id: str
+        input: str
+        model_config = ConfigDict(populate_by_name=None)
+
+    class Meta:
+        """Meta class for RunConvertWorkflow"""
+
+        document = "fragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {\n  ...UserErrorFull\n  permissionReason: reason\n  __typename\n}\n\nfragment WorkflowUserErrorFull on WorkflowUserError {\n  ...UserErrorFull\n  node\n  message\n  reason\n  __typename\n}\n\nmutation RunConvertWorkflow($id: ID!, $input: Blob!) {\n  runConvertWorkflow(id: $id, input: $input) {\n    error {\n      __typename\n      ... on WorkflowUserError {\n        ...WorkflowUserErrorFull\n      }\n      ... on PermissionDeniedUserError {\n        ...PermissionDeniedUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    output\n    __typename\n  }\n}"
+
+
+class RunActiveWorkflowRunactiveworkflowUnknownIdUserErrorInlineFragment(
+    UnknownIdUserErrorFull, Model
+):
+    pass
+
+
+class RunActiveWorkflowRunactiveworkflowPermissionDeniedUserErrorInlineFragment(
+    PermissionDeniedUserErrorFull, Model
+):
+    pass
+
+
+class RunActiveWorkflowRunactiveworkflowOtherUserErrorInlineFragment(
+    OtherUserErrorFull, Model
+):
+    pass
+
+
+class RunActiveWorkflowRunactiveworkflow(Model):
+    """No documentation"""
+
+    typename: Literal["RunActiveWorkflowPayload"] = Field(
+        alias="__typename", default="RunActiveWorkflowPayload"
+    )
+    error: Optional[
+        Union[
+            RunActiveWorkflowRunactiveworkflowUnknownIdUserErrorInlineFragment,
+            RunActiveWorkflowRunactiveworkflowPermissionDeniedUserErrorInlineFragment,
+            RunActiveWorkflowRunactiveworkflowOtherUserErrorInlineFragment,
+        ]
+    ] = Field(default=None)
+    task: Optional[WorkflowTaskMeta] = Field(default=None)
+
+
+class RunActiveWorkflow(Model):
+    """No documentation found for this operation."""
+
+    runActiveWorkflow: RunActiveWorkflowRunactiveworkflow
+
+    class Arguments(Model):
+        """Arguments for RunActiveWorkflow"""
+
+        id: str
+        input: RunActiveWorkflowInput
+        model_config = ConfigDict(populate_by_name=None)
+
+    class Meta:
+        """Meta class for RunActiveWorkflow"""
+
+        document = "fragment TaskMeta on Task {\n  __typename\n  id\n  createdAt\n}\n\nfragment UserErrorFull on UserError {\n  __typename\n  code\n}\n\nfragment OtherUserErrorFull on OtherUserError {\n  ...UserErrorFull\n  __typename\n}\n\nfragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {\n  ...UserErrorFull\n  permissionReason: reason\n  __typename\n}\n\nfragment UnknownIdUserErrorFull on UnknownIdUserError {\n  ...UserErrorFull\n  id\n  __typename\n}\n\nfragment WorkflowTaskMeta on WorkflowTask {\n  ...TaskMeta\n  workflow {\n    id\n    __typename\n  }\n  __typename\n}\n\nmutation RunActiveWorkflow($id: ID!, $input: RunActiveWorkflowInput!) {\n  runActiveWorkflow(id: $id, input: $input) {\n    error {\n      __typename\n      ... on UnknownIdUserError {\n        ...UnknownIdUserErrorFull\n      }\n      ... on PermissionDeniedUserError {\n        ...PermissionDeniedUserErrorFull\n      }\n      ... on OtherUserError {\n        ...OtherUserErrorFull\n      }\n    }\n    task {\n      ...WorkflowTaskMeta\n      __typename\n    }\n    __typename\n  }\n}"
 
 
 CertificateInput.model_rebuild()
