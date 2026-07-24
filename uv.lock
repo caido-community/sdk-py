@@ -983,7 +983,7 @@ wheels = [
 [[package]]
 name = "turms"
 version = "1.0.1"
-source = { git = "https://github.com/caido/dependency-turms.git?branch=caido#21dc21eb42955c23da8d6a30b69d820a830267de" }
+source = { git = "https://github.com/caido/dependency-turms.git?branch=caido#4f71f26594660a8fccd2809a97d64d8dec8bd317" }
 dependencies = [
     { name = "graphql-core" },
     { name = "pydantic" },

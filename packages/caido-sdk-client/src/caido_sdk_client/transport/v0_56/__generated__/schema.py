@@ -1540,9 +1540,7 @@ class TasksTasksBaseDeleteStreamWsMessageTask(
     )
 
 
-class TasksTasksBaseReplayTask(
-    TaskMetaReplayTask, ReplayTaskMeta, TasksTasksBase, Model
-):
+class TasksTasksBaseReplayTask(ReplayTaskMeta, TasksTasksBase, Model):
     """No documentation"""
 
     typename: Literal["ReplayTask"] = Field(alias="__typename", default="ReplayTask")
@@ -1658,7 +1656,7 @@ class FinishedTaskFinishedtaskTaskBaseDeleteStreamWsMessageTask(
 
 
 class FinishedTaskFinishedtaskTaskBaseReplayTask(
-    TaskMetaReplayTask, ReplayTaskMeta, FinishedTaskFinishedtaskTaskBase, Model
+    ReplayTaskMeta, FinishedTaskFinishedtaskTaskBase, Model
 ):
     """No documentation"""
 
