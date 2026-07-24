@@ -10,10 +10,21 @@ dependencies = [
   "caido-server-auth>=0.1.2",
   "gql[aiohttp,websockets]>=3.5.0",
   "pydantic>=2.11.0",
+  "semver>=3.0.4",
 ]
 
 [dependency-groups]
-dev = ["pytest>=8.0.0", "pytest-asyncio>=0.24.0", "caido-schema-proxy>=0.56.0"]
+dev = ["pytest>=8.0.0", "pytest-asyncio>=0.24.0"]
+schema-latest = ["caido-schema-proxy>=0.57.0"]
+schema-v0-56 = ["caido-schema-proxy==0.56.0"]
+
+[tool.uv]
+conflicts = [
+  [
+    { group = "schema-latest" },
+    { group = "schema-v0-56" },
+  ],
+]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

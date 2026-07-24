@@ -5,7 +5,9 @@ from __future__ import annotations
 import json
 
 from caido_sdk_client.errors.base import BaseError
-from caido_sdk_client.graphql.__generated__.schema import AliasTakenUserErrorFull
+from caido_sdk_client.graphql.__generated__.schema import (
+    AliasTakenUserErrorFull,
+)
 
 
 class NameTakenUserError(BaseError):

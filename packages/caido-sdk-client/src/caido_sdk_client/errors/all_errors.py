@@ -6,6 +6,7 @@ from typing import Union
 
 from caido_sdk_client.graphql.__generated__.schema import (
     AliasTakenUserErrorFull,
+    CertificateUserErrorFull,
     CloudUserErrorFull,
     InvalidGlobTermsUserErrorFull,
     NameTakenUserErrorFull,
@@ -25,6 +26,7 @@ from caido_sdk_client.graphql.__generated__.schema import (
 AllErrors = Union[
     UnknownIdUserErrorFull,
     AliasTakenUserErrorFull,
+    CertificateUserErrorFull,
     InvalidGlobTermsUserErrorFull,
     PermissionDeniedUserErrorFull,
     NameTakenUserErrorFull,

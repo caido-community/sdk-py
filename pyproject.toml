@@ -22,4 +22,4 @@ dev = [
 
 
 [tool.ty.src]
-exclude = ["**/graphql/__generated__/**"]
+exclude = ["**/__generated__/**"]

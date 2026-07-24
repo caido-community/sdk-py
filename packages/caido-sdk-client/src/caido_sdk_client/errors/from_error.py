@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from caido_sdk_client.errors.authorization import PermissionDeniedUserError
 from caido_sdk_client.errors.base import BaseError
+from caido_sdk_client.errors.certificate import CertificateUserError
 from caido_sdk_client.errors.cloud import CloudUserError
 from caido_sdk_client.errors.form import (
     AliasTakenUserError,
@@ -21,7 +22,10 @@ from caido_sdk_client.errors.project import ProjectUserError
 from caido_sdk_client.errors.tasks import TaskInProgressUserError
 from caido_sdk_client.errors.version import NewerVersionUserError
 from caido_sdk_client.errors.workflow import WorkflowUserError
-from caido_sdk_client.graphql.__generated__.schema import RankErrorReason
+from caido_sdk_client.graphql.__generated__.schema import (
+    CertificateErrorReason,
+    RankErrorReason,
+)
 
 
 def from_error(error: object) -> BaseError:
@@ -47,6 +51,12 @@ def from_error(error: object) -> BaseError:
 
         case "AliasTakenUserError":
             return AliasTakenUserError(error)  # type: ignore[arg-type]
+
+        case "CertificateUserError":
+            reason = getattr(error, "reason")
+            if not isinstance(reason, CertificateErrorReason):
+                reason = CertificateErrorReason(str(reason))
+            return CertificateUserError(reason)
 
         case "InvalidGlobTermsUserError":
             return InvalidGlobTermsUserError(getattr(error, "terms"))

@@ -13,6 +13,8 @@ from caido_sdk_client.graphql import GraphQLClient
 from caido_sdk_client.logger import ConsoleLogger, Logger
 from caido_sdk_client.rest import RestClient
 from caido_sdk_client.sdks import (
+    DNSRewriteSDK,
+    DNSUpstreamSDK,
     EnvironmentSDK,
     FilterSDK,
     FindingSDK,
@@ -28,6 +30,7 @@ from caido_sdk_client.sdks import (
     WorkflowSDK,
 )
 from caido_sdk_client.utils import sleep
+from caido_sdk_client.version import Version
 
 
 @dataclass(frozen=True, slots=True)
@@ -70,6 +73,9 @@ class Client:
 
     graphql: GraphQLClient
     rest: RestClient
+    version: Version
+    dns_rewrite: DNSRewriteSDK
+    dns_upstream: DNSUpstreamSDK
     user: UserSDK
     plugin: PluginSDK
     project: ProjectSDK
@@ -92,6 +98,7 @@ class Client:
         headers: Mapping[str, str] | None = None,
         timeout_ms: int | None = None,
         logger: Logger | None = None,
+        version: Version | None = None,
     ) -> None:
         self._url = url.rstrip("/")
         self._logger = logger or ConsoleLogger()
@@ -112,15 +119,18 @@ class Client:
             self._logger,
             timeout_ms=timeout_ms,
         )
+        self.version = version or Version.lazy(self.rest)
         self.user = UserSDK(self.graphql)
         self.plugin = PluginSDK(self.graphql, self.rest)
         self.project = ProjectSDK(self.graphql)
         self.environment = EnvironmentSDK(self.graphql)
         self.filter = FilterSDK(self.graphql)
+        self.dns_upstream = DNSUpstreamSDK(self.graphql)
+        self.dns_rewrite = DNSRewriteSDK(self.graphql)
         self.findings = FindingSDK(self.graphql)
         self.hosted_file = HostedFileSDK(self.graphql)
         self.instance = InstanceSDK(self.graphql)
-        self.replay = ReplaySDK(self.graphql)
+        self.replay = ReplaySDK(self.graphql, self.version)
         self.request = RequestSDK(self.graphql)
         self.scope = ScopeSDK(self.graphql)
         self.task = TaskSDK(self.graphql)

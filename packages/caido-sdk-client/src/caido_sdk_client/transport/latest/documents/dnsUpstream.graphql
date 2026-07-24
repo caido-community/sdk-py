@@ -1,0 +1,19 @@
+fragment DnsUpstreamFull on DNSUpstream {
+  id
+  ip
+  name
+}
+
+query DnsUpstreams {
+  dnsUpstreams {
+    ...DnsUpstreamFull
+  }
+}
+
+mutation CreateDnsUpstream($input: CreateDNSUpstreamInput!) {
+  createDnsUpstream(input: $input) {
+    upstream {
+      ...DnsUpstreamFull
+    }
+  }
+}

@@ -47,8 +47,8 @@ class ReplaySendOptions:
 class ReplaySendSettings:
     """Settings for replay send."""
 
-    connection_close: bool = False
-    update_content_length: bool = True
+    connection_close: bool | None = None
+    update_content_length: bool | None = None
     placeholders: list[ReplayPlaceholderInput] | None = None
 
 

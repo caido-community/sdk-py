@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+from .certificate import CertificateSDK
+from .dns_rewrite import DNSRewriteSDK
+from .dns_upstream import DNSUpstreamSDK
 from .environment import EnvironmentInstance, EnvironmentSDK
 from .filter import FilterSDK
 from .finding import FindingSDK, FindingsListBuilder
@@ -30,6 +33,9 @@ from .user import UserSDK
 from .workflow import WorkflowSDK
 
 __all__ = [
+    "CertificateSDK",
+    "DNSRewriteSDK",
+    "DNSUpstreamSDK",
     "EnvironmentInstance",
     "EnvironmentSDK",
     "FilterSDK",

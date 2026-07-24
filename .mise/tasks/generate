@@ -5,7 +5,34 @@ set -e
 
 cd packages/caido-sdk-client
 
-SCHEMA_PATH=$(uv run python -c "import importlib.resources; print(importlib.resources.files('caido_schema_proxy').joinpath('schema.graphql'))")
-ln -sf "$SCHEMA_PATH" ./schema.graphql
+cleanup() {
+  rm -rf ./.turms ./schema.latest.graphql ./schema.v0_56.graphql
+}
+trap cleanup EXIT
 
-uv run turms gen
+copy_schema() {
+  uv run --group "$1" python -c \
+    "import importlib.resources, pathlib; target = pathlib.Path('$2'); target.unlink(missing_ok=True); target.write_bytes(importlib.resources.files('caido_schema_proxy').joinpath('schema.graphql').read_bytes())"
+}
+
+copy_schema schema-latest ./schema.latest.graphql
+copy_schema schema-v0-56 ./schema.v0_56.graphql
+
+uv run turms gen latest
+
+uv run python -c "
+import pathlib, shutil
+target = pathlib.Path('.turms/v0_56')
+shutil.rmtree(target, ignore_errors=True)
+target.mkdir(parents=True)
+sources = [
+    *pathlib.Path('src/caido_sdk_client/transport/v0_56/documents').glob('*.graphql'),
+    *(
+        pathlib.Path('src/caido_sdk_client/transport/latest/documents') / name
+        for name in ('connectionInfo.graphql', 'request.graphql', 'range.graphql', 'task.graphql')
+    ),
+]
+for source in sources:
+    shutil.copy2(source, target / source.name)
+"
+uv run turms gen v0_56

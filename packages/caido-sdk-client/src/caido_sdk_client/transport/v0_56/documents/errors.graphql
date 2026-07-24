@@ -1,0 +1,33 @@
+fragment UserErrorFull on UserError {
+  __typename
+  code
+}
+
+fragment CloudUserErrorFull on CloudUserError {
+  ...UserErrorFull
+  cloudReason: reason
+}
+
+fragment PermissionDeniedUserErrorFull on PermissionDeniedUserError {
+  ...UserErrorFull
+  permissionReason: reason
+}
+
+fragment UnknownIdUserErrorFull on UnknownIdUserError {
+  ...UserErrorFull
+  id
+}
+
+fragment OtherUserErrorFull on OtherUserError {
+  ...UserErrorFull
+}
+
+fragment RankUserErrorFull on RankUserError {
+  ...UserErrorFull
+  rankReason: reason
+}
+
+fragment TaskInProgressUserErrorFull on TaskInProgressUserError {
+  ...UserErrorFull
+  taskId
+}

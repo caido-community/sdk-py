@@ -7,6 +7,7 @@ from caido_sdk_client.errors.authorization import (
     PermissionDeniedUserError,
 )
 from caido_sdk_client.errors.base import BaseError
+from caido_sdk_client.errors.certificate import CertificateUserError
 from caido_sdk_client.errors.cloud import CloudUserError
 from caido_sdk_client.errors.form import (
     AliasTakenUserError,
@@ -46,6 +47,7 @@ __all__ = [
     "AliasTakenUserError",
     "AuthorizationUserError",
     "BaseError",
+    "CertificateUserError",
     "CloudUserError",
     "InstanceNotReadyError",
     "InvalidGlobTermsUserError",

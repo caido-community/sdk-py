@@ -21,25 +21,28 @@ Mirror the JS `src/` layout as closely as possible:
 | `src/utils/*.ts` | `utils/*.py` |
 | `src/sdks/*.ts` | `sdks/*.py` |
 | `src/types/*.ts` | `types/*.py` |
+| `src/transport/latest/convert/*.ts` | `transport/latest/convert/*.py` |
 | `src/graphql/client.ts` | `graphql/client.py` |
 | `src/graphql/utils.ts` | `graphql/utils.py` |
-| `src/graphql/documents/*.graphql` | `graphql/documents/*.graphql` (identical) |
+| `src/transport/latest/documents/*.graphql` | `transport/latest/documents/*.graphql` (identical) |
 | `src/client.ts` | `client.py` |
 
 ## Generated Code
 
-**NEVER modify files under `graphql/__generated__/`.**
-These are produced by turms from `.graphql` documents and `schema.graphql`.
-To regenerate, run `mise run generate` from the repository root (it links `schema.graphql` from `caido-schema-proxy` and runs turms in `packages/caido-sdk-client`).
+**NEVER modify files under `transport/*/__generated__/`.**
+These are produced by turms from the versioned `.graphql` documents and schemas.
+To regenerate, run `mise run generate` from the repository root (it resolves the pinned `caido-schema-proxy` versions and runs turms in `packages/caido-sdk-client`).
+`graphql/__generated__/schema.py` is a compatibility re-export of the latest transport so existing imports remain stable.
 The workspace resolves **turms** from Caido’s fork ([`caido/dependency-turms`](https://github.com/caido/dependency-turms) branch `caido`) via `[tool.uv.sources]` in the root `pyproject.toml`, not from PyPI.
 Turms requires fragments to be referenced by at least one operation; standalone fragment-only documents won't pass validation.
 
-The `schema.graphql` file comes from the JS SDK's `node_modules/@caido/schema-proxy/schema.graphql`.
+The latest and v0.56 schemas correspond to the JS SDK's `@caido/schema-proxy` and `@caido/schema-proxy-v0.56` packages.
 
 ## GraphQL Documents
 
-Copy `.graphql` documents from the JS SDK into `graphql/documents/`.
+Copy latest `.graphql` documents from the JS SDK into `transport/latest/documents/`. Keep version-specific documents under their corresponding transport folder.
 Turms config is in `graphql.config.yaml` at the package root.
+Transport-specific converter implementations live under `transport/latest/convert/`; top-level `convert/` modules only provide stable compatibility re-exports or cross-version conversion.
 
 ## Conventions
 
@@ -47,7 +50,7 @@ Turms config is in `graphql.config.yaml` at the package root.
 - Use `from __future__ import annotations` in every module.
 - Error classes extend `BaseError` (in `errors/base.py`), which mirrors the JS `BaseError extends Error`.
 - `from` is a Python keyword; the JS `errors/from.ts` is named `errors/from_error.py` with a `from_error()` function.
-- Use generated pydantic models and enums from `graphql/__generated__/schema.py` for typed error constructors, operations, and fragment types.
+- Import latest generated pydantic models and enums through `graphql/__generated__/schema.py`. Import a versioned transport directly only when implementing version-specific behavior.
 - Avoid `Any` as much as possible: prefer generated fragment/operation types (e.g. `ConnectionInfoFull`, `ReplayEntryFull`) for convert function parameters and internal variables; use `object` or a protocol only when you must accept multiple unrelated types.
 - In `from_error()`, prefer dispatching on the GraphQL `typename` string (mirroring the JS `error.__typename` switch) instead of structural pattern matching on specific pydantic model classes. This keeps the function compatible with both fragment `...Full` models and operation-specific inline fragment models, as long as they expose the required attributes. For new error families, mirror the existing `from_error()` style and raise a `ValueError` on unknown `typename`.
 - Use `match`/`case` on enum values in error constructors (e.g., `CloudErrorReason.UNAVAILABLE`).
@@ -75,8 +78,9 @@ Use subclasses of `str` in `types/strings.py` to distinguish IDs, cursors, and H
 ## Dependencies
 
 Managed via `uv` with workspace layout. Package deps are in `packages/caido-sdk-client/pyproject.toml`.
-Current deps: `gql[aiohttp,websockets]`, `pydantic`.
+Current deps: `gql[aiohttp,websockets]`, `pydantic`, `semver`.
 Dev deps (workspace root): `ruff`, `ty`, `turms`.
+Schema codegen uses the mutually exclusive `schema-latest` and `schema-v0-56` dependency groups.
 
 ## Before finishing
 

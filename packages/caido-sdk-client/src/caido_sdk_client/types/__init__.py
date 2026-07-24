@@ -2,7 +2,16 @@
 
 from __future__ import annotations
 
+from .certificate import CertificateFileLike, ImportCertificateOptions
 from .connection import Connection, Edge, PageInfo
+from .dns_rewrite import (
+    CreateDNSRewriteOptions,
+    DNSIPResolver,
+    DNSResolver,
+    DNSRewrite,
+    DNSUpstreamResolver,
+)
+from .dns_upstream import CreateDNSUpstreamOptions, DNSUpstream
 from .environment import (
     CreateEnvironmentOptions,
     Environment,
@@ -63,6 +72,7 @@ from .request import (
     Response,
 )
 from .scope import CreateScopeOptions, Scope, UpdateScopeOptions
+from .semver import SemverLiteral
 from .strings import Cursor, CursorLike, Httpql, HttpqlLike, Id, IdLike
 from .task import TaskResult, TaskStatus
 from .user import (
@@ -76,6 +86,7 @@ from .user import (
     UserProfile,
     UserSubscription,
 )
+from .versioned import TransportVersion, Versioned, versioned
 from .workflow import (
     CreateWorkflowOptions,
     UpdateWorkflowOptions,
@@ -86,6 +97,15 @@ __all__ = [
     "AISettings",
     "AnalyticsSettings",
     "AnthropicAISetting",
+    "CertificateFileLike",
+    "ImportCertificateOptions",
+    "CreateDNSRewriteOptions",
+    "CreateDNSUpstreamOptions",
+    "DNSIPResolver",
+    "DNSResolver",
+    "DNSRewrite",
+    "DNSUpstream",
+    "DNSUpstreamResolver",
     "CloudUser",
     "Connection",
     "ConnectionInfo",
@@ -143,6 +163,7 @@ __all__ = [
     "CreateScopeOptions",
     "UpdateScopeOptions",
     "ScriptUser",
+    "SemverLiteral",
     "SetAISettingsInput",
     "SetAnalyticsSettingsInput",
     "SetInstanceSettingsInput",
@@ -161,5 +182,8 @@ __all__ = [
     "UserSubscription",
     "CreateWorkflowOptions",
     "UpdateWorkflowOptions",
+    "TransportVersion",
+    "Versioned",
     "Workflow",
+    "versioned",
 ]

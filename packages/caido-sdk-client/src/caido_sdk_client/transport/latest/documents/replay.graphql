@@ -1,4 +1,5 @@
-fragment ReplayEntryFull on ReplayEntry {
+fragment ReplayEntryHttpFull on ReplayEntryHttp {
+  __typename
   connection {
     ...ConnectionInfoFull
   }
@@ -16,6 +17,28 @@ fragment ReplayEntryFull on ReplayEntry {
     placeholders {
       ...ReplayPlaceholderFull
     }
+  }
+}
+
+fragment ReplayEntryWsFull on ReplayEntryWs {
+  __typename
+  createdAt
+  error
+  id
+  http {
+    ...ReplayEntryHttpFull
+  }
+  session {
+    id
+  }
+}
+
+fragment ReplayEntryFull on ReplayEntry {
+  ... on ReplayEntryHttp {
+    ...ReplayEntryHttpFull
+  }
+  ... on ReplayEntryWs {
+    ...ReplayEntryWsFull
   }
 }
 
@@ -85,7 +108,8 @@ fragment ReplayPreprocessorFull on ReplayPreprocessor {
   }
 }
 
-fragment ReplaySessionMeta on ReplaySession {
+fragment ReplaySessionHttpMeta on ReplaySessionHttp {
+  __typename
   id
   name
   collection {
@@ -93,6 +117,45 @@ fragment ReplaySessionMeta on ReplaySession {
   }
   activeEntry {
     id
+  }
+  entries(last: 1) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
+  settings {
+    connectionClose
+    updateContentLength
+  }
+}
+
+fragment ReplaySessionWsMeta on ReplaySessionWs {
+  __typename
+  id
+  name
+  collection {
+    id
+  }
+  activeEntry {
+    id
+  }
+  entries(last: 1) {
+    edges {
+      node {
+        id
+      }
+    }
+  }
+}
+
+fragment ReplaySessionMeta on ReplaySession {
+  ... on ReplaySessionHttp {
+    ...ReplaySessionHttpMeta
+  }
+  ... on ReplaySessionWs {
+    ...ReplaySessionWsMeta
   }
 }
 
@@ -103,11 +166,12 @@ fragment ReplaySessionCollectionMeta on ReplaySessionCollection {
 
 query ReplayEntry(
   $id: ID!
+  $sessionKind: ReplaySessionKind!
   $includeReplayRaw: Boolean!
   $includeRequestRaw: Boolean!
   $includeResponseRaw: Boolean!
 ) {
-  replayEntry(id: $id) {
+  replayEntry(id: $id, sessionKind: $sessionKind) {
     ...ReplayEntryFull
   }
 }
@@ -140,18 +204,36 @@ query ReplaySessionEntries(
   $includeResponseRaw: Boolean!
 ) {
   replaySession(id: $id) {
-    entries(after: $after, before: $before, first: $first, last: $last) {
-      edges {
-        cursor
-        node {
-          ...ReplayEntryFull
+    ... on ReplaySessionHttp {
+      entries(after: $after, before: $before, first: $first, last: $last) {
+        edges {
+          cursor
+          node {
+            ...ReplayEntryFull
+          }
+        }
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
         }
       }
-      pageInfo {
-        hasNextPage
-        hasPreviousPage
-        startCursor
-        endCursor
+    }
+    ... on ReplaySessionWs {
+      entries(after: $after, before: $before, first: $first, last: $last) {
+        edges {
+          cursor
+          node {
+            ...ReplayEntryFull
+          }
+        }
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
       }
     }
   }
@@ -192,6 +274,18 @@ query ReplaySessionCollections(
 
 mutation CreateReplaySession($input: CreateReplaySessionInput!) {
   createReplaySession(input: $input) {
+    error {
+      __typename
+      ... on PermissionDeniedUserError {
+        ...PermissionDeniedUserErrorFull
+      }
+      ... on CloudUserError {
+        ...CloudUserErrorFull
+      }
+      ... on OtherUserError {
+        ...OtherUserErrorFull
+      }
+    }
     session {
       ...ReplaySessionMeta
     }
@@ -252,8 +346,30 @@ mutation SetActiveReplaySessionEntry($id: ID!, $entryId: ID!) {
   }
 }
 
-mutation StartReplayTask($sessionId: ID!, $input: StartReplayTaskInput!) {
-  startReplayTask(sessionId: $sessionId, input: $input) {
+mutation UpdateReplayEntryDraft(
+  $id: ID!
+  $input: UpdateReplayEntryDraftInput!
+) {
+  updateReplayEntryDraft(id: $id, input: $input) {
+    entry {
+      id
+    }
+  }
+}
+
+mutation UpdateReplaySessionSettings(
+  $id: ID!
+  $input: ReplaySessionSettingsInput!
+) {
+  updateReplaySessionSettings(id: $id, input: $input) {
+    session {
+      id
+    }
+  }
+}
+
+mutation StartReplayTask($sessionId: ID!) {
+  startReplayTask(sessionId: $sessionId) {
     error {
       __typename
       ... on CloudUserError {
@@ -264,6 +380,9 @@ mutation StartReplayTask($sessionId: ID!, $input: StartReplayTaskInput!) {
       }
       ... on TaskInProgressUserError {
         ...TaskInProgressUserErrorFull
+      }
+      ... on UnknownIdUserError {
+        ...UnknownIdUserErrorFull
       }
       ... on OtherUserError {
         ...OtherUserErrorFull

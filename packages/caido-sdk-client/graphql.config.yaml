@@ -1,10 +1,48 @@
 projects:
-  default:
-    schema: ./schema.graphql
-    documents: src/caido_sdk_client/graphql/documents/**.graphql
+  latest:
+    schema: ./schema.latest.graphql
+    documents: src/caido_sdk_client/transport/latest/documents/**.graphql
     extensions:
       turms:
-        out_dir: src/caido_sdk_client/graphql/__generated__
+        out_dir: src/caido_sdk_client/transport/latest/__generated__
+        plugins:
+          - type: turms.plugins.enums.EnumsPlugin
+          - type: turms.plugins.inputs.InputsPlugin
+            inputtype_bases:
+              - 'caido_sdk_client.utils.pydantic.Model'
+          - type: turms.plugins.fragments.FragmentsPlugin
+          - type: turms.plugins.operations.OperationsPlugin
+        object_bases:
+          - 'caido_sdk_client.utils.pydantic.Model'
+        scalar_definitions:
+          DateTime: str
+          Duration: int
+          Blob: str
+          Port: int
+          Timestamp: int
+          Snapshot: int
+          Rank: str
+          Token: str
+          Url: str
+          Upload: gql.FileVar
+          JSON: dict
+          JsonObject: dict
+          Image: str
+          Sensitive: str
+          Uri: str
+          Alias: str
+          HTTPQL: str
+          JsonRaw: str
+          Version: str
+          Binary: str
+  v0_56:
+    schema: ./schema.v0_56.graphql
+    # Turms accepts one document glob, so generate stages these shared documents
+    # alongside the v0.56 replay document without duplicating source files.
+    documents: ./.turms/v0_56/*.graphql
+    extensions:
+      turms:
+        out_dir: src/caido_sdk_client/transport/v0_56/__generated__
         plugins:
           - type: turms.plugins.enums.EnumsPlugin
           - type: turms.plugins.inputs.InputsPlugin

@@ -1,6 +1,10 @@
 version = 1
 revision = 3
 requires-python = ">=3.12"
+conflicts = [[
+    { package = "caido-sdk-client", group = "schema-latest" },
+    { package = "caido-sdk-client", group = "schema-v0-56" },
+]]
 
 [manifest]
 members = [
@@ -109,7 +113,7 @@ version = "1.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "frozenlist" },
-    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.13' or (extra == 'group-16-caido-sdk-client-schema-latest' and extra == 'group-16-caido-sdk-client-schema-v0-56')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/61/62/06741b579156360248d1ec624842ad0edf697050bbaf7c3e46394e106ad1/aiosignal-1.4.0.tar.gz", hash = "sha256:f47eecd9468083c2029cc99945502cb7708b082c232f9aca65da147157b251c7", size = 25007, upload-time = "2025-07-03T22:54:43.528Z" }
 wheels = [
@@ -132,7 +136,7 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "idna" },
     { name = "sniffio" },
-    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.13' or (extra == 'group-16-caido-sdk-client-schema-latest' and extra == 'group-16-caido-sdk-client-schema-v0-56')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/c6/78/7d432127c41b50bccba979505f272c16cbcadcc33645d5fa3a738110ae75/anyio-4.11.0.tar.gz", hash = "sha256:82a8d0b81e318cc5ce71a5f1f8b5c4e63619620b63141ef8c995fa0db95a57c4", size = 219094, upload-time = "2025-09-23T09:19:12.58Z" }
 wheels = [
@@ -167,20 +171,35 @@ wheels = [
 ]
 
 [[package]]
+name = "caido-schema-proxy"
+version = "0.57.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e9/56/771949c78694e30db8a2ab2361c9ef0fa54984f4098eae79d5c953c6d851/caido_schema_proxy-0.57.1.tar.gz", hash = "sha256:8081251211e73037f3ea1bb45133ad4e261a07f6677de042b241164ccf78d7d3", size = 20863, upload-time = "2026-07-10T18:12:23.592Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f0/eb/f5b9f8751e0e0c5e40db7f44e0592ac93c5296ecf59693370b00a74dfdb9/caido_schema_proxy-0.57.1-py3-none-any.whl", hash = "sha256:2eea79809b14161db325e54214b1e5ac57017185295bca3d7a351d2bd8544b67", size = 21571, upload-time = "2026-07-10T18:12:22.793Z" },
+]
+
+[[package]]
 name = "caido-sdk-client"
-version = "0.1.1"
+version = "0.2.0"
 source = { editable = "packages/caido-sdk-client" }
 dependencies = [
     { name = "caido-server-auth" },
     { name = "gql", extra = ["aiohttp", "websockets"] },
     { name = "pydantic" },
+    { name = "semver" },
 ]
 
 [package.dev-dependencies]
 dev = [
-    { name = "caido-schema-proxy" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
+]
+schema-latest = [
+    { name = "caido-schema-proxy", version = "0.57.1", source = { registry = "https://pypi.org/simple" } },
+]
+schema-v0-56 = [
+    { name = "caido-schema-proxy", version = "0.56.0", source = { registry = "https://pypi.org/simple" } },
 ]
 
 [package.metadata]
@@ -188,14 +207,16 @@ requires-dist = [
     { name = "caido-server-auth", editable = "packages/caido-server-auth" },
     { name = "gql", extras = ["aiohttp", "websockets"], specifier = ">=3.5.0" },
     { name = "pydantic", specifier = ">=2.11.0" },
+    { name = "semver", specifier = ">=3.0.4" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "caido-schema-proxy", specifier = ">=0.56.0" },
     { name = "pytest", specifier = ">=8.0.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
 ]
+schema-latest = [{ name = "caido-schema-proxy", specifier = ">=0.57.0" }]
+schema-v0-56 = [{ name = "caido-schema-proxy", specifier = "==0.56.0" }]
 
 [[package]]
 name = "caido-sdk-workspace"
@@ -304,7 +325,7 @@ name = "click"
 version = "8.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-16-caido-sdk-client-schema-latest' and extra == 'group-16-caido-sdk-client-schema-v0-56')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/3d/fa/656b739db8587d7b5dfa22e22ed02566950fbfbcdc20311993483657a5c0/click-8.3.1.tar.gz", hash = "sha256:12ff4785d337a1bb490bb7e9c2b1ee5da3112e94a8622f26a6c77f5d2fc6842a", size = 295065, upload-time = "2025-11-15T20:45:42.706Z" }
 wheels = [
@@ -795,7 +816,7 @@ name = "pytest"
 version = "9.0.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-16-caido-sdk-client-schema-latest' and extra == 'group-16-caido-sdk-client-schema-v0-56')" },
     { name = "iniconfig" },
     { name = "packaging" },
     { name = "pluggy" },
@@ -812,7 +833,7 @@ version = "1.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pytest" },
-    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.13' or (extra == 'group-16-caido-sdk-client-schema-latest' and extra == 'group-16-caido-sdk-client-schema-v0-56')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/90/2c/8af215c0f776415f3590cac4f9086ccefd6fd463befeae41cd4d3f193e5a/pytest_asyncio-1.3.0.tar.gz", hash = "sha256:d7f52f36d231b80ee124cd216ffb19369aa168fc10095013c6b014a34d3ee9e5", size = 50087, upload-time = "2025-11-10T16:07:47.256Z" }
 wheels = [
@@ -908,7 +929,7 @@ version = "1.9.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-16-caido-sdk-client-schema-latest' and extra == 'group-16-caido-sdk-client-schema-v0-56')" },
     { name = "rich" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/04/27/091e140ea834272188e63f8dd6faac1f5c687582b687197b3e0ec3c78ebf/rich_click-1.9.7.tar.gz", hash = "sha256:022997c1e30731995bdbc8ec2f82819340d42543237f033a003c7b1f843fc5dc", size = 74838, upload-time = "2026-01-31T04:29:27.707Z" }
@@ -939,6 +960,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/28/3a/950367aee7c69027f4f422059227b290ed780366b6aecee5de5039d50fa8/ruff-0.15.5-py3-none-win32.whl", hash = "sha256:732e5ee1f98ba5b3679029989a06ca39a950cced52143a0ea82a2102cb592b74", size = 10551676, upload-time = "2026-03-05T20:06:13.705Z" },
     { url = "https://files.pythonhosted.org/packages/b8/00/bf077a505b4e649bdd3c47ff8ec967735ce2544c8e4a43aba42ee9bf935d/ruff-0.15.5-py3-none-win_amd64.whl", hash = "sha256:821d41c5fa9e19117616c35eaa3f4b75046ec76c65e7ae20a333e9a8696bc7fe", size = 11678972, upload-time = "2026-03-05T20:06:45.379Z" },
     { url = "https://files.pythonhosted.org/packages/fe/4e/cd76eca6db6115604b7626668e891c9dd03330384082e33662fb0f113614/ruff-0.15.5-py3-none-win_arm64.whl", hash = "sha256:b498d1c60d2fe5c10c45ec3f698901065772730b411f164ae270bb6bfcc4740b", size = 10965572, upload-time = "2026-03-05T20:06:16.984Z" },
+]
+
+[[package]]
+name = "semver"
+version = "3.0.4"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/72/d1/d3159231aec234a59dd7d601e9dd9fe96f3afff15efd33c1070019b26132/semver-3.0.4.tar.gz", hash = "sha256:afc7d8c584a5ed0a11033af086e8af226a9c0b206f313e0301f8dd7b6b589602", size = 269730, upload-time = "2025-01-24T13:19:27.617Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a6/24/4d91e05817e92e3a61c8a21e08fd0f390f5301f1c448b137c57c4bc6e543/semver-3.0.4-py3-none-any.whl", hash = "sha256:9c824d87ba7f7ab4a1890799cec8596f15c1241cb473404ea1cb0c55e4b04746", size = 17912, upload-time = "2025-01-24T13:19:24.949Z" },
 ]
 
 [[package]]

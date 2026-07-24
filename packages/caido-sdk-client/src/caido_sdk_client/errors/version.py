@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 from caido_sdk_client.errors.base import BaseError
-from caido_sdk_client.graphql.__generated__.schema import NewerVersionUserErrorFull
+from caido_sdk_client.graphql.__generated__.schema import (
+    NewerVersionUserErrorFull,
+)
 
 
 class NewerVersionUserError(BaseError):
