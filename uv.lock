@@ -181,7 +181,7 @@ wheels = [
 
 [[package]]
 name = "caido-sdk-client"
-version = "0.2.0"
+version = "0.3.0"
 source = { editable = "packages/caido-sdk-client" }
 dependencies = [
     { name = "caido-server-auth" },

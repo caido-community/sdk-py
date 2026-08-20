@@ -52,11 +52,11 @@ class TaskSDK:
 
     def finished(
         self,
-        filter_pred: Callable[[TaskResult], bool],
+        filter_pred: Callable[[TaskResult], bool] | None = None,
     ) -> AsyncIterator[TaskResult]:
-        """Subscribe to finished tasks and yield those matching the filter."""
+        """Subscribe to finished tasks, optionally yielding those matching the filter."""
 
-        async def map_event(event: dict[str, Any]) -> TaskResult:
+        def map_event(event: dict[str, Any], _: int) -> TaskResult:
             payload = FinishedTask.model_validate(event)
             ft: FinishedTaskFinishedtask = payload.finishedTask
             task = _task_from_fragment(self._graphql, ft.task)
@@ -69,18 +69,13 @@ class TaskSDK:
                 error=error_payload,
             )
 
-        async def filtered(
-            source: AsyncIterator[dict[str, Any]],
-        ) -> AsyncIterator[TaskResult]:
-            mapped = map_async_iterable(
-                lambda ev, _: map_event(ev),
-                source,
-            )
-            async for result in filter_async_iterable(filter_pred, mapped):
-                yield result
-
-        subscription = self._graphql.subscribe(FinishedTask.Meta.document)
-        return filtered(subscription)
+        results = map_async_iterable(
+            map_event,
+            self._graphql.subscribe(FinishedTask.Meta.document),
+        )
+        if filter_pred is None:
+            return results
+        return filter_async_iterable(filter_pred, results)
 
 
 class Task:
