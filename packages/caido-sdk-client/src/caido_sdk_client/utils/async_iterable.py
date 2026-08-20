@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 from collections.abc import AsyncIterable, AsyncIterator, Callable, Coroutine
 from typing import TypeVar
 
@@ -34,3 +35,31 @@ async def filter_async_iterable(
             pred = await pred
         if pred:
             yield item
+
+
+def buffer_async_iterable(source: AsyncIterable[T]) -> AsyncIterator[T]:
+    """Start pulling from ``source`` immediately so early items are not missed."""
+    iterator = aiter(source)
+
+    async def _next() -> T:
+        return await anext(iterator)
+
+    first = asyncio.create_task(_next())
+
+    async def _buffered() -> AsyncIterator[T]:
+        try:
+            try:
+                result = await first
+            except StopAsyncIteration:
+                return
+            while True:
+                yield result
+                result = await anext(iterator)
+        except StopAsyncIteration:
+            return
+        finally:
+            closer = getattr(iterator, "aclose", None)
+            if closer is not None:
+                await closer()
+
+    return _buffered()

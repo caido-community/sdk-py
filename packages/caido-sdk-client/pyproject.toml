@@ -28,6 +28,7 @@ testpaths = [
   "tests",
   "src/caido_sdk_client/graphql/tests",
   "src/caido_sdk_client/errors/tests",
+  "src/caido_sdk_client/sdks/tests",
 ]
 # Run tests one at a time (no parallel workers); integration tests share one Caido instance
 addopts = ["-p", "no:xdist"]

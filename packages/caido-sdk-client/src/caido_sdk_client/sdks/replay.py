@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Awaitable, Callable
 from typing import Literal, cast
 
 from caido_sdk_client.convert.blob import encode_blob
@@ -17,6 +18,7 @@ from caido_sdk_client.transport.v0_56.__generated__ import schema as v0_56
 from caido_sdk_client.types.replay_session import ReplaySendOptions, ReplaySendResult
 from caido_sdk_client.types.strings import IdLike
 from caido_sdk_client.types.versioned import TransportVersion
+from caido_sdk_client.utils.async_iterable import buffer_async_iterable
 from caido_sdk_client.utils.errors import handle_graphql_error
 from caido_sdk_client.version import Version
 
@@ -145,62 +147,76 @@ class ReplaySDK:
                 },
             )
 
-        raw = await self._graphql.mutation(
-            latest.StartReplayTask.Meta.document,
-            variables={"sessionId": str(session_id)},
-        )
-        payload = latest.StartReplayTask.model_validate(raw).startReplayTask
-        if payload.error is not None:
-            handle_graphql_error(cast(AllErrors, payload.error))
-        if payload.task is None:
-            raise OtherUserError("INTERNAL", "startReplayTask returned no task")
-        task = ReplayTask(self._graphql, payload.task)
-        return await self._wait_for_task(task)
+        async def start() -> ReplayTask:
+            raw = await self._graphql.mutation(
+                latest.StartReplayTask.Meta.document,
+                variables={"sessionId": str(session_id)},
+            )
+            payload = latest.StartReplayTask.model_validate(raw).startReplayTask
+            if payload.error is not None:
+                handle_graphql_error(cast(AllErrors, payload.error))
+            if payload.task is None:
+                raise OtherUserError("INTERNAL", "startReplayTask returned no task")
+            return ReplayTask(self._graphql, payload.task)
+
+        return await self._wait_for_task(start)
 
     async def _send_v0_56(
         self, session_id: IdLike, options: ReplaySendOptions
     ) -> ReplaySendResult:
         settings = options.settings
-        raw = await self._graphql.mutation(
-            v0_56.StartReplayTask.Meta.document,
-            variables={
-                "sessionId": str(session_id),
-                "input": {
-                    "connection": {
-                        "host": options.connection.host,
-                        "port": options.connection.port,
-                        "isTLS": options.connection.is_tls,
-                        "SNI": options.connection.sni,
-                    },
-                    "raw": encode_blob(options.raw),
-                    "settings": {
-                        "connectionClose": (
-                            settings.connection_close
-                            if settings is not None
-                            and settings.connection_close is not None
-                            else False
-                        ),
-                        "updateContentLength": (
-                            settings.update_content_length
-                            if settings is not None
-                            and settings.update_content_length is not None
-                            else True
-                        ),
-                        "placeholders": _placeholders(options),
+
+        async def start() -> ReplayTask:
+            raw = await self._graphql.mutation(
+                v0_56.StartReplayTask.Meta.document,
+                variables={
+                    "sessionId": str(session_id),
+                    "input": {
+                        "connection": {
+                            "host": options.connection.host,
+                            "port": options.connection.port,
+                            "isTLS": options.connection.is_tls,
+                            "SNI": options.connection.sni,
+                        },
+                        "raw": encode_blob(options.raw),
+                        "settings": {
+                            "connectionClose": (
+                                settings.connection_close
+                                if settings is not None
+                                and settings.connection_close is not None
+                                else False
+                            ),
+                            "updateContentLength": (
+                                settings.update_content_length
+                                if settings is not None
+                                and settings.update_content_length is not None
+                                else True
+                            ),
+                            "placeholders": _placeholders(options),
+                        },
                     },
                 },
-            },
-        )
-        payload = v0_56.StartReplayTask.model_validate(raw).startReplayTask
-        if payload.error is not None:
-            handle_graphql_error(cast(AllErrors, payload.error))
-        if payload.task is None:
-            raise OtherUserError("INTERNAL", "startReplayTask returned no task")
-        task = ReplayTask(self._graphql, payload.task)
-        return await self._wait_for_task(task)
+            )
+            payload = v0_56.StartReplayTask.model_validate(raw).startReplayTask
+            if payload.error is not None:
+                handle_graphql_error(cast(AllErrors, payload.error))
+            if payload.task is None:
+                raise OtherUserError("INTERNAL", "startReplayTask returned no task")
+            return ReplayTask(self._graphql, payload.task)
 
-    async def _wait_for_task(self, task: ReplayTask) -> ReplaySendResult:
-        async for result in self._tasks.finished(lambda item: item.task.id == task.id):
+        return await self._wait_for_task(start)
+
+    async def _wait_for_task(
+        self, start: Callable[[], Awaitable[ReplayTask]]
+    ) -> ReplaySendResult:
+        """Open the finished-task subscription before running ``start``, then resolve when the started task finishes."""
+        finished = buffer_async_iterable(self._tasks.finished())
+        task = await start()
+
+        async for result in finished:
+            if result.task.id != task.id:
+                continue
+
             entry = await self.entries.get(task.replay_entry_id)
             if entry is None:
                 raise OtherUserError("INTERNAL", "Replay entry not found")
