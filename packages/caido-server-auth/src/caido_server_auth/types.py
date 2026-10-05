@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Literal, NotRequired, TypedDict
+from enum import StrEnum
+from typing import Literal, TypedDict
 
 
 def _parse_iso8601(value: str) -> datetime:
@@ -49,12 +50,20 @@ class AuthenticationToken:
         )
 
 
+class ScopeRequirement(StrEnum):
+    """Whether a device scope must be granted."""
+
+    REQUIRED = "required"
+    FORBIDDEN = "forbidden"
+    OPTIONAL = "optional"
+
+
 @dataclass(frozen=True, slots=True)
 class DeviceScope:
     """Scope information returned by the cloud device information API."""
 
     name: str
-    description: str | None = None
+    requirement: ScopeRequirement
 
 
 @dataclass(frozen=True, slots=True)
@@ -69,7 +78,10 @@ class DeviceInformation:
         return cls(
             user_code=data["user_code"],
             scopes=tuple(
-                DeviceScope(name=scope["name"], description=scope.get("description"))
+                DeviceScope(
+                    name=scope["name"],
+                    requirement=ScopeRequirement(scope["requirement"]),
+                )
                 for scope in data["scopes"]
             ),
         )
@@ -153,7 +165,7 @@ class OAuth2ErrorPayload(TypedDict, total=False):
 
 class DeviceScopePayload(TypedDict):
     name: str
-    description: NotRequired[str]
+    requirement: str
 
 
 class DeviceInformationPayload(TypedDict):

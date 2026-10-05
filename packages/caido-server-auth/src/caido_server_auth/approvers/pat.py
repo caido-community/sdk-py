@@ -14,9 +14,11 @@ from ..types import (
     AuthenticationRequest,
     DeviceInformation,
     DeviceInformationPayload,
+    DeviceScope,
     DeviceScopePayload,
     HttpMethod,
     OAuth2ErrorPayload,
+    ScopeRequirement,
 )
 
 DEFAULT_API_URL = "https://api.caido.io"
@@ -46,16 +48,23 @@ class PATApprover:
     async def approve(self, request: AuthenticationRequest) -> None:
         # Step 1: Retrieve device information to discover request scopes.
         device_info = await self._get_device_information(request.user_code)
-        scopes_to_approve = [scope.name for scope in device_info.scopes]
 
-        # Step 2: Optionally filter scopes if allowed_scopes is configured.
+        # Step 2: Filter scopes if allowed_scopes is provided.
+        scopes_to_approve: list[DeviceScope] = []
         if self._allowed_scopes is not None:
             allowed = set(self._allowed_scopes)
             scopes_to_approve = [
-                scope for scope in scopes_to_approve if scope in allowed
+                scope for scope in device_info.scopes if scope.name in allowed
+            ]
+        else:
+            scopes_to_approve = [
+                scope
+                for scope in device_info.scopes
+                if scope.requirement
+                in (ScopeRequirement.REQUIRED, ScopeRequirement.OPTIONAL)
             ]
 
-        # Step 3: Approve the device with the final scope list.
+        # Step 3: Approve the device with the filtered scopes.
         await self._approve_device(request.user_code, scopes_to_approve)
 
     async def _send_request(
@@ -115,11 +124,10 @@ class PATApprover:
                 name = scope.get("name")
                 if not isinstance(name, str):
                     continue
-                description = scope.get("description")
-                if isinstance(description, str):
-                    scopes.append({"name": name, "description": description})
-                else:
-                    scopes.append({"name": name})
+                requirement = scope.get("requirement")
+                if not isinstance(requirement, str):
+                    continue
+                scopes.append({"name": name, "requirement": requirement})
 
         typed_payload = DeviceInformationPayload(
             user_code=str(payload.get("user_code", "")),
@@ -157,8 +165,13 @@ class PATApprover:
                 status_code=status,
             ) from exc
 
-    async def _approve_device(self, user_code: str, scopes: list[str]) -> None:
-        query = urlencode({"user_code": user_code, "scope": ",".join(scopes)})
+    async def _approve_device(self, user_code: str, scopes: list[DeviceScope]) -> None:
+        query = urlencode(
+            {
+                "user_code": user_code,
+                "scope": ",".join(scope.name for scope in scopes),
+            }
+        )
         url = f"{self._api_url}/oauth2/device/approve?{query}"
 
         status, body = await self._send_request(

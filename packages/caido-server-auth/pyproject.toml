@@ -1,6 +1,6 @@
 [project]
 name = "caido-server-auth"
-version = "0.1.2"
+version = "0.1.3"
 description = "Authenticate with a Caido instance."
 readme = "README.md"
 authors = [{ name = "Caido Labs Inc.", email = "dev@caido.io" }]

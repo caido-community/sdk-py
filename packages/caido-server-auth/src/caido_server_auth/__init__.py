@@ -14,6 +14,7 @@ from .types import (
     AuthenticationToken,
     DeviceInformation,
     DeviceScope,
+    ScopeRequirement,
 )
 
 __all__ = [
@@ -31,4 +32,5 @@ __all__ = [
     "OnRequestCallback",
     "PATApprover",
     "PATApproverOptions",
+    "ScopeRequirement",
 ]
